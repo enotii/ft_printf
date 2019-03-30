@@ -6,7 +6,7 @@
 /*   By: mbeahan <mbeahan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/29 18:52:56 by mbeahan           #+#    #+#             */
-/*   Updated: 2019/03/30 20:56:35 by mbeahan          ###   ########.fr       */
+/*   Updated: 2019/03/30 21:16:02 by mbeahan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void     parse_flags(char *string, t_printf *list)
     }
 }
 
-int    parse_width(char *string, t_printf *list)
+void    parse_width(char *string, t_printf *list)
 {
     int     i;
     int     len;
@@ -80,10 +80,10 @@ int    parse_width(char *string, t_printf *list)
         }
         if (string[i] == '+' || string[i] == '-' || string[i] == '0' || string[i] == ' ' || string[i] == '#')
             i++;
-        if (string[i] > 47 && string[i] < 58)
+        if (string[i] > 48 && string[i] < 58)
         {
             tmp = i;
-            while(string[i] > 47 && string[i] < 58)
+            while(string[i] > 48 && string[i] < 58)
             {
                  i++;
                 len++;
@@ -101,7 +101,8 @@ int    parse_width(char *string, t_printf *list)
         i++;
         tmp++;
     }
-    return (ft_atoi(width));
+    list->width = ft_atoi(width);
+    free(width);
 }
 
 void    ft_parse(char *string)
@@ -118,8 +119,9 @@ void    ft_parse(char *string)
         i++;
     }
     parse_flags(string, sooqa);
-    sooqa->width = parse_width(string, sooqa);
+    parse_width(string, sooqa);
 }
+
 int     ft_printf(const char *format, ...)
 {
     int i;
@@ -131,7 +133,7 @@ int     ft_printf(const char *format, ...)
 }
 int main()
 {
-    ft_printf("%+-------+++", 123);
-    //printf("%+-----+d", 123);
+    ft_printf("%10s=%0*.*f", 123);
+    //printf("%10s=%0*.*f);
     return(0);
 } 
