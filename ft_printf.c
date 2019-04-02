@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbeahan <mbeahan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: gachibass228 <marvin@42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/29 18:52:56 by mbeahan           #+#    #+#             */
-/*   Updated: 2019/04/02 21:10:49 by mbeahan          ###   ########.fr       */
+/*   Updated: 2019/04/03 00:08:05 by gachibass22      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,139 @@ void     parse_flags(char *string, t_printf *list)
         i++;
     }
 }
+
+void    parse_size(char *string, t_printf *list)
+{
+    int check;
+    int i;
+
+    i = 0;
+    check = 0;
+    while (string[i] && check < 2)
+    {
+        if (string[i] == '%' && string[i + 1] != '%')
+        {
+            check++;
+            i++;
+        }
+         if (check == 1 && (string[i] == 'h' && string[i + 1] == 'h'))
+        {
+            list->size = (char *)malloc(sizeof(char) * 2);
+            list->size[0] = 'h';
+            list->size[1] = 'h';
+            break;
+        }
+         if (check == 1 && (string[i] == 'h' && string[i + 1] != 'h'))
+        {
+            list->size = (char *)malloc(sizeof(char) * 2);
+            list->size[0] = 'h';
+            list->size[1] = '\0';
+            break;
+        }
+        if (check == 1 && (string[i] == 'l' && string[i + 1] == 'l'))
+        {
+            list->size = (char *)malloc(sizeof(char) * 2);
+            list->size[0] = 'l';
+            list->size[1] = 'l';
+            break;
+        }
+         if (check == 1 && (string[i] == 'l' && string[i + 1] != 'l'))
+        {
+            list->size = (char *)malloc(sizeof(char) * 2);
+            list->size[0] = 'l';
+            list->size[1] = '\0';
+            break;
+        }
+         if (check == 1 && (string[i] == 'L' && string[i + 1] == 'f'))
+        {
+            list->size = (char *)malloc(sizeof(char) * 2);
+            list->size[0] = 'L';
+            list->size[1] = '\0';
+            break;
+        }
+         i++;
+    }
+}
+
+int    parse_type(char *string, t_printf *list)
+{
+    int check;
+    int i;
+
+    i = 0;
+    check = 0;
+    while (string[i] && check < 2)
+    {
+        if (string[i] == '%' && string[i + 1] != '%')
+        {
+            check++;
+            i++;
+        }
+         if (check == 1 && (string[i] == 'd'))
+        {
+            list->type = 'd';
+            i++;
+            return(i);
+        }
+        if (check == 1 && (string[i] == 'c'))
+        {
+            list->type = 'c';
+            i++;
+            return(i);
+        }
+        if (check == 1 && (string[i] == 's'))
+        {
+            list->type = 's';
+            i++;
+            return(i);
+        }
+        if (check == 1 && (string[i] == 'p'))
+        {
+            list->type = 'p';
+            i++;
+            return(i);
+        }
+        if (check == 1 && (string[i] == 'f'))
+        {
+            list->type = 'f';
+            i++;
+            return(i);
+        }
+        if (check == 1 && (string[i] == 'i'))
+        {
+            list->type = 'i';
+            i++;
+            return(i);
+        }
+        if (check == 1 && (string[i] == 'o'))
+        {
+            list->type = 'o';
+            i++;
+            return(i);
+        }
+        if (check == 1 && (string[i] == 'u'))
+        {
+            list->type = 'u';
+            i++;
+            return(i);
+        }
+        if (check == 1 && (string[i] == 'x'))
+        {
+            list->type = 'x';
+            i++;
+            return(i);
+        }
+        if (check == 1 && (string[i] == 'X'))
+        {
+            list->type = 'X';
+            i++;
+            return(i);
+        }
+        i++;
+    }
+    return(0);
+}
+
 void    parse_precision(char *string, t_printf *list)
 {
     int i;
@@ -153,12 +286,14 @@ void    parse_width(char *string, t_printf *list)
 void    ft_parse(char *string)
 {
     int i;
+    int count;
     t_printf *sooqa;
 
     i = 0;
+    count = 0;
     sooqa = (t_printf *)malloc(sizeof(t_printf));
     zeroing_args(&sooqa);
-    while(string[i] != '%')
+    while(string[i] != '%' && string[i])
     {
         ft_putchar(string[i]);
         i++;
@@ -166,6 +301,13 @@ void    ft_parse(char *string)
     parse_flags(string, sooqa);
     parse_width(string, sooqa);
     parse_precision(string, sooqa);
+    parse_size(string,sooqa);
+    count = parse_type(string,sooqa);
+    while(string[count] != '\0')
+    {
+        ft_putchar(string[count]);
+        count++;
+    }
 }
 
 int     ft_printf(const char *format, ...)
@@ -179,7 +321,8 @@ int     ft_printf(const char *format, ...)
 }
 int main()
 {
-    printf("%0.510")
+   ft_printf("ffdf %03.2ddfdf");
+   // printf("fdfd%+-dfdsfdf", 20);
     //ft_printf("Your result is %10s=%0*.*f", 123);
     //printf("%10s=%0*.*f);
     return(0);

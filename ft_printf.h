@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbeahan <mbeahan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: gachibass228 <marvin@42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/29 18:53:51 by mbeahan           #+#    #+#             */
-/*   Updated: 2019/04/02 21:10:22 by mbeahan          ###   ########.fr       */
+/*   Updated: 2019/04/03 00:06:13 by gachibass22      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ typedef struct  s_printf
     char    zero;
     int     width;
     int     precision;
-    char    size;
+    char    *size;
     char    type;
 }               t_printf;
 
@@ -33,5 +33,7 @@ void    ft_parse(char *string);
 int     ft_printf(const char *format, ...);
 void    parse_precision(char *string, t_printf *list);
 void    parse_width(char *string, t_printf *list);
+void    parse_size(char *string, t_printf *list);
+int     parse_type(char *string, t_printf *list);
 
 #endif
