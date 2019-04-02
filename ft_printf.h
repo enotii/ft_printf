@@ -6,7 +6,7 @@
 /*   By: mbeahan <mbeahan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/29 18:53:51 by mbeahan           #+#    #+#             */
-/*   Updated: 2019/03/30 21:10:13 by mbeahan          ###   ########.fr       */
+/*   Updated: 2019/04/02 21:10:22 by mbeahan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ void    zeroing_args(t_printf **list);
 void    parse_flags(char *string, t_printf *list);
 void    ft_parse(char *string);
 int     ft_printf(const char *format, ...);
+void    parse_precision(char *string, t_printf *list);
 void    parse_width(char *string, t_printf *list);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: mbeahan <mbeahan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/29 18:52:56 by mbeahan           #+#    #+#             */
-/*   Updated: 2019/04/02 21:03:02 by mbeahan          ###   ########.fr       */
+/*   Updated: 2019/04/02 21:10:49 by mbeahan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,8 @@ void    parse_precision(char *string, t_printf *list)
     int check;
     char *precision;
     int len;
+    int tmp;
 
-    len = 0;
     i = 0;
     check = 0;
     while (string[i] && check < 2)
@@ -78,13 +78,29 @@ void    parse_precision(char *string, t_printf *list)
         if (check == 1 && (string[i] == '.' && (string[i + 1] > 47 && string[i + 1] < 58)))
         {
             i++;
+            tmp = i;
+            len = 0;
             while(string[i] > 47 && string[i] < 58)
             {
                 len++;
                 i++;
             }
+            break ;
         }
         i++;
+    }
+    if (len >= 0)
+    {
+        i = 0;
+        precision = (char *)malloc(sizeof(char) * len);
+        while (i < len)
+        {
+            precision[i] = string[tmp];
+            i++;
+            tmp++;
+        }
+        list->precision = ft_atoi(precision);
+        free(precision);
     }
 }
 
@@ -99,7 +115,6 @@ void    parse_width(char *string, t_printf *list)
     i = 0;
     check = 0;
     len = 0;
-    tmp = 0;
     while (string[i] && check < 2)
     {
         if (string[i] == '%' && string[i + 1] != '%')
@@ -150,6 +165,7 @@ void    ft_parse(char *string)
     }
     parse_flags(string, sooqa);
     parse_width(string, sooqa);
+    parse_precision(string, sooqa);
 }
 
 int     ft_printf(const char *format, ...)
