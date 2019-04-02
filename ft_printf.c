@@ -6,7 +6,7 @@
 /*   By: mbeahan <mbeahan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/29 18:52:56 by mbeahan           #+#    #+#             */
-/*   Updated: 2019/03/30 21:16:02 by mbeahan          ###   ########.fr       */
+/*   Updated: 2019/04/02 21:03:02 by mbeahan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,35 @@ void     parse_flags(char *string, t_printf *list)
         i++;
     }
 }
+void    parse_precision(char *string, t_printf *list)
+{
+    int i;
+    int check;
+    char *precision;
+    int len;
+
+    len = 0;
+    i = 0;
+    check = 0;
+    while (string[i] && check < 2)
+    {
+        if (string[i] == '%' && string[i + 1] != '%')
+        {
+            check++;
+            i++;
+        }
+        if (check == 1 && (string[i] == '.' && (string[i + 1] > 47 && string[i + 1] < 58)))
+        {
+            i++;
+            while(string[i] > 47 && string[i] < 58)
+            {
+                len++;
+                i++;
+            }
+        }
+        i++;
+    }
+}
 
 void    parse_width(char *string, t_printf *list)
 {
@@ -78,20 +107,21 @@ void    parse_width(char *string, t_printf *list)
             i++;
             check++;
         }
-        if (string[i] == '+' || string[i] == '-' || string[i] == '0' || string[i] == ' ' || string[i] == '#')
+        if (check == 1 && (string[i] == '+' || string[i] == '-' || string[i] == '0' || string[i] == ' ' || string[i] == '#'))
             i++;
-        if (string[i] > 48 && string[i] < 58)
+        if (check == 1 && (string[i] > 48 && string[i] < 58))
         {
             tmp = i;
             while(string[i] > 48 && string[i] < 58)
             {
-                 i++;
+                i++;
                 len++;
             }
              break ;
         }
-        if ((string[i] != '+' && string[i] != '-' && string[i] != '0' && string[i] != ' ' && string[i] != '#') && (!(string[i] > 47 && string[i] < 58)))
+        if (check == 1 && ((string[i] != '+' && string[i] != '-' && string[i] != '0' && string[i] != ' ' && string[i] != '#') && (!(string[i] > 47 && string[i] < 58))))
              break ;
+        i++;
     }
     width = (char *)malloc(sizeof(char) * len);
     i = 0;
@@ -133,7 +163,8 @@ int     ft_printf(const char *format, ...)
 }
 int main()
 {
-    ft_printf("%10s=%0*.*f", 123);
+    printf("%0.510")
+    //ft_printf("Your result is %10s=%0*.*f", 123);
     //printf("%10s=%0*.*f);
     return(0);
 } 
