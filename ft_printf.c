@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbeahan <mbeahan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: gachibass228 <marvin@42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/29 18:52:56 by mbeahan           #+#    #+#             */
-/*   Updated: 2019/04/04 22:51:11 by mbeahan          ###   ########.fr       */
+/*   Updated: 2019/04/04 23:23:32 by gachibass22      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -320,18 +320,39 @@ void     ft_print_address(t_printf *list, void *address)
    char *addr;
    int rest;
    int count;
-
+   int buff;
+    char r;
+    
    new = (int)address;
+   buff = new;
+   while(buff > 16)
+   {
+       count++;
+       buff = buff/16;
+   }
+   addr = (char *)malloc(sizeof(char) * count + 2);
    while(new > 16)
    {
-    rest = new%16;
-    if(rest > 10)
-    {
-        a
-    }
-    new = new/16;
+       rest = new%16;
+       if(rest >= 10)
+       {
+           rest == 10 ? ft_strcat(addr, "a") : 0;
+           rest == 11 ? ft_strcat(addr, "b") : 0;
+           rest == 12 ? ft_strcat(addr, "c") : 0;
+           rest == 13 ? ft_strcat(addr, "d") : 0;
+           rest == 14 ? ft_strcat(addr, "e") : 0;
+           rest == 15 ? ft_strcat(addr, "f") : 0;
+       }
+       else 
+       {
+        r = rest % 10 + '0';
+       ft_strcat(addr, (char *)r);
+       }
+       new = new/16;
    }
-   
+        r = new % 10 + '0';
+       ft_strcat(addr, (char *)r);
+   ft_putstr(addr);
 }
 int     ft_printf(const char *format, ...)
 {
@@ -377,6 +398,6 @@ int main()
 {
     int a = 98/16;
     printf("%d\n",a);
-   //ft_printf("Your p is : %p", &a);
+   ft_printf("Your p is : %p", &a);
    return(0);
 } 
