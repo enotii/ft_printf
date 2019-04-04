@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gachibass228 <marvin@42.fr>                +#+  +:+       +#+        */
+/*   By: mbeahan <mbeahan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/29 18:52:56 by mbeahan           #+#    #+#             */
-/*   Updated: 2019/04/04 20:05:34 by gachibass22      ###   ########.fr       */
+/*   Updated: 2019/04/04 20:19:09 by mbeahan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -283,40 +283,31 @@ void    parse_width(char *string, t_printf *list)
     free(width);
 }
 
-int    ft_print_and_return(char *string, int start)
+int     ft_print_and_return(char *string, int start)
 {
-    while (string[start] && (!(string[start] == '%' && string[start] != '%')))
+    while (string[start] && (!(string[start] == '%' && string[start + 1] != '%')))
     {
         ft_putchar(string[start]);
         start++;
     }
-    if (string[start + 1])
+    if(string[start + 1])
         return(start + 1);
     return (0);
 }
 
 void    ft_parse(char *string)
 {
-    int count;
-    t_printf *sooqa;
     int i;
+    t_printf *sooqa;
 
     i = 0;
-    count = 0;
     sooqa = (t_printf *)malloc(sizeof(t_printf));
     ft_print_and_return(string, i);
-    zeroing_args(&sooqa);
     parse_flags(string, sooqa);
     parse_width(string, sooqa);
     parse_precision(string, sooqa);
-    parse_size(string,sooqa);
-    count = parse_type(string,sooqa);
-    //count = ft_print_and_return(string, count);
-    while(string[count] != '\0')
-    {
-        ft_putchar(string[count]);
-        count++;
-    }
+    i = parse_type(string, sooqa);
+    ft_print_and_return(string, i);
 }
 
 int     ft_printf(const char *format, ...)
@@ -331,8 +322,5 @@ int     ft_printf(const char *format, ...)
 int main()
 {
    ft_printf("ffdf %03.2ddfd%fdfsdf");
-   // printf("fdfd%+-dfdsfdf", 20);
-    //ft_printf("Your result is %10s=%0*.*f", 123);
-    //printf("%10s=%0*.*f);
-    return(0);
+   return(0);
 } 
