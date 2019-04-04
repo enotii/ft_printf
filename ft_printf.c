@@ -6,7 +6,7 @@
 /*   By: mbeahan <mbeahan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/29 18:52:56 by mbeahan           #+#    #+#             */
-/*   Updated: 2019/04/04 20:19:09 by mbeahan          ###   ########.fr       */
+/*   Updated: 2019/04/04 20:58:17 by mbeahan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -283,44 +283,47 @@ void    parse_width(char *string, t_printf *list)
     free(width);
 }
 
-int     ft_print_and_return(char *string, int start)
+void     ft_print(char *string, int start)
 {
     while (string[start] && (!(string[start] == '%' && string[start + 1] != '%')))
     {
         ft_putchar(string[start]);
         start++;
     }
-    if(string[start + 1])
-        return(start + 1);
-    return (0);
 }
 
-void    ft_parse(char *string)
+void    ft_print_char(t_printf *list, int c)
 {
-    int i;
-    t_printf *sooqa;
-
-    i = 0;
-    sooqa = (t_printf *)malloc(sizeof(t_printf));
-    ft_print_and_return(string, i);
-    parse_flags(string, sooqa);
-    parse_width(string, sooqa);
-    parse_precision(string, sooqa);
-    i = parse_type(string, sooqa);
-    ft_print_and_return(string, i);
+    char new;
+    new = (int)c;
+    ft_putchar(new);
 }
 
 int     ft_printf(const char *format, ...)
 {
     int i;
-    i = 0;
+    t_printf *sooqa;
     va_list ap;
-    va_start(ap,format);
-    ft_parse((char *)format);
+    int normal;
+
+    i = 0;
+    sooqa = (t_printf *)malloc(sizeof(t_printf));
+    ft_print((char *)format, i);
+    parse_flags((char *)format, sooqa);
+    parse_width((char *)format, sooqa);
+    parse_precision((char *)format, sooqa);
+    i = parse_type((char *)format, sooqa);
+    if (sooqa->type == 'c')
+    {
+        va_start(ap,format);
+        int c = va_arg(ap, int);
+        ft_print_char(sooqa, 'A');
+        ft_print((char *)format, i);
+    }
     return(0);
 }
 int main()
 {
-   ft_printf("ffdf %03.2ddfd%fdfsdf");
+   ft_printf("Your char is : %c", "A");
    return(0);
 } 
