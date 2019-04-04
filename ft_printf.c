@@ -6,7 +6,7 @@
 /*   By: mbeahan <mbeahan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/29 18:52:56 by mbeahan           #+#    #+#             */
-/*   Updated: 2019/04/04 20:58:17 by mbeahan          ###   ########.fr       */
+/*   Updated: 2019/04/04 21:39:15 by mbeahan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -294,9 +294,12 @@ void     ft_print(char *string, int start)
 
 void    ft_print_char(t_printf *list, int c)
 {
-    char new;
-    new = (int)c;
-    ft_putchar(new);
+    ft_putchar(c - 'A');
+}
+
+void    ft_print_string(t_printf *list, char *string)
+{
+    ft_putstr(string);
 }
 
 int     ft_printf(const char *format, ...)
@@ -317,13 +320,21 @@ int     ft_printf(const char *format, ...)
     {
         va_start(ap,format);
         int c = va_arg(ap, int);
-        ft_print_char(sooqa, 'A');
+        ft_print_char(sooqa, c);
         ft_print((char *)format, i);
+    }
+    if (sooqa->type == 's')
+    {
+        va_start(ap,format);
+        char *string = va_arg(ap, char *);
+        ft_print_string(sooqa, string);
+        ft_print((char *)format, i);
+        
     }
     return(0);
 }
 int main()
 {
-   ft_printf("Your char is : %c", "A");
+   ft_printf("Your char is : %c", "T");
    return(0);
 } 
