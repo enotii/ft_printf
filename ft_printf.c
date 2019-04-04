@@ -6,7 +6,7 @@
 /*   By: mbeahan <mbeahan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/29 18:52:56 by mbeahan           #+#    #+#             */
-/*   Updated: 2019/04/04 21:39:15 by mbeahan          ###   ########.fr       */
+/*   Updated: 2019/04/04 22:51:11 by mbeahan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -294,24 +294,55 @@ void     ft_print(char *string, int start)
 
 void    ft_print_char(t_printf *list, int c)
 {
-    ft_putchar(c - 'A');
+    write(1, &c, 1);
 }
 
 void    ft_print_string(t_printf *list, char *string)
 {
-    ft_putstr(string);
+    int i;
+
+    i = 0;
+    if (list->precision)
+    {
+        while (i < list->precision)
+        {
+            ft_putchar(string[i]);
+            i++;
+        }
+    }
+    else
+        ft_putstr(string);
 }
 
+void     ft_print_address(t_printf *list, void *address)
+{
+   int new;
+   char *addr;
+   int rest;
+   int count;
+
+   new = (int)address;
+   while(new > 16)
+   {
+    rest = new%16;
+    if(rest > 10)
+    {
+        a
+    }
+    new = new/16;
+   }
+   
+}
 int     ft_printf(const char *format, ...)
 {
     int i;
     t_printf *sooqa;
     va_list ap;
-    int normal;
 
     i = 0;
     sooqa = (t_printf *)malloc(sizeof(t_printf));
     ft_print((char *)format, i);
+    zeroing_args(&sooqa);
     parse_flags((char *)format, sooqa);
     parse_width((char *)format, sooqa);
     parse_precision((char *)format, sooqa);
@@ -322,6 +353,7 @@ int     ft_printf(const char *format, ...)
         int c = va_arg(ap, int);
         ft_print_char(sooqa, c);
         ft_print((char *)format, i);
+        zeroing_args(&sooqa);
     }
     if (sooqa->type == 's')
     {
@@ -329,12 +361,22 @@ int     ft_printf(const char *format, ...)
         char *string = va_arg(ap, char *);
         ft_print_string(sooqa, string);
         ft_print((char *)format, i);
-        
+        zeroing_args(&sooqa);
+    }
+    if (sooqa->type == 'p')
+    {
+        va_start(ap, format);
+        void *address = va_arg(ap, void *);
+        ft_print_address(sooqa, address);
+        ft_print((char *)format, i);
+        zeroing_args(&sooqa);
     }
     return(0);
 }
 int main()
 {
-   ft_printf("Your char is : %c", "T");
+    int a = 98/16;
+    printf("%d\n",a);
+   //ft_printf("Your p is : %p", &a);
    return(0);
 } 
