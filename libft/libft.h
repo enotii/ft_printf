@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: caking <caking@student.42.fr>              +#+  +:+       +#+        */
+/*   By: gachibass228 <marvin@42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/28 15:25:16 by mbeahan           #+#    #+#             */
-/*   Updated: 2019/02/14 22:43:58 by caking           ###   ########.fr       */
+/*   Updated: 2019/04/05 20:21:41 by gachibass22      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,5 +86,6 @@ int				ft_count_words(char const *s, char c);
 void			ft_swap(int *a, int *b);
 int				ft_isdel(int c);
 int				ft_abs(int c);
+char	*ft_itoa_base(int value, int base);
 
 #endif

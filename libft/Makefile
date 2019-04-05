@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: mbeahan <marvin@42.fr>                     +#+  +:+       +#+         #
+#    By: gachibass228 <marvin@42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/12/14 20:47:05 by mbeahan           #+#    #+#              #
-#    Updated: 2018/12/18 17:00:33 by mbeahan          ###   ########.fr        #
+#    Updated: 2019/04/05 20:25:37 by gachibass22      ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -74,7 +74,8 @@ FILES = ft_memset.c \
 		ft_free_list.c \
 	   	ft_swap.c \
 		ft_isdel.c \
-		ft_abs.c
+		ft_abs.c \
+		ft_itoa_base.c
 
 OBJ =	ft_memset.o \
 		ft_bzero.o \
@@ -138,7 +139,8 @@ OBJ =	ft_memset.o \
 		ft_free_list.o \
 		ft_swap.o \
 		ft_isdel.o \
-		ft_abs.o
+		ft_abs.o \
+		ft_itoa_base.o
 
 $(NAME) :
 	gcc $(FLAG) -c $(FILES)

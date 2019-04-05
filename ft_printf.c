@@ -6,7 +6,7 @@
 /*   By: gachibass228 <marvin@42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/29 18:52:56 by mbeahan           #+#    #+#             */
-/*   Updated: 2019/04/04 23:23:32 by gachibass22      ###   ########.fr       */
+/*   Updated: 2019/04/05 20:25:19 by gachibass22      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -316,44 +316,16 @@ void    ft_print_string(t_printf *list, char *string)
 
 void     ft_print_address(t_printf *list, void *address)
 {
-   int new;
-   char *addr;
-   int rest;
-   int count;
-   int buff;
-    char r;
-    
-   new = (int)address;
-   buff = new;
-   while(buff > 16)
-   {
-       count++;
-       buff = buff/16;
-   }
-   addr = (char *)malloc(sizeof(char) * count + 2);
-   while(new > 16)
-   {
-       rest = new%16;
-       if(rest >= 10)
-       {
-           rest == 10 ? ft_strcat(addr, "a") : 0;
-           rest == 11 ? ft_strcat(addr, "b") : 0;
-           rest == 12 ? ft_strcat(addr, "c") : 0;
-           rest == 13 ? ft_strcat(addr, "d") : 0;
-           rest == 14 ? ft_strcat(addr, "e") : 0;
-           rest == 15 ? ft_strcat(addr, "f") : 0;
-       }
-       else 
-       {
-        r = rest % 10 + '0';
-       ft_strcat(addr, (char *)r);
-       }
-       new = new/16;
-   }
-        r = new % 10 + '0';
-       ft_strcat(addr, (char *)r);
-   ft_putstr(addr);
+    char *a;
+	char *ret;
+    int new;
+
+	new = (int)address;
+	ret = ft_strdup("0x");
+	ft_strcat(ret, ft_itoa_base((unsigned long int)address, 16));
+    ft_putstr(ret);
 }
+
 int     ft_printf(const char *format, ...)
 {
     int i;
@@ -396,8 +368,8 @@ int     ft_printf(const char *format, ...)
 }
 int main()
 {
-    int a = 98/16;
-    printf("%d\n",a);
-   ft_printf("Your p is : %p", &a);
+    //int a = 98/16;
+  //  printf("%d\n",a);
+   ft_printf("Your p is : %p", 1234);
    return(0);
 } 
