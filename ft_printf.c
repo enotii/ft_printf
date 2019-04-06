@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Alexandr <Alexandr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mbeahan <mbeahan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/29 18:52:56 by mbeahan           #+#    #+#             */
-/*   Updated: 2019/04/06 11:13:50 by Alexandr         ###   ########.fr       */
+/*   Updated: 2019/04/06 18:34:35 by mbeahan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -201,6 +201,7 @@ void    parse_precision(char *string, t_printf *list)
 
     i = 0;
     check = 0;
+    len = -1;
     while (string[i] && check < 2)
     {
         if (string[i] == '%' && string[i + 1] != '%')
@@ -328,7 +329,7 @@ void    ft_print_string(t_printf *list, char *string)
     int i;
     char *output;
     
-    if (list->precision < ft_strlen(string))
+    if (list->precision >= 0 && list->precision < ft_strlen(string))
     {
         output = (char *)malloc(sizeof(char) * list->precision);
         i = 0;
@@ -338,7 +339,7 @@ void    ft_print_string(t_printf *list, char *string)
             i++;
         }
     }
-    if (!list->precision)
+    if (list->precision < 0)
         output = ft_strdup(string);
     if ((list->width > ft_strlen(output)) && list->minus)
     {
@@ -364,7 +365,38 @@ void    ft_print_string(t_printf *list, char *string)
         ft_putstr(output);
 }
 
-void     ft_print_address(t_printf *list, void *address)
+void    get_string_addres(t_printf *list, int *array, int count)
+{
+    char *address;
+    int len;
+    int i;
+
+    i = 2;
+    len = count;
+    address = (char *)malloc(sizeof(char) * (len + 3));
+    address[0] = '0';
+    address[1] = 'x';
+    while (len >= 0)
+    {
+        if (array[len] >= 10)
+         {
+             array[len] == 10 ? address[i] = 'a' : 0;
+             array[len] == 11 ? address[i] = 'b' : 0;
+             array[len] == 12 ? address[i] = 'c' : 0;
+             array[len] == 13 ? address[i] = 'd' : 0;
+             array[len] == 14 ? address[i] = 'e' : 0;
+             array[len] == 15 ? address[i] = 'f' : 0;
+         }
+         else
+            address[i] = array[len] + '0';
+        i++;
+        len--;
+    }
+    ft_print_string(list, address);
+    free(address);
+}
+
+void     unsigned_hh(t_printf *list, void *address)
 {
     unsigned long long int tmp;
     unsigned long long int new;
@@ -372,7 +404,7 @@ void     ft_print_address(t_printf *list, void *address)
     int count;
     int i;
 
-    i = 1;
+    i = 0;
     new = (unsigned long long int)address;
     tmp = new;
     count = 0;
@@ -382,33 +414,123 @@ void     ft_print_address(t_printf *list, void *address)
         count++;
     }
     array = (int *)malloc(sizeof(unsigned long long int) * (count + 1));
-    ft_putstr("0x");
-    count = 0;
     while(new > 16)
     {
-        array[count] = new % 16;
+        array[i] = new % 16;
         new = new / 16;
-        count++;
-    }
-    array[count] = new;
-    while(count != 0 && list->width < i)
-    {
-        if (array[count] >= 10)
-        {
-            array[count] == 10 ? ft_putchar('a') : 0;
-            array[count] == 11 ? ft_putchar('b') : 0;
-            array[count] == 12 ? ft_putchar('c') : 0;
-            array[count] == 13 ? ft_putchar('d') : 0;
-            array[count] == 14 ? ft_putchar('e') : 0;
-            array[count] == 15 ? ft_putchar('f') : 0;
-        }
-        else
-            ft_putnbr(array[count]);
-        count--;
         i++;
     }
-    ft_putnbr(array[0]);
+    array[i] = new;
+    get_string_addres(list, array, count);
     free(array);
+}
+
+void    unsigned_h(t_printf *list, unsigned long long u)
+{
+    int count;
+    char *string;
+    unsigned short new_u;
+    unsigned short tmp_u;
+    int i;
+
+    new_u = (unsigned short)u;
+    tmp_u = new_u;
+    count = 0;
+    i = 0;
+    if (tmp_u >= 10)
+    {
+        while (tmp_u >= 10)
+        {
+            tmp_u = tmp_u / 10;
+            count++;
+        }
+        string = (char *)malloc(sizeof(char) * count + 1);
+        while (new_u >= 10)
+        {
+            string[i] = (new_u / 10) + '0';
+            new_u = new_u % 10;
+            i++;
+        }
+        string[i] = new_u + '0';
+    }
+    else
+    {
+        string = (char *)malloc(sizeof(char) * 1);
+        string[i] = new_u + '0';
+    }
+    ft_putstr(string);
+}
+
+void    unsigned_ll(t_printf *list, unsigned long long u)
+{
+    int count;
+    char *string;
+    unsigned long long new_u;
+    unsigned long long tmp_u;
+    int i;
+
+    new_u = u;
+    tmp_u = new_u;
+    count = 0;
+    i = 0;
+    if (tmp_u >= 10)
+    {
+        while (tmp_u >= 10)
+        {
+            tmp_u = tmp_u / 10;
+            count++;
+        }
+        string = (char *)malloc(sizeof(char) * count + 1);
+        while (new_u >= 10)
+        {
+            string[i] = (new_u / 10) + '0';
+            new_u = new_u % 10;
+            i++;
+        }
+        string[i] = new_u + '0';
+    }
+    else
+    {
+        string = (char *)malloc(sizeof(char) * 1);
+        string[i] = new_u + '0';
+    }
+    ft_putstr(string);
+}
+
+void    unsigned_l(t_printf *list, unsigned long long u)
+{
+    int count;
+    char *string;
+    unsigned long new_u;
+    unsigned long tmp_u;
+    int i;
+
+    new_u = (unsigned long)u;
+    tmp_u = new_u;
+    count = 0;
+    i = 0;
+    if (tmp_u >= 10)
+    {
+        while (tmp_u >= 10)
+        {
+            tmp_u = tmp_u / 10;
+            count++;
+        }
+        string = (char *)malloc(sizeof(char) * count + 1);
+        while (new_u >= 10)
+        {
+            string[i] = (new_u / 10) + '0';
+            new_u = new_u % 10;
+            i++;
+        }
+        string[i] = new_u + '0';
+    }
+    else
+    {
+        string = (char *)malloc(sizeof(char) * 1);
+        string[i] = new_u + '0';
+    }
+    ft_putstr(string);
 }
 
 int     ft_printf(const char *format, ...)
@@ -424,6 +546,7 @@ int     ft_printf(const char *format, ...)
     parse_flags((char *)format, sooqa);
     parse_width((char *)format, sooqa);
     parse_precision((char *)format, sooqa);
+    parse_size((char*)format, sooqa);
     i = parse_type((char *)format, sooqa);
     if (sooqa->type == 'c')
     {
@@ -445,18 +568,24 @@ int     ft_printf(const char *format, ...)
     {
         va_start(ap, format);
         void *address = va_arg(ap, void *);
-        ft_print_address(sooqa, address);
+        parse_address(sooqa, address);
         ft_print((char *)format, i);
         zeroing_args(&sooqa);
+    }
+    if (sooqa->type == 'u')
+    {
+        va_start(ap, format);
+        unsigned long long u = va_arg(ap, unsigned long long);
+        if (ft_strcmp(sooqa->size, "hh") == 0)
+            unsigned_hh(sooqa, u);
     }
     return(0);
 }
 
 int main()
 {
-    int b = 5;
-    int *a = &b;
-    printf("%10.5s\n", "Hello World");
-   ft_printf("%10.5s\n", "Hello world");
+    unsigned char g = 'A';
+    printf("%hhu\n", g);
+    ft_printf("%hhu", g);
    return(0);
 } 
