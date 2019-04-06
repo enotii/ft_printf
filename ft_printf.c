@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gachibass228 <marvin@42.fr>                +#+  +:+       +#+        */
+/*   By: Alexandr <Alexandr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/29 18:52:56 by mbeahan           #+#    #+#             */
-/*   Updated: 2019/04/05 20:25:19 by gachibass22      ###   ########.fr       */
+/*   Updated: 2019/04/06 11:13:50 by Alexandr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void zeroing_args(t_printf **list)
     (*list)->bar = 0;
     (*list)->zero = 0;
     (*list)->width = 0;
-    (*list)->precision = 0;
+    (*list)->precision = -1;
     (*list)->size = 0;
     (*list)->type = 0;
 }
@@ -195,7 +195,7 @@ void    parse_precision(char *string, t_printf *list)
 {
     int i;
     int check;
-    char *precision;
+    char *prec;
     int len;
     int tmp;
 
@@ -208,12 +208,12 @@ void    parse_precision(char *string, t_printf *list)
             check++;
             i++;
         }
-        if (check == 1 && (string[i] == '.' && (string[i + 1] > 47 && string[i + 1] < 58)))
+        if (check == 1 && string[i] == '.' && string[i + 1] > 47 && string[i + 1] < 58)
         {
-            i++;
+            i += 1;
             tmp = i;
             len = 0;
-            while(string[i] > 47 && string[i] < 58)
+            while (string[i] > 47 && string[i] < 58)
             {
                 len++;
                 i++;
@@ -222,19 +222,22 @@ void    parse_precision(char *string, t_printf *list)
         }
         i++;
     }
-    if (len >= 0)
+    if (len > 1)
     {
+        prec = (char *)malloc(sizeof(char) * len);
         i = 0;
-        precision = (char *)malloc(sizeof(char) * len);
-        while (i < len)
+        while (i < len && string[tmp])
         {
-            precision[i] = string[tmp];
+            prec[i] = string[tmp];
             i++;
             tmp++;
         }
-        list->precision = ft_atoi(precision);
-        free(precision);
+        i = ft_atoi(prec);
+        list->precision = i;
+        free(prec);
     }
+    if (len == 1)
+        list->precision = string[tmp] - '0';
 }
 
 void    parse_width(char *string, t_printf *list)
@@ -257,10 +260,10 @@ void    parse_width(char *string, t_printf *list)
         }
         if (check == 1 && (string[i] == '+' || string[i] == '-' || string[i] == '0' || string[i] == ' ' || string[i] == '#'))
             i++;
-        if (check == 1 && (string[i] > 48 && string[i] < 58))
+        if (check == 1 && (string[i] > 47 && string[i] < 58))
         {
             tmp = i;
-            while(string[i] > 48 && string[i] < 58)
+            while(string[i] > 47 && string[i] < 58)
             {
                 i++;
                 len++;
@@ -279,7 +282,8 @@ void    parse_width(char *string, t_printf *list)
         i++;
         tmp++;
     }
-    list->width = ft_atoi(width);
+    if (ft_atoi(width))
+        list->width = ft_atoi(width);
     free(width);
 }
 
@@ -294,36 +298,117 @@ void     ft_print(char *string, int start)
 
 void    ft_print_char(t_printf *list, int c)
 {
-    write(1, &c, 1);
+    int i;
+
+    i = 0;
+    if (list->width && list->minus)
+    {
+        write(1, &c, 1);
+        while (i < list->width -1)
+        {
+            ft_putchar(' ');
+            i++;
+        }
+    }
+    if (list->width && !list->minus)
+    {
+        while (i < list->width -1)
+        {
+            ft_putchar(' ');
+            i++;
+        }
+        write(1, &c, 1);
+    }
+    if (!list->width)
+        write(1, &c, 1);
 }
 
 void    ft_print_string(t_printf *list, char *string)
 {
     int i;
-
-    i = 0;
-    if (list->precision)
+    char *output;
+    
+    if (list->precision < ft_strlen(string))
     {
-        while (i < list->precision)
+        output = (char *)malloc(sizeof(char) * list->precision);
+        i = 0;
+        while (string[i] && i < list->precision)
         {
-            ft_putchar(string[i]);
+            output[i] = string[i];
             i++;
         }
     }
-    else
-        ft_putstr(string);
+    if (!list->precision)
+        output = ft_strdup(string);
+    if ((list->width > ft_strlen(output)) && list->minus)
+    {
+        i = ft_strlen(output);
+        ft_putstr(output);
+        while (i < list->width)
+        {
+            ft_putchar(' ');
+            i++;
+        }
+    }
+    if (!list->minus && list->width && (list->width > ft_strlen(output)))
+    {
+        i = list->width - ft_strlen(output);
+        while(i > 0)
+        {
+            ft_putchar(' ');
+            i--;
+        }
+        ft_putstr(output);
+    }
+    if (!list->width || list->width < ft_strlen(output))
+        ft_putstr(output);
 }
 
 void     ft_print_address(t_printf *list, void *address)
 {
-    char *a;
-	char *ret;
-    int new;
+    unsigned long long int tmp;
+    unsigned long long int new;
+    int *array;
+    int count;
+    int i;
 
-	new = (int)address;
-	ret = ft_strdup("0x");
-	ft_strcat(ret, ft_itoa_base((unsigned long int)address, 16));
-    ft_putstr(ret);
+    i = 1;
+    new = (unsigned long long int)address;
+    tmp = new;
+    count = 0;
+    while(tmp > 16)
+    {
+        tmp = tmp / 16;
+        count++;
+    }
+    array = (int *)malloc(sizeof(unsigned long long int) * (count + 1));
+    ft_putstr("0x");
+    count = 0;
+    while(new > 16)
+    {
+        array[count] = new % 16;
+        new = new / 16;
+        count++;
+    }
+    array[count] = new;
+    while(count != 0 && list->width < i)
+    {
+        if (array[count] >= 10)
+        {
+            array[count] == 10 ? ft_putchar('a') : 0;
+            array[count] == 11 ? ft_putchar('b') : 0;
+            array[count] == 12 ? ft_putchar('c') : 0;
+            array[count] == 13 ? ft_putchar('d') : 0;
+            array[count] == 14 ? ft_putchar('e') : 0;
+            array[count] == 15 ? ft_putchar('f') : 0;
+        }
+        else
+            ft_putnbr(array[count]);
+        count--;
+        i++;
+    }
+    ft_putnbr(array[0]);
+    free(array);
 }
 
 int     ft_printf(const char *format, ...)
@@ -366,10 +451,12 @@ int     ft_printf(const char *format, ...)
     }
     return(0);
 }
+
 int main()
 {
-    //int a = 98/16;
-  //  printf("%d\n",a);
-   ft_printf("Your p is : %p", 1234);
+    int b = 5;
+    int *a = &b;
+    printf("%10.5s\n", "Hello World");
+   ft_printf("%10.5s\n", "Hello world");
    return(0);
 } 
