@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbeahan <mbeahan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: Alexandr <Alexandr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/29 18:52:56 by mbeahan           #+#    #+#             */
-/*   Updated: 2019/04/06 18:34:35 by mbeahan          ###   ########.fr       */
+/*   Updated: 2019/04/07 14:23:36 by Alexandr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -396,16 +396,16 @@ void    get_string_addres(t_printf *list, int *array, int count)
     free(address);
 }
 
-void     unsigned_hh(t_printf *list, void *address)
+void     parse_address(t_printf *list, void *address)
 {
-    unsigned long long int tmp;
-    unsigned long long int new;
+    int tmp;
+    int new;
     int *array;
     int count;
     int i;
 
     i = 0;
-    new = (unsigned long long int)address;
+    new = (int)address;
     tmp = new;
     count = 0;
     while(tmp > 16)
@@ -413,7 +413,7 @@ void     unsigned_hh(t_printf *list, void *address)
         tmp = tmp / 16;
         count++;
     }
-    array = (int *)malloc(sizeof(unsigned long long int) * (count + 1));
+    array = (int *)malloc(sizeof(int) * (count + 1));
     while(new > 16)
     {
         array[i] = new % 16;
@@ -423,6 +423,42 @@ void     unsigned_hh(t_printf *list, void *address)
     array[i] = new;
     get_string_addres(list, array, count);
     free(array);
+}
+
+ void    unsigned_hh(t_printf *list, unsigned long long u)
+{
+    int count;
+    char *string;
+    unsigned char new_u;
+    unsigned char tmp_u;
+    int i;
+
+    new_u = (unsigned char)u;
+    tmp_u = new_u;
+    count = 0;
+    i = 0;
+    if (tmp_u >= 10)
+    {
+        while (tmp_u >= 10)
+        {
+            tmp_u = tmp_u / 10;
+            count++;
+        }
+        string = (char *)malloc(sizeof(char) * count + 1);
+        while (new_u >= 10)
+        {
+            string[i] = (new_u / 10) + '0';
+            new_u = new_u % 10;
+            i++;
+        }
+        string[i] = new_u + '0';
+    }
+    else
+    {
+        string = (char *)malloc(sizeof(char) * 1);
+        string[i] = new_u + '0';
+    }
+    ft_putstr(string);
 }
 
 void    unsigned_h(t_printf *list, unsigned long long u)
@@ -578,6 +614,12 @@ int     ft_printf(const char *format, ...)
         unsigned long long u = va_arg(ap, unsigned long long);
         if (ft_strcmp(sooqa->size, "hh") == 0)
             unsigned_hh(sooqa, u);
+        if (sooqa->size[0] == 'h')
+            unsigned_h(sooqa,u);
+        if (ft_strcmp(sooqa->size, "ll") == 0)
+            unsigned_ll(sooqa, u);
+        if (sooqa->size[0] == 'l')
+            unsigned_l(sooqa, u);
     }
     return(0);
 }
