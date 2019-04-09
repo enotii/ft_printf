@@ -6,7 +6,7 @@
 /*   By: mbeahan <mbeahan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/29 18:52:56 by mbeahan           #+#    #+#             */
-/*   Updated: 2019/04/09 18:26:49 by mbeahan          ###   ########.fr       */
+/*   Updated: 2019/04/09 20:21:31 by mbeahan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -425,7 +425,7 @@ void     parse_address(t_printf *list, void *address)
     free(array);
 }
 
- void    unsigned_hh(t_printf *list, unsigned long long u)
+void    unsigned_hh(t_printf *list, unsigned long long u)
 {
     int count;
     char *string;
@@ -447,8 +447,8 @@ void     parse_address(t_printf *list, void *address)
         string = (char *)malloc(sizeof(char) * count + 1);
         while (new_u >= 10)
         {
-            string[i] = (new_u / 10) + '0';
-            new_u = new_u % 10;
+            string[i] = new_u % 10;
+            new_u = new_u / 10;
             i++;
         }
         string[i] = new_u + '0';
@@ -458,7 +458,7 @@ void     parse_address(t_printf *list, void *address)
         string = (char *)malloc(sizeof(char) * 1);
         string[i] = new_u + '0';
     }
-    ft_putstr(string);
+    //ft_putstr(string);
 }
 
 void    unsigned_h(t_printf *list, unsigned long long u)
@@ -483,8 +483,8 @@ void    unsigned_h(t_printf *list, unsigned long long u)
         string = (char *)malloc(sizeof(char) * count + 1);
         while (new_u >= 10)
         {
-            string[i] = (new_u / 10) + '0';
-            new_u = new_u % 10;
+            string[i] = new_u % 10;
+            new_u = new_u / 10;
             i++;
         }
         string[i] = new_u + '0';
@@ -519,8 +519,8 @@ void    unsigned_ll(t_printf *list, unsigned long long u)
         string = (char *)malloc(sizeof(char) * count + 1);
         while (new_u >= 10)
         {
-            string[i] = (new_u / 10) + '0';
-            new_u = new_u % 10;
+            string[i] = new_u % 10;
+            new_u = new_u / 10;
             i++;
         }
         string[i] = new_u + '0';
@@ -555,8 +555,8 @@ void    unsigned_l(t_printf *list, unsigned long long u)
         string = (char *)malloc(sizeof(char) * count + 1);
         while (new_u >= 10)
         {
-            string[i] = (new_u / 10) + '0';
-            new_u = new_u % 10;
+            string[i] = new_u % 10;
+            new_u = new_u / 10;
             i++;
         }
         string[i] = new_u + '0';
@@ -613,12 +613,12 @@ int     ft_printf(const char *format, ...)
         va_start(ap, format);
         unsigned long long u = va_arg(ap, unsigned long long);
         if (ft_strcmp(sooqa->size, "hh") == 0)
-            unsigned_hh(sooqa, u);
-        if (sooqa->size[0] == 'h')
+            unsigned_hh(sooqa,u);
+        else if (sooqa->size[0] == 'h')
             unsigned_h(sooqa,u);
-        if (ft_strcmp(sooqa->size, "ll") == 0)
+        else if (ft_strcmp(sooqa->size, "ll") == 0)
             unsigned_ll(sooqa, u);
-        if (sooqa->size[0] == 'l')
+        else if (sooqa->size[0] == 'l')
             unsigned_l(sooqa, u);
     }
     return(0);
@@ -626,9 +626,8 @@ int     ft_printf(const char *format, ...)
 
 int main()
 {
-    int a = 5;
-    int *b = &a;
-    printf("%p\n", b);
-    ft_printf("%p", b);
+    unsigned long long a = 8446744073709551615;
+    printf("%llu\n", a);
+    ft_printf("%llu", a);
    return(0);
 } 
