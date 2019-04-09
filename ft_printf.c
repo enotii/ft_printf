@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Alexandr <Alexandr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mbeahan <mbeahan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/29 18:52:56 by mbeahan           #+#    #+#             */
-/*   Updated: 2019/04/07 14:23:36 by Alexandr         ###   ########.fr       */
+/*   Updated: 2019/04/09 18:26:49 by mbeahan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -398,14 +398,14 @@ void    get_string_addres(t_printf *list, int *array, int count)
 
 void     parse_address(t_printf *list, void *address)
 {
-    int tmp;
-    int new;
+    unsigned long long int tmp;
+    unsigned long long int new;
     int *array;
     int count;
     int i;
 
     i = 0;
-    new = (int)address;
+    new = (unsigned long long int)address;
     tmp = new;
     count = 0;
     while(tmp > 16)
@@ -413,7 +413,7 @@ void     parse_address(t_printf *list, void *address)
         tmp = tmp / 16;
         count++;
     }
-    array = (int *)malloc(sizeof(int) * (count + 1));
+    array = (int *)malloc(sizeof(unsigned long long int) * (count + 1));
     while(new > 16)
     {
         array[i] = new % 16;
@@ -626,8 +626,9 @@ int     ft_printf(const char *format, ...)
 
 int main()
 {
-    unsigned char g = 'A';
-    printf("%hhu\n", g);
-    ft_printf("%hhu", g);
+    int a = 5;
+    int *b = &a;
+    printf("%p\n", b);
+    ft_printf("%p", b);
    return(0);
 } 
