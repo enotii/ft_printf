@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Alexandr <Alexandr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mbeahan <mbeahan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/29 18:52:56 by mbeahan           #+#    #+#             */
-/*   Updated: 2019/04/11 14:55:24 by Alexandr         ###   ########.fr       */
+/*   Updated: 2019/04/16 20:33:38 by mbeahan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -396,7 +396,129 @@ void    get_string_addres(t_printf *list, int *array, int count)
     free(address);
 }
 
-void reverse_string(char *string)
+void print_unsigned(char *string, t_printf *list)
+{
+    int i;
+    int len;
+
+    len = ft_strlen(string);
+    if (list->minus && list->zero)
+        list->zero = 0;
+    if (list->width && list->precision)
+    {
+        if (list->width == list->precision)
+        {
+            i = list->width - ft_strlen(string);
+            while (i)
+            {
+                ft_putchar('0');
+                i--;
+            }
+            ft_putstr(string);
+        }
+        if (list->width > list->precision)
+        {
+            if (list->minus)
+            {
+                i = list->precision - len;
+                while(i)
+                {
+                    ft_putchar('0');
+                    i--;
+                }
+                ft_putstr(string);
+                i = list->width - list->precision;
+                while (i)
+                {
+                    ft_putchar(' ');
+                    i--;
+                }
+            }
+            else
+            {
+                i = list->width - list->precision;
+                while (i)
+                {
+                    ft_putchar(' ');
+                    i--;
+                }
+                i = list->precision - len;
+                while(i)
+                {
+                    ft_putchar('0');
+                    i--;
+                }
+                ft_putstr(string);
+            }
+        }
+        if (list->precision > list->width)
+        {
+            i = list->precision - len;
+            while (i)
+            {
+                ft_putchar('0');
+                i--;
+            }
+            ft_putstr(string);
+        }
+    }
+    if (list->precision && (!(list->width)))
+    {
+        if (list->precision <= len)
+            ft_putstr(string);
+        if(list->precision > len)
+        {
+            i = list->precision - len;
+            while (i)
+            {
+                ft_putchar('0');
+                i--;
+            }
+        }
+    }
+    if (list->width && (!(list->precision)))
+    {
+        if (list->width <= len)
+            ft_putstr(string);
+        if(list->width > len)
+        {
+            if (list->minus == 0 && list->zero == 0)
+            {
+                i = list->width - len;
+                while (i)
+                {
+                    ft_putchar(' ');
+                    i--;
+                }
+                ft_putstr(string);
+            }
+            if (list->minus)
+            {
+                ft_putstr(string);
+                i = list->width - len;
+                while (i)
+                {
+                    ft_putchar(' ');
+                    i--;
+                }
+            }
+            if (list->zero)
+            {
+                i = list->width - len;
+                while (i)
+                {
+                    ft_putchar('0');
+                    i--;
+                }
+                ft_putstr(string);
+            }
+        }
+    }
+    if (list->width == 0 && list->precision == 0)
+        ft_putstr(string);
+}
+
+void reverse_string(char *string, t_printf *list)
 {
     char *str;
     int len;
@@ -413,7 +535,7 @@ void reverse_string(char *string)
         len--;
     }
     string[i] = '\0';
-    ft_putstr(string);
+    print_unsigned(string, list);
     free(str);
 }
 
@@ -480,7 +602,8 @@ void    unsigned_hh(t_printf *list, unsigned long long u)
         string = (char *)malloc(sizeof(char) * 1);
         string[i] = new_u + '0';
     }
-    reverse_string(string);
+    reverse_string(string, list);
+    free(string);
 }
 
 void    unsigned_h(t_printf *list, unsigned long long u)
@@ -517,7 +640,8 @@ void    unsigned_h(t_printf *list, unsigned long long u)
         string = (char *)malloc(sizeof(char) * 1);
         string[i] = new_u + '0';
     }
-    reverse_string(string);
+    reverse_string(string, list);
+    free(string);
 }
 
 void    unsigned_ll(t_printf *list, unsigned long long u)
@@ -554,7 +678,8 @@ void    unsigned_ll(t_printf *list, unsigned long long u)
         string = (char *)malloc(sizeof(char) * 1);
         string[i] = new_u + '0';
     }
-    reverse_string(string);
+    reverse_string(string, list);
+    free(string);
 }
 
 void    unsigned_l(t_printf *list, unsigned long long u)
@@ -591,7 +716,8 @@ void    unsigned_l(t_printf *list, unsigned long long u)
         string = (char *)malloc(sizeof(char) * 1);
         string[i] = new_u + '0';
     }
-    reverse_string(string);
+    reverse_string(string, list);
+    free(string);
 }
 
 int     ft_printf(const char *format, ...)
@@ -651,10 +777,8 @@ int     ft_printf(const char *format, ...)
 
 int main()
 {
-    char *str;
-    str = (char *)malloc(sizeof(char) * 6);
-    str = "Hello ";
-    printf("%s\n", str);
-    ft_printf("%s", str);
-   return(0);
+    unsigned char a = 255;
+    printf("%08.8hhu\n", a);
+    ft_printf("%08.8hhu", a);
+    return(0);
 } 
