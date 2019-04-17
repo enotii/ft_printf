@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbeahan <mbeahan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: caking <caking@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/29 18:53:51 by mbeahan           #+#    #+#             */
-/*   Updated: 2019/04/16 21:19:49 by mbeahan          ###   ########.fr       */
+/*   Updated: 2019/04/17 22:51:35 by caking           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,9 @@ void    print_unsigned(char *string, t_printf *list);
 void    zeroing_args(t_printf **list);
 void    ft_print(char *string, int start);
 void    reverse_string(char *string, t_printf *list);
-//----------------------PRINTF----------------------//
+//----------------------PRINTF-----------------------//
 int     ft_printf(const char *format, ...);
+//---------------------Print int---------------------//
+void    ft_print_int(t_printf *list, int c);
 
 #endif
