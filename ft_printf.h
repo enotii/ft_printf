@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: caking <caking@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mbeahan <mbeahan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/29 18:53:51 by mbeahan           #+#    #+#             */
-/*   Updated: 2019/04/17 22:51:35 by caking           ###   ########.fr       */
+/*   Updated: 2019/04/20 15:18:24 by mbeahan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,13 +46,17 @@ void    unsigned_ll(t_printf *list, unsigned long long u);
 void    unsigned_h(t_printf *list, unsigned long long u);
 void    unsigned_hh(t_printf *list, unsigned long long u);
 void    print_unsigned(char *string, t_printf *list);
+//---------------------Print INT---------------------//
+void    hh_int(t_printf *list, long long int d);
+void    h_int(t_printf *list, long long int d);
+void    ll_int(t_printf *list, long long int d);
+void    l_int(t_printf *list, long long int d);
+void    print_int(char *string, t_printf *list);
 //------------------Help function's-----------------//
 void    zeroing_args(t_printf **list);
 void    ft_print(char *string, int start);
-void    reverse_string(char *string, t_printf *list);
-//----------------------PRINTF-----------------------//
+char    *reverse_string(char *string, t_printf *list);
+//----------------------PRINTF----------------------//
 int     ft_printf(const char *format, ...);
-//---------------------Print int---------------------//
-void    ft_print_int(t_printf *list, int c);
 
 #endif

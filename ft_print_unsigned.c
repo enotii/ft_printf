@@ -6,7 +6,7 @@
 /*   By: mbeahan <mbeahan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 20:47:57 by mbeahan           #+#    #+#             */
-/*   Updated: 2019/04/16 20:51:21 by mbeahan          ###   ########.fr       */
+/*   Updated: 2019/04/20 13:48:33 by mbeahan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,7 +168,7 @@ void    unsigned_hh(t_printf *list, unsigned long long u)
         string = (char *)malloc(sizeof(char) * 1);
         string[i] = new_u + '0';
     }
-    reverse_string(string, list);
+    print_unsigned(reverse_string(string, list), list);
     free(string);
 }
 
@@ -206,7 +206,7 @@ void    unsigned_h(t_printf *list, unsigned long long u)
         string = (char *)malloc(sizeof(char) * 1);
         string[i] = new_u + '0';
     }
-    reverse_string(string, list);
+    print_unsigned(reverse_string(string, list), list);
     free(string);
 }
 
@@ -244,7 +244,7 @@ void    unsigned_ll(t_printf *list, unsigned long long u)
         string = (char *)malloc(sizeof(char) * 1);
         string[i] = new_u + '0';
     }
-    reverse_string(string, list);
+    print_unsigned(reverse_string(string, list), list);
     free(string);
 }
 
@@ -282,6 +282,6 @@ void    unsigned_l(t_printf *list, unsigned long long u)
         string = (char *)malloc(sizeof(char) * 1);
         string[i] = new_u + '0';
     }
-    reverse_string(string, list);
+    print_unsigned(reverse_string(string, list), list);
     free(string);
 }
