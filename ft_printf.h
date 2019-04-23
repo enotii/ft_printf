@@ -6,7 +6,7 @@
 /*   By: mbeahan <mbeahan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/29 18:53:51 by mbeahan           #+#    #+#             */
-/*   Updated: 2019/04/20 15:18:24 by mbeahan          ###   ########.fr       */
+/*   Updated: 2019/04/23 18:17:55 by mbeahan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,20 @@ void    h_int(t_printf *list, long long int d);
 void    ll_int(t_printf *list, long long int d);
 void    l_int(t_printf *list, long long int d);
 void    print_int(char *string, t_printf *list);
+//--------------------Print X ----------------------//
+void     get_x_string(t_printf *list, int *array, int count);
+void     default_x(t_printf *list, unsigned long long x);
+void     hh_x(t_printf *list, unsigned long long x);
+void     h_x(t_printf *list, unsigned long long x);
+void     ll_x(t_printf *list, unsigned long long x);
+void     l_x(t_printf *list, unsigned long long x);
+//--------------------Print Octal-------------------//
+void    get_o_string(t_printf *list, int *array, int count);
+void    default_o(t_printf *list, unsigned long long x);
+void    hh_o(t_printf *list, unsigned long long x);
+void    h_o(t_printf *list, unsigned long long x);
+void    ll_o(t_printf *list, unsigned long long x);
+void    l_o(t_printf *list, unsigned long long x);
 //------------------Help function's-----------------//
 void    zeroing_args(t_printf **list);
 void    ft_print(char *string, int start);

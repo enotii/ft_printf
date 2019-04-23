@@ -6,7 +6,7 @@
 /*   By: mbeahan <mbeahan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 21:21:53 by mbeahan           #+#    #+#             */
-/*   Updated: 2019/04/20 18:40:01 by mbeahan          ###   ########.fr       */
+/*   Updated: 2019/04/23 18:30:12 by mbeahan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,13 +77,42 @@ int     ft_printf(const char *format, ...)
         else if (sooqa->size[0] == 'l')
             l_int(sooqa, d);
     }
+    if (sooqa->type == 'x' || sooqa->type == 'X')
+    {
+        va_start(ap,format);
+        unsigned long long x = va_arg(ap, unsigned long long);
+        if (sooqa->size == 0)
+            default_x(sooqa,x);
+        else if (ft_strcmp(sooqa->size, "hh") == 0)
+            hh_x(sooqa,x);
+        else if (sooqa->size[0] == 'h')
+            h_x(sooqa,x);
+        else if (ft_strcmp(sooqa->size, "ll") == 0)
+            ll_x(sooqa, x);
+        else if (sooqa->size[0] == 'l')
+            l_x(sooqa, x);
+    }
+    if (sooqa->type == 'o')
+    {
+        va_start(ap,format);
+        unsigned long long x = va_arg(ap, unsigned long long);
+        if (sooqa->size == 0)
+            default_o(sooqa,x);
+        else if (ft_strcmp(sooqa->size, "hh") == 0)
+            hh_o(sooqa,x);
+        else if (sooqa->size[0] == 'h')
+            h_o(sooqa,x);
+        else if (ft_strcmp(sooqa->size, "ll") == 0)
+            ll_o(sooqa, x);
+        else if (sooqa->size[0] == 'l')
+            l_o(sooqa, x);
+    }
     return(0);
 }
 
 int main()
 {
-    signed char d = -111;
-    printf("%+08hhd\n", d);
-    ft_printf("%+08hhd", d);
+    printf("%#o\n", 123456);
+    ft_printf("%#o", 123456);
     return(0);
 }
