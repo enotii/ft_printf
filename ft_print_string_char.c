@@ -6,7 +6,7 @@
 /*   By: mbeahan <mbeahan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 20:54:36 by mbeahan           #+#    #+#             */
-/*   Updated: 2019/04/16 20:56:44 by mbeahan          ###   ########.fr       */
+/*   Updated: 2019/04/27 14:18:09 by mbeahan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,40 +42,122 @@ void    ft_print_char(t_printf *list, int c)
 void    ft_print_string(t_printf *list, char *string)
 {
     int i;
-    char *output;
     
-    if (list->precision >= 0 && list->precision < ft_strlen(string))
+    if (list->width == 0 && list->precision == -1)
+        ft_putstr(string);
+    if (list->width != 0 && list->precision != -1)
     {
-        output = (char *)malloc(sizeof(char) * list->precision);
-        i = 0;
-        while (string[i] && i < list->precision)
+        if (list->width == list->precision)
         {
-            output[i] = string[i];
-            i++;
+            i = list->width - ft_strlen(string);
+            if (i >= 0)
+            {
+                if (list->minus == 0)
+                {
+                    while (i)
+                    {
+                        ft_putchar(' ');
+                        i--;
+                    }
+                    ft_putstr(string);
+                }
+                if (list->minus != 0)
+                {
+                    ft_putstr(string);
+                    while (i)
+                    {
+                        ft_putchar(' ');
+                        i--;
+                    }
+                }
+            }
+            if (i < 0)
+            {
+                i = list->precision;
+                while (i)
+                {
+                    ft_putchar(*string);
+                    string++;
+                    i--;
+                }
+            }
+        }
+         if ((list->width > list->precision) && list->minus == 0)
+        {
+            i = list->width - list->precision;
+            while (i)
+            {
+                ft_putchar(' ');
+                i--;
+            }
+            ft_putstr(string);
+        }
+        if ((list->width > list->precision) && list->minus != 0)
+        {
+            ft_putstr(string);
+            i = list->width - list->precision;
+            while (i)
+            {
+                ft_putchar(' ');
+                i--;
+            }
+        }
+        if (list->precision > list->width)
+        {
+            if (list->precision > ft_strlen(string))
+                ft_putstr(string);
+            if (list->precision < ft_strlen(string))
+            {
+                i = list->precision;
+                while (i)
+                {
+                    ft_putchar(*string);
+                    string += 1;
+                    i--;
+                }
+            }
         }
     }
-    if (list->precision < 0)
-        output = ft_strdup(string);
-    if ((list->width > ft_strlen(output)) && list->minus)
+    if (list->precision != -1 && list->width == 0)
     {
-        i = ft_strlen(output);
-        ft_putstr(output);
-        while (i < list->width)
+        if (list->precision >= ft_strlen(string))
+            ft_putstr(string);
+        if (list->precision < ft_strlen(string))
         {
-            ft_putchar(' ');
-            i++;
+            i = list->precision;
+            while (i)
+            {
+                ft_putchar(*string);
+                string++;
+                i--;
+            }
         }
     }
-    if (!list->minus && list->width && (list->width > ft_strlen(output)))
+    if (list->width != 0 && list->precision == -1)
     {
-        i = list->width - ft_strlen(output);
-        while(i > 0)
+        if (list->width > ft_strlen(string))
         {
-            ft_putchar(' ');
-            i--;
+            i = list->width - ft_strlen(string);
+            if (list->minus != 0)
+            {
+                ft_putstr(string);
+                while(i)
+                {
+                    ft_putchar(' ');
+                    i--;
+                }
+            }
+            if (list->minus == 0)
+            {
+                while(i)
+                {
+                    ft_putchar(' ');
+                    i--;
+                }
+                ft_putstr(string);
+            }
         }
-        ft_putstr(output);
+        if (list->width <= ft_strlen(string))
+            ft_putstr(string);
     }
-    if (!list->width || list->width < ft_strlen(output))
-        ft_putstr(output);
 }

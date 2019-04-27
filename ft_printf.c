@@ -6,7 +6,7 @@
 /*   By: mbeahan <mbeahan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 21:21:53 by mbeahan           #+#    #+#             */
-/*   Updated: 2019/04/23 18:30:12 by mbeahan          ###   ########.fr       */
+/*   Updated: 2019/04/27 14:18:43 by mbeahan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,7 @@ int     ft_printf(const char *format, ...)
 
 int main()
 {
-    printf("%#o\n", 123456);
-    ft_printf("%#o", 123456);
+    printf("%-7s\n", "Hello");
+    ft_printf("%-7s\n", "Hello");
     return(0);
 }
