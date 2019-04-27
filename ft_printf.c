@@ -6,7 +6,7 @@
 /*   By: gachibass228 <marvin@42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 21:21:53 by mbeahan           #+#    #+#             */
-/*   Updated: 2019/04/27 16:14:29 by gachibass22      ###   ########.fr       */
+/*   Updated: 2019/04/27 18:31:28 by gachibass22      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,13 @@ int     ft_printf(const char *format, ...)
 
 int main()
 {
-    printf("%f\n", 1.223543);
-    ft_printf("%f\n", 1.223543);
+  //  printf("%f\n", 1.223543);
+    //ft_printf("%f\n", 1.223543);
+float f = 8.0/3.0;
+double lf = 8.0/3.0;
+long double Lf = 8.0/3.0;
+printf("value       float: %0.60f\n", f);
+printf("value      double: %0.60lf\n", lf);
+printf("value long double: %0.60Lf\n", Lf);
     return(0);
 }
