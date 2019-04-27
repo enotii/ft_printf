@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbeahan <mbeahan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: gachibass228 <marvin@42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 21:21:53 by mbeahan           #+#    #+#             */
-/*   Updated: 2019/04/27 14:18:43 by mbeahan          ###   ########.fr       */
+/*   Updated: 2019/04/27 16:14:29 by gachibass22      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,12 +107,18 @@ int     ft_printf(const char *format, ...)
         else if (sooqa->size[0] == 'l')
             l_o(sooqa, x);
     }
+    if (sooqa->type == 'f')
+    {
+        va_start(ap,format);
+        long double f = va_arg(ap, long double);
+        print_float(sooqa,f);
+    }
     return(0);
 }
 
 int main()
 {
-    printf("%-7s\n", "Hello");
-    ft_printf("%-7s\n", "Hello");
+    printf("%f\n", 1.223543);
+    ft_printf("%f\n", 1.223543);
     return(0);
 }
