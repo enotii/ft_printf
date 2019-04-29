@@ -6,7 +6,7 @@
 /*   By: gachibass228 <marvin@42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/29 18:53:51 by mbeahan           #+#    #+#             */
-/*   Updated: 2019/04/29 21:08:02 by gachibass22      ###   ########.fr       */
+/*   Updated: 2019/04/29 21:53:32 by gachibass22      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,9 @@ void    ll_int(t_printf *list, long long int d);
 void    l_int(t_printf *list, long long int d);
 void    print_int(char *string, t_printf *list);
 //---------------------Print Float--------------------//
-void	print_float(t_printf *list, long double f);
+void	defaut_f(t_printf *list, long double f);
+void	l_float(t_printf *list, long double f);
+void    L_float(t_printf *list, long double f);
 //--------------------Print X ----------------------//
 void     get_x_string(t_printf *list, int *array, int count);
 void     default_x(t_printf *list, unsigned long long x);

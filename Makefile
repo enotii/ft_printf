@@ -12,7 +12,8 @@ $(NAME):
 	clang -I libft/ -o ft_print_octal.o -c ft_print_octal.c
 	clang -I libft/ -o ft_printf.o -c ft_printf.c
 	clang -I libft/ -o help_functions.o -c help_functions.c
-	clang -o $(NAME) ft_parse.o ft_print_pointer.o ft_print_string_char.o ft_print_unsigned.o ft_print_int.o ft_print_x.o ft_print_octal.o help_functions.o ft_printf.o -I libft/ -L libft/ -lft
+	clang -I libft/ -o ft_print_float.o -c ft_print_float.c
+	clang -o $(NAME) ft_parse.o ft_print_pointer.o ft_print_string_char.o ft_print_unsigned.o ft_print_int.o ft_print_x.o ft_print_octal.o help_functions.o ft_printf.o ft_print_float.o -I libft/ -L libft/ -lft
 clean:
 	rm -rf libft/*.o
 	rm -rf *.o
@@ -26,3 +27,4 @@ debug:
 
 val:
 	valgrind --leak-check=full ./ft_printf test10.fillitf	
+	
