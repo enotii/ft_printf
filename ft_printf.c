@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gachibass228 <marvin@42.fr>                +#+  +:+       +#+        */
+/*   By: caking <caking@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 21:21:53 by mbeahan           #+#    #+#             */
-/*   Updated: 2019/04/29 23:49:51 by gachibass22      ###   ########.fr       */
+/*   Updated: 2019/05/05 02:04:44 by caking           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,8 @@ int     ft_printf(const char *format, ...)
             ll_int(sooqa, d);
         else if (sooqa->size[0] == 'l')
             l_int(sooqa, d);
+        else if (!(sooqa->size))
+           default_int(sooqa, d);
     }
     if (sooqa->type == 'x' || sooqa->type == 'X')
     {
@@ -110,10 +112,10 @@ int     ft_printf(const char *format, ...)
     if (sooqa->type == 'f')
     {
         va_start(ap,format);
-        if (sooqa->size == 0)
+        if (!(sooqa->size))
         {
             double f = va_arg(ap, double);
-            defaut_f(sooqa,f);
+            default_float(sooqa,f);
         }
         else if (ft_strcmp(sooqa->size, "l") == 0)
         {
@@ -136,8 +138,8 @@ int main()
 float f = 8.0/3.0;
 double lf = 8.0/3.0;
 long double Lf = 8.0/3.0;
- ft_printf("%f\n", f);
-printf("value       float: %0.60f\n", -f);
+ ft_printf("%f", f);
+printf("\nvalue       float: %0.60f\n", -f);
 printf("value      double: %0.60lf\n", -lf);
 printf("value long double: %0.60Lf\n", -Lf); //666666666666666518636930049979127943515777587890625
     return(0);

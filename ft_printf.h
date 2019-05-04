@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gachibass228 <marvin@42.fr>                +#+  +:+       +#+        */
+/*   By: caking <caking@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/29 18:53:51 by mbeahan           #+#    #+#             */
-/*   Updated: 2019/04/29 21:53:32 by gachibass22      ###   ########.fr       */
+/*   Updated: 2019/05/05 02:03:50 by caking           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,10 +51,11 @@ void    hh_int(t_printf *list, long long int d);
 void    h_int(t_printf *list, long long int d);
 void    ll_int(t_printf *list, long long int d);
 void    l_int(t_printf *list, long long int d);
+void    default_int(t_printf *list,int d);
 void    print_int(char *string, t_printf *list);
 //---------------------Print Float--------------------//
-void	defaut_f(t_printf *list, long double f);
-void	l_float(t_printf *list, long double f);
+void    default_float(t_printf *list, double d);
+void	l_float(t_printf *list, double f);
 void    L_float(t_printf *list, long double f);
 //--------------------Print X ----------------------//
 void     get_x_string(t_printf *list, int *array, int count);

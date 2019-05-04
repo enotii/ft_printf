@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_print_int.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbeahan <mbeahan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: caking <caking@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/20 13:31:45 by mbeahan           #+#    #+#             */
-/*   Updated: 2019/04/23 18:28:25 by mbeahan          ###   ########.fr       */
+/*   Updated: 2019/05/05 00:23:33 by caking           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -261,6 +261,64 @@ void print_int(char *string, t_printf *list)
         else
             ft_putstr(string);
     }
+}
+
+void    default_int(t_printf *list,int d)
+{
+    char *string;
+    int count;
+    long int new_d;
+    long int tmp_d;
+    int i;
+
+    new_d = d;
+    tmp_d = new_d;
+    count = 0;
+    i = 0;
+    if (tmp_d < 0)
+        tmp_d *= -1;
+    if (tmp_d >= 10)
+    {
+        while (tmp_d >= 10)
+        {
+            tmp_d = tmp_d / 10;
+            count++;
+        }
+        if (new_d >= 0)
+            string = (char *)malloc(sizeof(char) * count + 1);
+        else
+        {
+            string = (char *)malloc(sizeof(char) * count + 2);
+            string[i] = '-';
+            i++;
+            new_d *= -1;
+        }
+            while (new_d >= 10)
+        {
+            string[i] = new_d % 10 + '0';
+            new_d = new_d / 10;
+            i++;
+        }
+        string[i] = new_d + '0';
+        string[i + 1] = '\0';
+    }
+    else
+    {
+        if (new_d >= 0)
+        {
+            string = (char *)malloc(sizeof(char) * 1);
+            string[i] = new_d + '0';
+        }
+        else
+        {
+            string = (char *)malloc(sizeof(char) * 2);
+            string[0] = '-';
+            string[1] = tmp_d + '0';
+        }
+        
+    }
+    print_int(reverse_string(string, list), list);
+    free(string);
 }
 
 void    hh_int(t_printf *list, long long int d)
