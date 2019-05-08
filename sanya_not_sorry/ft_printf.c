@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbeahan <mbeahan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: caking <caking@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 21:21:53 by mbeahan           #+#    #+#             */
-/*   Updated: 2019/05/07 18:02:36 by mbeahan          ###   ########.fr       */
+/*   Updated: 2019/05/08 18:41:12 by caking           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,11 @@ int     help_ft_printf(t_printf *lst, const char *string, va_list ap)
 {
     int i;
     i = 0;
-
+            while((!(string[i] == '%' && string[i + 1] != '%')) && string[i] != '\0')
+        {
+            ft_putchar(string[i]);
+            i++;
+        }
     while(string[i])
     {
         zeroing_args(&lst);
@@ -113,7 +117,9 @@ int main()
 {
     char *dura = "qwerty";
     int b = 5;
+    int a = 123;
+    char *c = "qqqq";
     printf("%s <- This is your string, and this is your number -> %d\n", dura, b);
-    ft_printf("%s <- This is your string, and this is your number -> %d\n", dura, b);
+    ft_printf("This is your string %s, and this is your number -> %d\n%d\t%s\t", dura, b , a, c);
     return(0);
 }
