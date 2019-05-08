@@ -6,7 +6,7 @@
 /*   By: mbeahan <mbeahan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 20:47:57 by mbeahan           #+#    #+#             */
-/*   Updated: 2019/04/20 13:48:33 by mbeahan          ###   ########.fr       */
+/*   Updated: 2019/05/08 21:04:53 by mbeahan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,14 @@ void print_unsigned(char *string, t_printf *list)
     len = ft_strlen(string);
     if (list->minus && list->zero)
         list->zero = 0;
-    if (list->width && list->precision)
+    if (list->width != 0 && list->precision != -1)
     {
         if (list->width == list->precision)
         {
-            i = list->width - len;
+            if (list->width < ft_strlen(string))
+                i = 0;
+            else
+                i = list->width - ft_strlen(string);
             while (i)
             {
                 ft_putchar('0');
@@ -52,13 +55,19 @@ void print_unsigned(char *string, t_printf *list)
             }
             else
             {
-                i = list->width - list->precision;
+                if (list->precision >= ft_strlen(string))
+                    i = list->width - list->precision;
+                else
+                    i = list->width - ft_strlen(string);
                 while (i)
                 {
                     ft_putchar(' ');
                     i--;
                 }
-                i = list->precision - len;
+                if (list->precision >= ft_strlen(string))
+                    i = list->precision - ft_strlen(string);
+                else
+                    i = 0;
                 while(i)
                 {
                     ft_putchar('0');
@@ -69,7 +78,10 @@ void print_unsigned(char *string, t_printf *list)
         }
         if (list->precision > list->width)
         {
-            i = list->precision - len;
+            if (list->precision >= len)
+                i = list->precision - len;
+            if (list->precision < len)
+                i = 0;
             while (i)
             {
                 ft_putchar('0');
@@ -78,7 +90,7 @@ void print_unsigned(char *string, t_printf *list)
             ft_putstr(string);
         }
     }
-    if (list->precision && (!(list->width)))
+    if (list->precision != -1 && list->width == 0)
     {
         if (list->precision <= len)
             ft_putstr(string);
@@ -92,7 +104,7 @@ void print_unsigned(char *string, t_printf *list)
             }
         }
     }
-    if (list->width && (!(list->precision)))
+    if (list->width != 0 && list->precision == -1)
     {
         if (list->width <= len)
             ft_putstr(string);
@@ -165,8 +177,9 @@ void    unsigned_hh(t_printf *list, unsigned long long u)
     }
     else
     {
-        string = (char *)malloc(sizeof(char) * 1);
+        string = (char *)malloc(sizeof(char) * 2);
         string[i] = new_u + '0';
+        string[i + 1] = '\0';
     }
     print_unsigned(reverse_string(string, list), list);
     free(string);
@@ -203,8 +216,9 @@ void    unsigned_h(t_printf *list, unsigned long long u)
     }
     else
     {
-        string = (char *)malloc(sizeof(char) * 1);
+        string = (char *)malloc(sizeof(char) * 2);
         string[i] = new_u + '0';
+        string[i + 1] = '\0';
     }
     print_unsigned(reverse_string(string, list), list);
     free(string);
@@ -241,8 +255,9 @@ void    unsigned_ll(t_printf *list, unsigned long long u)
     }
     else
     {
-        string = (char *)malloc(sizeof(char) * 1);
+        string = (char *)malloc(sizeof(char) * 2);
         string[i] = new_u + '0';
+        string[i + 1] = '\0';
     }
     print_unsigned(reverse_string(string, list), list);
     free(string);
@@ -279,8 +294,9 @@ void    unsigned_l(t_printf *list, unsigned long long u)
     }
     else
     {
-        string = (char *)malloc(sizeof(char) * 1);
+        string = (char *)malloc(sizeof(char) * 2);
         string[i] = new_u + '0';
+        string[i + 1] = '\0';
     }
     print_unsigned(reverse_string(string, list), list);
     free(string);

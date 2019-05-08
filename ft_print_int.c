@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_print_int.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: caking <caking@student.21-school.ru>       +#+  +:+       +#+        */
+/*   By: mbeahan <mbeahan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/20 13:31:45 by mbeahan           #+#    #+#             */
-/*   Updated: 2019/05/05 00:23:33 by caking           ###   ########.fr       */
+/*   Updated: 2019/05/08 21:59:09 by mbeahan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ void print_int(char *string, t_printf *list)
         }
         if ((list->width > list->precision) && list->precision != -1)
         {
-            if (list->space)
+            if (list->space && string[0] != '-')
                 ft_putchar(' ');
             if (list->minus)
             {
@@ -293,7 +293,7 @@ void    default_int(t_printf *list,int d)
             i++;
             new_d *= -1;
         }
-            while (new_d >= 10)
+        while (new_d >= 10)
         {
             string[i] = new_d % 10 + '0';
             new_d = new_d / 10;
@@ -306,14 +306,16 @@ void    default_int(t_printf *list,int d)
     {
         if (new_d >= 0)
         {
-            string = (char *)malloc(sizeof(char) * 1);
-            string[i] = new_d + '0';
+            string = (char *)malloc(sizeof(char) * 2);
+            string[0] = new_d + '0';
+            string[1] = '\0';
         }
         else
         {
-            string = (char *)malloc(sizeof(char) * 2);
+            string = (char *)malloc(sizeof(char) * 3);
             string[0] = '-';
             string[1] = tmp_d + '0';
+            string[2] = '\0';
         }
         
     }
@@ -364,14 +366,17 @@ void    hh_int(t_printf *list, long long int d)
     {
         if (new_d >= 0)
         {
-            string = (char *)malloc(sizeof(char) * 1);
-            string[i] = new_d + '0';
+            string = (char *)malloc(sizeof(char) * 2);
+            string[0] = new_d + '0';
+            string[1] = '\0';
+
         }
         else
         {
-            string = (char *)malloc(sizeof(char) * 2);
+            string = (char *)malloc(sizeof(char) * 3);
             string[0] = '-';
             string[1] = tmp_d + '0';
+            string[2] = '\0';
         }
         
     }
@@ -422,14 +427,16 @@ void    h_int(t_printf *list, long long int d)
     {
         if (new_d >= 0)
         {
-            string = (char *)malloc(sizeof(char) * 1);
-            string[i] = new_d + '0';
+            string = (char *)malloc(sizeof(char) * 2);
+            string[0] = new_d + '0';
+            string[1] = '\0';
         }
         else
         {
-            string = (char *)malloc(sizeof(char) * 2);
+            string = (char *)malloc(sizeof(char) * 3);
             string[0] = '-';
             string[1] = tmp_d + '0';
+            string[2] = '\0';
         }
         
     }
@@ -480,14 +487,16 @@ void    ll_int(t_printf *list, long long int d)
     {
         if (new_d >= 0)
         {
-            string = (char *)malloc(sizeof(char) * 1);
-            string[i] = new_d + '0';
+            string = (char *)malloc(sizeof(char) * 2);
+            string[0] = new_d + '0';
+            string[1] = '\0';
         }
         else
         {
-            string = (char *)malloc(sizeof(char) * 2);
+            string = (char *)malloc(sizeof(char) * 3);
             string[0] = '-';
             string[1] = tmp_d + '0';
+            string[2] = '\0';
         }
         
     }
@@ -538,14 +547,16 @@ void    l_int(t_printf *list, long long int d)
     {
         if (new_d >= 0)
         {
-            string = (char *)malloc(sizeof(char) * 1);
-            string[i] = new_d + '0';
+            string = (char *)malloc(sizeof(char) * 2);
+            string[0] = new_d + '0';
+            string[1] = '\0';
         }
         else
         {
             string = (char *)malloc(sizeof(char) * 2);
             string[0] = '-';
             string[1] = tmp_d + '0';
+            string[2] = '\0';
         }
         
     }

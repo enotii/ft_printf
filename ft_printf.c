@@ -3,134 +3,125 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: caking <caking@student.21-school.ru>       +#+  +:+       +#+        */
+/*   By: mbeahan <mbeahan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 21:21:53 by mbeahan           #+#    #+#             */
-/*   Updated: 2019/05/05 02:04:44 by caking           ###   ########.fr       */
+/*   Updated: 2019/05/08 21:57:08 by mbeahan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-int     ft_printf(const char *format, ...)
+void    needed_to_print(t_printf *lst, va_list ap)
 {
-    int i;
-    t_printf *sooqa;
-    va_list ap;
-
-    i = 0;
-    sooqa = (t_printf *)malloc(sizeof(t_printf));
-    ft_print((char *)format, i);
-    zeroing_args(&sooqa);
-    parse_flags((char *)format, sooqa);
-    parse_width((char *)format, sooqa);
-    parse_precision((char *)format, sooqa);
-    parse_size((char*)format, sooqa);
-    i = parse_type((char *)format, sooqa);
-    if (sooqa->type == 'c')
+    if (lst->type == 'c')
+        ft_print_char(lst, va_arg(ap, int));
+    if (lst->type == 's')
+        ft_print_string(lst, va_arg(ap, char *));
+    if (lst->type == 'p')
+        parse_address(lst, va_arg(ap, void *));
+    if (lst->type == 'u')
     {
-        va_start(ap,format);
-        int c = va_arg(ap, int);
-        ft_print_char(sooqa, c);
-        ft_print((char *)format, i);
-        zeroing_args(&sooqa);
+        if (ft_strcmp(lst->size, "hh") == 0)
+            unsigned_hh(lst,va_arg(ap, unsigned long long));
+        else if (lst->size[0] == 'h')
+            unsigned_h(lst,va_arg(ap, unsigned long long));
+        else if (ft_strcmp(lst->size, "ll") == 0)
+            unsigned_ll(lst, va_arg(ap, unsigned long long));
+        else if (lst->size[0] == 'l')
+            unsigned_l(lst, va_arg(ap, unsigned long long));
     }
-    if (sooqa->type == 's')
+    if (lst->type == 'd' || lst->type == 'i')
     {
-        va_start(ap,format);
-        char *string = va_arg(ap, char *);
-        ft_print_string(sooqa, string);
-        ft_print((char *)format, i);
-        zeroing_args(&sooqa);
+        if (lst->size == 0)
+            default_int(lst,va_arg(ap, long long int));
+        else if(ft_strcmp(lst->size, "hh") == 0)
+            hh_int(lst,va_arg(ap, long long int));
+        else if (lst->size[0] == 'h')
+            h_int(lst,va_arg(ap, long long int));
+        else if (ft_strcmp(lst->size, "ll") == 0)
+            ll_int(lst, va_arg(ap, long long int));
+        else if (lst->size[0] == 'l')
+            l_int(lst, va_arg(ap, long long int));
     }
-    if (sooqa->type == 'p')
+    if (lst->type == 'x' || lst->type == 'X')
     {
-        va_start(ap, format);
-        void *address = va_arg(ap, void *);
-        parse_address(sooqa, address);
-        ft_print((char *)format, i);
-        zeroing_args(&sooqa);
+        if (lst->size == 0)
+            default_x(lst,va_arg(ap, unsigned long long));
+        else if (ft_strcmp(lst->size, "hh") == 0)
+            hh_x(lst,va_arg(ap, unsigned long long));
+        else if (lst->size[0] == 'h')
+            h_x(lst,va_arg(ap, unsigned long long));
+        else if (ft_strcmp(lst->size, "ll") == 0)
+            ll_x(lst, va_arg(ap, unsigned long long));
+        else if (lst->size[0] == 'l')
+            l_x(lst, va_arg(ap, unsigned long long));
     }
-    if (sooqa->type == 'u')
+    if (lst->type == 'o')
     {
-        va_start(ap, format);
-        unsigned long long u = va_arg(ap, unsigned long long);
-        if (ft_strcmp(sooqa->size, "hh") == 0)
-            unsigned_hh(sooqa,u);
-        else if (sooqa->size[0] == 'h')
-            unsigned_h(sooqa,u);
-        else if (ft_strcmp(sooqa->size, "ll") == 0)
-            unsigned_ll(sooqa, u);
-        else if (sooqa->size[0] == 'l')
-            unsigned_l(sooqa, u);
+        if (lst->size == 0)
+            default_o(lst,va_arg(ap, unsigned long long));
+        else if (ft_strcmp(lst->size, "hh") == 0)
+            hh_o(lst,va_arg(ap, unsigned long long));
+        else if (lst->size[0] == 'h')
+            h_o(lst,va_arg(ap, unsigned long long));
+        else if (ft_strcmp(lst->size, "ll") == 0)
+            ll_o(lst, va_arg(ap, unsigned long long));
+        else if (lst->size[0] == 'l')
+            l_o(lst, va_arg(ap, unsigned long long));
     }
-    if (sooqa->type == 'd' || sooqa->type == 'i')
+        if (lst->type == 'f')
     {
-        va_start(ap,format);
-        long long int d = va_arg(ap, long long int);
-        if (ft_strcmp(sooqa->size, "hh") == 0)
-            hh_int(sooqa,d);
-        else if (sooqa->size[0] == 'h')
-            h_int(sooqa,d);
-        else if (ft_strcmp(sooqa->size, "ll") == 0)
-            ll_int(sooqa, d);
-        else if (sooqa->size[0] == 'l')
-            l_int(sooqa, d);
-        else if (!(sooqa->size))
-           default_int(sooqa, d);
+        if (!(lst->size))
+            default_float(lst,va_arg(ap, double));
+        else if (ft_strcmp(lst->size, "l") == 0)
+            l_float(lst,va_arg(ap, double));
+        else if (ft_strcmp(lst->size, "L") == 0)
+            L_float(lst,va_arg(ap, long double));
     }
-    if (sooqa->type == 'x' || sooqa->type == 'X')
-    {
-        va_start(ap,format);
-        unsigned long long x = va_arg(ap, unsigned long long);
-        if (sooqa->size == 0)
-            default_x(sooqa,x);
-        else if (ft_strcmp(sooqa->size, "hh") == 0)
-            hh_x(sooqa,x);
-        else if (sooqa->size[0] == 'h')
-            h_x(sooqa,x);
-        else if (ft_strcmp(sooqa->size, "ll") == 0)
-            ll_x(sooqa, x);
-        else if (sooqa->size[0] == 'l')
-            l_x(sooqa, x);
-    }
-    if (sooqa->type == 'o')
-    {
-        va_start(ap,format);
-        unsigned long long x = va_arg(ap, unsigned long long);
-        if (sooqa->size == 0)
-            default_o(sooqa,x);
-        else if (ft_strcmp(sooqa->size, "hh") == 0)
-            hh_o(sooqa,x);
-        else if (sooqa->size[0] == 'h')
-            h_o(sooqa,x);
-        else if (ft_strcmp(sooqa->size, "ll") == 0)
-            ll_o(sooqa, x);
-        else if (sooqa->size[0] == 'l')
-            l_o(sooqa, x);
-    }
-    if (sooqa->type == 'f')
-    {
-        va_start(ap,format);
-        if (!(sooqa->size))
-        {
-            double f = va_arg(ap, double);
-            default_float(sooqa,f);
-        }
-        else if (ft_strcmp(sooqa->size, "l") == 0)
-        {
-            double f = va_arg(ap, double);
-            l_float(sooqa,f);
-        }
-        else if (ft_strcmp(sooqa->size, "L") == 0)
-        {
-            long double f = va_arg(ap, long double);
-            L_float(sooqa,f);
-        }
-    }
-    return(0);
 }
 
+int     help_ft_printf(t_printf *lst, const char *string, va_list ap)
+{
+    int i;
+    i = 0;
+    int stop;
+
+    while((!(string[i] == '%' && string[i + 1] != '%')) && string[i] != '\0')
+    {
+        ft_putchar(string[i]);
+        i++;
+    }
+    while(string[i])
+    {
+        stop = parse_type((char *)string, lst, i);
+        zeroing_args(&lst);
+        parse_flags((char *)string, lst, i, stop);
+        parse_width((char *)string, lst, i, stop);
+        parse_precision((char *)string, lst, i, stop);
+        parse_size((char*)string, lst, i, stop);
+        i = parse_type((char *)string, lst, i);
+        needed_to_print(lst, ap);
+        while((!(string[i] == '%' && string[i + 1] != '%')) && string[i] != '\0')
+        {
+            ft_putchar(string[i]);
+            i++;
+        }
+    }
+}
+
+int     ft_printf(const char *format, ...)
+{
+    t_printf *lst;
+    va_list ap;
+
+    lst = (t_printf *)malloc(sizeof(t_printf));
+    va_start(ap, format);
+    help_ft_printf(lst, format, ap);
+    free(lst);
+    va_end(ap);
+    return(0);
+}
 int main()
 {
   //  printf("%f\n", 1.223543);

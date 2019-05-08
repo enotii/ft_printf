@@ -6,7 +6,7 @@
 /*   By: mbeahan <mbeahan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 20:57:24 by mbeahan           #+#    #+#             */
-/*   Updated: 2019/04/23 17:20:49 by mbeahan          ###   ########.fr       */
+/*   Updated: 2019/05/08 21:01:21 by mbeahan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void    get_string_addres(t_printf *list, int *array, int count)
 
     i = 2;
     len = count;
-    address = (char *)malloc(sizeof(char) * (len + 1));
+    address = (char *)malloc(sizeof(char) * (len + 4));
     address[0] = '0';
     address[1] = 'x';
     while (len >= 0)
@@ -39,6 +39,8 @@ void    get_string_addres(t_printf *list, int *array, int count)
         i++;
         len--;
     }
+    list->precision = -1;
+    address[i] = '\0';
     ft_print_string(list, address);
     free(address);
 }

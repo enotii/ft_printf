@@ -6,20 +6,18 @@
 /*   By: mbeahan <mbeahan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 21:00:20 by mbeahan           #+#    #+#             */
-/*   Updated: 2019/04/16 21:02:22 by mbeahan          ###   ########.fr       */
+/*   Updated: 2019/05/08 20:48:22 by mbeahan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-void     parse_flags(char *string, t_printf *list)
+void     parse_flags(char *string, t_printf *list, int i, int stop)
 {
-    int i;
     int check;
 
     check = 0;
-    i = 0;
-    while (string[i] && check < 2)
+    while (string[i] && check < 2 && i != stop)
     {
         if (string[i] == '%' && string[i + 1] != '%')
         {
@@ -45,14 +43,12 @@ void     parse_flags(char *string, t_printf *list)
     }
 }
 
-void    parse_size(char *string, t_printf *list)
+void    parse_size(char *string, t_printf *list, int i, int stop)
 {
     int check;
-    int i;
 
-    i = 0;
     check = 0;
-    while (string[i] && check < 2)
+    while (string[i] && check < 2 && i != stop)
     {
         if (string[i] == '%' && string[i + 1] != '%')
         {
@@ -98,12 +94,10 @@ void    parse_size(char *string, t_printf *list)
     }
 }
 
-int    parse_type(char *string, t_printf *list)
+int    parse_type(char *string, t_printf *list, int i)
 {
     int check;
-    int i;
 
-    i = 0;
     check = 0;
     while (string[i] && check < 2)
     {
@@ -177,24 +171,25 @@ int    parse_type(char *string, t_printf *list)
     return(0);
 }
 
-void    parse_precision(char *string, t_printf *list)
+void    parse_precision(char *string, t_printf *list, int i, int stop)
 {
-    int i;
     int check;
     char *prec;
     int len;
     int tmp;
 
-    i = 0;
+    prec = NULL;
     check = 0;
     len = -1;
-    while (string[i] && check < 2)
+    while (string[i] && check < 2 && i != stop)
     {
         if (string[i] == '%' && string[i + 1] != '%')
         {
             check++;
             i++;
         }
+        if (string[i] == '.' && !(string[i + 1] > 47 && string[i + 1] < 58))
+            list->precision = 0;
         if (check == 1 && string[i] == '.' && string[i + 1] > 47 && string[i + 1] < 58)
         {
             i += 1;
@@ -211,7 +206,7 @@ void    parse_precision(char *string, t_printf *list)
     }
     if (len > 1)
     {
-        prec = (char *)malloc(sizeof(char) * len);
+        prec = (char *)malloc(sizeof(char) * len + 1);
         i = 0;
         while (i < len && string[tmp])
         {
@@ -219,6 +214,7 @@ void    parse_precision(char *string, t_printf *list)
             i++;
             tmp++;
         }
+        prec[i] = '\0';
         i = ft_atoi(prec);
         list->precision = i;
         free(prec);
@@ -227,18 +223,16 @@ void    parse_precision(char *string, t_printf *list)
         list->precision = string[tmp] - '0';
 }
 
-void    parse_width(char *string, t_printf *list)
+void    parse_width(char *string, t_printf *list, int i, int stop)
 {
-    int     i;
     int     len;
     char    *width;
     int     check;
     int     tmp;
 
-    i = 0;
     check = 0;
     len = 0;
-    while (string[i] && check < 2)
+    while (string[i] && check < 2 && i != stop)
     {
         if (string[i] == '%' && string[i + 1] != '%')
         {
@@ -247,7 +241,7 @@ void    parse_width(char *string, t_printf *list)
         }
         if (check == 1 && (string[i] == '+' || string[i] == '-' || string[i] == '0' || string[i] == ' ' || string[i] == '#'))
             i++;
-        if (check == 1 && (string[i] > 47 && string[i] < 58))
+        if (check == 1 && (string[i] > 47 && string[i] < 58) && string[i - 1] != '.')
         {
             tmp = i;
             while(string[i] > 47 && string[i] < 58)
@@ -261,15 +255,18 @@ void    parse_width(char *string, t_printf *list)
              break ;
         i++;
     }
-    width = (char *)malloc(sizeof(char) * len);
-    i = 0;
-    while (i < len)
+    if (len > 0)
     {
-        width[i] = string[tmp];
-        i++;
-        tmp++;
+        width = (char *)malloc(sizeof(char) * len);
+        i = 0;
+        while (i < len)
+        {
+            width[i] = string[tmp];
+            i++;
+            tmp++;
+        }
+        if (ft_atoi(width))
+            list->width = ft_atoi(width);
+        free(width);
     }
-    if (ft_atoi(width))
-        list->width = ft_atoi(width);
-    free(width);
 }
