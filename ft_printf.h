@@ -6,11 +6,7 @@
 /*   By: caking <caking@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/29 18:53:51 by mbeahan           #+#    #+#             */
-<<<<<<< Updated upstream
-/*   Updated: 2019/05/05 02:03:50 by caking           ###   ########.fr       */
-=======
-/*   Updated: 2019/05/08 19:37:03 by mbeahan          ###   ########.fr       */
->>>>>>> Stashed changes
+/*   Updated: 2019/05/13 16:32:28 by caking           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +28,30 @@ typedef struct  s_printf
     char    type;
 }               t_printf;
 
+typedef struct		s_string
+{
+	char			*data;
+	int				size;
+	int				capacity;
+}					t_string;
+
+typedef struct		s_bignum
+{
+	t_string	int_part;
+	t_string		frac_part;
+}					t_bignum;
+union
+{
+	long double		d_num;
+	struct			s_double
+	{
+		__uint128_t mantissa:64;
+		__uint128_t exponent:15;
+		__uint128_t sign:1;
+	}				t_double;
+}					t;
+
+
 //-----------------Parse function's-----------------//
 void    parse_flags(char *string, t_printf *list, int i, int stop);
 void    parse_size(char *string, t_printf *list, int i, int stop);
@@ -51,16 +71,22 @@ void    unsigned_h(t_printf *list, unsigned long long u);
 void    unsigned_hh(t_printf *list, unsigned long long u);
 void    print_unsigned(char *string, t_printf *list);
 //---------------------Print INT---------------------//
-void    default_int(t_printf *list, long long int d);
+void    default_int(t_printf *list,int d);
 void    hh_int(t_printf *list, long long int d);
 void    h_int(t_printf *list, long long int d);
 void    ll_int(t_printf *list, long long int d);
 void    l_int(t_printf *list, long long int d);
 void    print_int(char *string, t_printf *list);
 //---------------------Print Float--------------------//
-void    default_float(t_printf *list, double d);
-void	l_float(t_printf *list, double f);
-void    L_float(t_printf *list, long double f);
+void        default_float(t_printf *list, double d);
+void	    l_float(t_printf *list, double f);
+t_bignum	*bin_mult(t_bignum *l);
+t_bignum	*bin_div(t_bignum *l);
+t_bignum    *get_the_bits(long double arg);
+t_bignum	*big_num_create(void);
+void		bin_to_dec(t_bignum *num);
+void		do_frac_part(t_bignum *num);
+void		do_int_part(t_bignum *num);
 //--------------------Print X ----------------------//
 void     print_x(t_printf *lst, char *string);
 void     get_x_string(t_printf *list, int *array, int count);

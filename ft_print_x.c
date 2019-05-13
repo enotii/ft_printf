@@ -3,14 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_print_x.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbeahan <mbeahan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: caking <caking@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/23 15:06:56 by mbeahan           #+#    #+#             */
-<<<<<<< Updated upstream
-/*   Updated: 2019/04/27 19:44:24 by mbeahan          ###   ########.fr       */
-=======
-/*   Updated: 2019/05/08 21:05:47 by mbeahan          ###   ########.fr       */
->>>>>>> Stashed changes
+/*   Updated: 2019/05/13 13:28:03 by caking           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +14,6 @@
 
 void    print_x(t_printf *lst, char *string)
 {
-<<<<<<< Updated upstream
     int i;
     int count_width;
     char symb;
@@ -34,44 +29,11 @@ void    print_x(t_printf *lst, char *string)
         {
             i = lst->precision - ft_strlen(string + 2);
             ft_putstr("0x");
-=======
-    int len;
-    int i;
-    char symb;
-    char up_or_low[3];
-
-
-    symb = ' ';
-    up_or_low[0] = '0';
-    up_or_low[1] = lst->type;
-    up_or_low[2] = '\0';
-    if (lst->bar != 0)
-        len = ft_strlen(string + 2);
-    if (lst->bar == 0)
-        len = ft_strlen(string);
-    if (lst->minus && lst->zero)
-        lst->zero = 0;
-    if (lst->precision == -1 && lst->width == 0)
-        ft_putstr(string);
-    if (lst->zero != 0)
-        symb = '0';
-    if (lst->width != 0 && lst->precision != -1)
-    {
-        if (lst->width < lst->precision)
-        {
-            if (lst->precision >= len)
-                i = lst->precision - len;
-            else
-                i = 0;
-            if (lst->bar != 0)
-                ft_putstr(up_or_low);
->>>>>>> Stashed changes
             while (i)
             {
                 ft_putchar('0');
                 i--;
             }
-<<<<<<< Updated upstream
             ft_putstr(string + 2);
         }
         if ((ft_strlen(string) < lst->precision) && lst->bar == 0)
@@ -92,31 +54,11 @@ void    print_x(t_printf *lst, char *string)
             ft_putstr(string);
         if ((ft_strlen(string) < lst->width) && (lst->minus == 0 && lst->zero == 0))
         {
-=======
-            if (lst->bar != 0)
-                ft_putstr(string + 2);
-            else
-                ft_putstr(string);
-        }
-        if (lst->width > lst->precision && lst->minus == 0)
-        {
-            if (lst->precision >= len)
-            {
-                i = lst->width - (ft_strlen(string) + lst->precision - len);
-                if ((lst->precision - len + ft_strlen(string)) > lst->width)
-                    i = 0;
-            }
-            if (lst->precision < len)
-                i = lst->width - ft_strlen(string);
-            if (i < 0)
-                i = 0;
->>>>>>> Stashed changes
             while (i)
             {
                 ft_putchar(' ');
                 i--;
             }
-<<<<<<< Updated upstream
             ft_putstr(string);
         }
         if ((ft_strlen(string) < lst->width) && lst->minus != 0)
@@ -133,38 +75,10 @@ void    print_x(t_printf *lst, char *string)
             if (lst->bar != 0)
                 ft_putstr("0x");
             while (i)
-=======
-            if (lst->precision >= len)
-                i = lst->precision - len;
-            else
-                i = 0;
-            if (lst->bar != 0)
-                ft_putstr(up_or_low);
-            while(i)
             {
                 ft_putchar('0');
                 i--;
             }
-            if (lst->bar != 0)
-                ft_putstr(string + 2);
-            else
-                ft_putstr(string);
-        }
-         if (lst->width > lst->precision && lst->minus != 0)
-        {
-            if (lst->precision >= len)
-                i = lst->precision - len;
-            else
-                i = 0;
-            if (lst->bar != 0)
-                ft_putstr(up_or_low);
-            while(i)
->>>>>>> Stashed changes
-            {
-                ft_putchar('0');
-                i--;
-            }
-<<<<<<< Updated upstream
             if (lst->bar == 0)
                 ft_putstr(string);
             if (lst->bar != 0)
@@ -242,38 +156,6 @@ void    print_x(t_printf *lst, char *string)
                 else
                     i = lst->precision - ft_strlen(string);
                 while(i)
-=======
-            if (lst->bar != 0)
-                ft_putstr(string + 2);
-            else
-                ft_putstr(string);
-            if (lst->precision >= len)
-            {
-                i = lst->width - (ft_strlen(string) + lst->precision - len);
-                if ((lst->precision - len + ft_strlen(string)) > lst->width)
-                    i = 0;
-            }
-            if (lst->precision < len)
-                i = lst->width - ft_strlen(string);
-            if (i < 0)
-                i = 0;
-            while (i)
-            {
-                ft_putchar(' ');
-                i--;
-            }
-        }
-        if (lst->width == lst->precision)
-        {
-            if (lst->precision < len)
-                ft_putstr(string);
-            if (lst->precision >= len)
-            {
-                if (lst->bar != 0)
-                    ft_putstr(up_or_low);
-                i = lst->precision - len;
-                while (i)
->>>>>>> Stashed changes
                 {
                     ft_putchar('0');
                     i--;
@@ -283,7 +165,6 @@ void    print_x(t_printf *lst, char *string)
                 else
                     ft_putstr(string);
             }
-<<<<<<< Updated upstream
            if (lst->minus != 0)
            {
                 if (lst->bar != 0)
@@ -338,68 +219,6 @@ void    print_x(t_printf *lst, char *string)
            }
     }
     }
-=======
-        }
-    }
-    if (lst->precision == -1 && lst->width != 0)
-        {
-            if (lst->width < ft_strlen(string))
-                ft_putstr(string);
-            if (lst->width >= ft_strlen(string) && lst->minus == 0)
-            {
-                if (lst->zero)
-                {
-                    symb = '0';
-                    if (lst->bar != 0)
-                        ft_putstr(up_or_low);
-                }
-                i = lst->width - ft_strlen(string);
-                while (i)
-                {
-                    ft_putchar(symb);
-                    i--;
-                }
-                if (lst->zero != 0 && lst->bar != 0)
-                    ft_putstr(string + 2);
-                else
-                    ft_putstr(string);
-            }
-            if (lst->width >= ft_strlen(string) && lst->minus != 0)
-            {
-                if (lst->zero != 0 && lst->bar != 0)
-                    ft_putstr(string + 2);
-                else
-                    ft_putstr(string);
-                i = lst->width - ft_strlen(string);
-                while (i)
-                {
-                    ft_putchar(' ');
-                    i--;
-                }
-            }
-        }
-    if (lst->precision != -1 && lst->width == 0)
-    {
-        if (lst->precision < len)
-            ft_putstr(string);
-        if (lst->precision >= len)
-        {
-            if (lst->bar != 0)
-                ft_putstr(up_or_low);
-            i = lst->precision - len;
-            while (i)
-            {
-                ft_putchar('0');
-                i--;
-            }
-            if (lst->bar != 0)
-                ft_putstr(string + 2);
-            else
-                ft_putstr(string);
-        }
-    }
-}
->>>>>>> Stashed changes
 
 void    get_x_string(t_printf *list, int *array, int count)
 {

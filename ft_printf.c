@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbeahan <mbeahan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: caking <caking@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 21:21:53 by mbeahan           #+#    #+#             */
-/*   Updated: 2019/05/08 21:57:08 by mbeahan          ###   ########.fr       */
+/*   Updated: 2019/05/13 16:17:40 by caking           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void    needed_to_print(t_printf *lst, va_list ap)
     if (lst->type == 'd' || lst->type == 'i')
     {
         if (lst->size == 0)
-            default_int(lst,va_arg(ap, long long int));
+            default_int(lst,va_arg(ap, int));
         else if(ft_strcmp(lst->size, "hh") == 0)
             hh_int(lst,va_arg(ap, long long int));
         else if (lst->size[0] == 'h')
@@ -74,10 +74,10 @@ void    needed_to_print(t_printf *lst, va_list ap)
     {
         if (!(lst->size))
             default_float(lst,va_arg(ap, double));
-        else if (ft_strcmp(lst->size, "l") == 0)
-            l_float(lst,va_arg(ap, double));
-        else if (ft_strcmp(lst->size, "L") == 0)
-            L_float(lst,va_arg(ap, long double));
+        // else if (ft_strcmp(lst->size, "l") == 0)
+        //     l_float(lst,va_arg(ap, double));
+        // else if (ft_strcmp(lst->size, "L") == 0)
+        //     L_float(lst,va_arg(ap, long double));
     }
 }
 
@@ -108,6 +108,7 @@ int     help_ft_printf(t_printf *lst, const char *string, va_list ap)
             i++;
         }
     }
+    return (0);
 }
 
 int     ft_printf(const char *format, ...)
@@ -126,11 +127,12 @@ int main()
 {
   //  printf("%f\n", 1.223543);
    // ft_printf("%f\n", 1.223543);
-float f = 8.0/3.0;
+double f = 8.0/3.0;
+double f1 = 234243.123;
 double lf = 8.0/3.0;
 long double Lf = 8.0/3.0;
- ft_printf("%f", f);
-printf("\nvalue       float: %0.60f\n", -f);
+ ft_printf("%f", -f);
+printf("\nvalue       float: %f\n", -f);
 printf("value      double: %0.60lf\n", -lf);
 printf("value long double: %0.60Lf\n", -Lf); //666666666666666518636930049979127943515777587890625
     return(0);

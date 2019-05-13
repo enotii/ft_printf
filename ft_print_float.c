@@ -6,434 +6,156 @@
 /*   By: caking <caking@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/29 21:43:43 by gachibass22       #+#    #+#             */
-/*   Updated: 2019/05/05 02:03:45 by caking           ###   ########.fr       */
+/*   Updated: 2019/05/13 16:21:00 by caking           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-void print_float(char *string, t_printf *list)
+t_bignum		*big_num_create(void)
 {
-    int i;
-    int len;
+	t_bignum	*num;
 
-    len = ft_strlen(string);
-    if (string[0] == '-')
-        len -= 1;
-    if (list->minus && list->zero)
-        list->zero = 0;
-    if (list->space && list->plus)
-        list->space = 0;
-    if (list->width && list->precision)
-    {
-        if (list->width == list->precision)
-        {
-            if (list->space != 0 && string[0] != '-')
-                ft_putchar(' ');
-            if (list->plus || string[0] == '-')
-            {
-                if (string[0] == '-')
-                    ft_putchar('-');
-                else
-                    ft_putchar('+');
-            }
-            i = list->width - len;
-            while (i)
-            {
-                ft_putchar('0');
-                i--;
-            }
-            if (string[0] == '-')
-                ft_putstr(string + 1);
-            else
-                ft_putstr(string);
-        }
-        if ((list->width > list->precision) && list->precision != -1)
-        {
-            if (list->space)
-                ft_putchar(' ');
-            if (list->minus)
-            {
-                if (list->plus || string[0] == '-')
-                {
-                    if (string[0] == '-')
-                        ft_putchar('-');
-                    else
-                        ft_putchar('+');
-                }
-                i = list->precision - len;
-                while(i)
-                {
-                    ft_putchar('0');
-                    i--;
-                }
-                if (string[0] != '-')
-                    ft_putstr(string);
-                else
-                    ft_putstr(string + 1);
-                if (string[0] == '-' || list->plus != 0 || list->space != 0)
-                    i = list->width - list->precision - 1;
-                else
-                    i = list->width - list->precision;
-                while (i)
-                {
-                    ft_putchar(' ');
-                    i--;
-                }
-            }
-            else
-            {
-                if (string[0] == '-' || list->plus != 0 || list->space != 0)
-                    i = list->width - list->precision - 1;
-                else
-                    i = list->width - list->precision;
-                while (i)
-                {
-                    ft_putchar(' ');
-                    i--;
-                }
-                i = list->precision - len;
-                if (list->plus || string[0] == '-')
-                {
-                    if (string[0] == '-')
-                        ft_putchar('-');
-                    else
-                        ft_putchar('+');
-                }
-                while(i)
-                {
-                    ft_putchar('0');
-                    i--;
-                }
-                if (string[0] != '-')
-                    ft_putstr(string);
-                else
-                    ft_putstr(string + 1);
-            }
-        }
-        if (list->precision > list->width)
-        {
-            if (list->plus || string[0] == '-')
-            {
-                if (string[0] == '-')
-                    ft_putchar('-');
-                else
-                    ft_putchar('+');
-            }
-            if (list->space != 0 && string[0] != '-')
-                ft_putchar(' ');
-            i = list->precision - len;
-            while (i)
-            {
-                ft_putchar('0');
-                i--;
-            }
-            if (string[0] != '-')
-                ft_putstr(string);
-            else
-                ft_putstr(string + 1);
-        }
-    }
-    if (list->precision != -1 && list->width == 0)
-    {
-        if (list->plus || string[0] == '-')
-        {
-            if (string[0] == '-')
-                ft_putchar('-');
-            else
-                ft_putchar('+');
-        }
-        if (list->space != 0 && string[0] != '-')
-                ft_putchar(' ');
-        if(list->precision > len)
-        {
-            i = list->precision - len;
-            while (i)
-            {
-                ft_putchar('0');
-                i--;
-            }
-        }
-        if (string[0] != '-')
-            ft_putstr(string);
-        else
-            ft_putstr(string + 1);
-    }
-    if (list->width != 0 && list->precision == -1)
-    {
-        if (list->width <= len)
-        {
-            if (list->plus || string[0] == '-')
-            {
-                if (string[0] == '-')
-                    ft_putstr(string);
-                else
-                {
-                    ft_putchar('+');
-                    ft_putstr(string + 1);
-                }   
-            }
-        }
-        if(list->width > len)
-        {
-            if (list->minus == 0 && list->zero == 0)
-            {
-                if (string[0] == '-' || list->plus != 0 || list->space != 0)
-                    i = list->width - len - 1;
-                else
-                    i = list->width - len;
-                while (i)
-                {
-                    ft_putchar(' ');
-                    i--;
-                }
-                if (list->plus || string[0] == '-')
-                {
-                    if (string[0] == '-')
-                        ft_putchar('-');
-                    else
-                        ft_putchar('+');
-                }
-                if (string[0] == '-')
-                    ft_putstr(string + 1);
-                else
-                    ft_putstr(string);
-            }
-            if (list->minus)
-            {
-                if (list->plus || string[0] == '-')
-                {
-                    if (string[0] == '-')
-                        ft_putchar('-');
-                    else
-                        ft_putchar('+');
-                }
-                if (string[0] == '-')
-                    ft_putstr(string + 1);
-                else
-                    ft_putstr(string);
-                if (string[0] == '-' || list->plus != 0 || list->space != 0)
-                    i = list->width - len - 1;
-                else
-                    i = list->width - len;
-                while (i)
-                {
-                    ft_putchar(' ');
-                    i--;
-                }
-            }
-            if (list->zero)
-            {
-                if (string[0] == '-' || list->plus != 0 || list->space != 0)
-                    i = list->width - len - 1;
-                else
-                    i = list->width - len;
-                if (list->plus || string[0] == '-')
-                {
-                    if (string[0] == '-')
-                        ft_putchar('-');
-                    else
-                        ft_putchar('+');
-                }
-                while (i)
-                {
-                    ft_putchar('0');
-                    i--;
-                }
-                if (string[0] == '-')
-                    ft_putstr(string + 1);
-                else
-                    ft_putstr(string);
-            }
-        }
-    }
-    if (list->width == 0 && list->precision == -1)
-    {
-         if (list->plus || string[0] == '-')
-        {
-            if (string[0] == '-')
-                ft_putchar('-');
-            else
-                ft_putchar('+');
-        }
-        if (string[0] == '-')
-            ft_putstr(string + 1);
-        else
-            ft_putstr(string);
-    }
+	num = (t_bignum *)malloc(sizeof(t_bignum));
+	num->int_part = str_create_size(5);
+	num->frac_part = str_create_size(5);
+	return (num);
 }
 
-void    default_float(t_printf *list, double d)
-{
-    char	*string;
-    int		count;
-    double	new_d;
-    double	tmp_d;
-    int		i;
 
-    new_d = d;
-    tmp_d = new_d;
-    count = 0;
-    i = 0;
-    if (tmp_d < 0)
-        tmp_d *= -1;
-    if (tmp_d >= 10)
-    {
-        while (tmp_d >= 10)
-        {
-            tmp_d = tmp_d / 10;
-            count++;
-        }
-        if (new_d >= 0)
-            string = (char *)malloc(sizeof(char) * count + 1);
-        else
-        {
-            string = (char *)malloc(sizeof(char) * count + 2);
-            string[i] = '-';
-            i++;
-            new_d *= -1;
-        }
-            while (new_d >= 10)
-        {
-            string[i] = (int)new_d % 10 + '0';
-            new_d = new_d / 10;
-            i++;
-        }
-        string[i] = new_d + '0';
-        string[i + 1] = '\0';
-    }
-    else
-    {
-        if (new_d >= 0)
-        {
-            string = (char *)malloc(sizeof(char) * 1);
-            string[i] = new_d + '0';
-        }
-        else
-        {
-            string = (char *)malloc(sizeof(char) * 2);
-            string[0] = '-';
-            string[1] = tmp_d + '0';
-        }
+t_bignum		*bin_mult(t_bignum *l)
+{
+	t_bignum	*res;
+	char	new_frac_part;
+
+	res = big_num_create();
+	res->sign = l->sign;
+	new_frac_part = str_cut(&l->frac_part, 1, str_len(&l->frac_part));
+	str_push_cs(&res->frac_part, &new_frac_part);
+	str_push_cs(&res->int_part, &l->int_part);
+	str_pushchar(&res->int_part, str_at(&l->frac_part, 0));
+	if (str_len(&res->int_part) == 0)
+		str_pushchar(&res->int_part, '0');
+	if (str_len(&res->frac_part) == 0)
+		str_pushchar(&res->frac_part, '0');
+	str_destroy(&new_frac_part);
+	return (res);
+}
+
+t_bignum		*bin_div(t_bignum *l)
+{
+	t_bignum	*res;
+	char	tmp;
+
+	res = big_num_create();
+	res->sign = l->sign;
+	tmp = str_cut(&l->int_part, 0, str_len(&l->int_part) - 1);
+	str_push_cs(&res->int_part, &tmp);
+	str_pushchar(&res->frac_part,
+				str_at(&l->int_part, str_len(&l->int_part) - 1));
+	str_push_cs(&res->frac_part, &l->frac_part);
+	if (str_len(&res->int_part) == 0)
+		str_pushchar(&res->int_part, '0');
+	if (str_len(&res->frac_part) == 0)
+		str_pushchar(&res->frac_part, '0');
+	return (res);
+}
+
+t_bignum		*get_the_bits(long double arg)
+{
+	int			i;
+	int			byte;
+	t_bignum	*num;
+
+	i = 62;
+	if (arg < 0)
+		arg *= -1.0;
+	t.d_num = (long double)arg;
+	num = big_num_create();
+	str_pushchar(&num->int_part, (t.t_double.mantissa >> 63 & 1) + 48);
+	byte = 0;
+	while (i >= 0)
+	{
+		byte = t.t_double.mantissa >> i & 1;
+		str_pushchar(&num->frac_part, byte + 48);
+		--i;
+	}
+	if (arg > 0)
+	{
+		if (t.t_double.exponent - 16383 > 0)
+			pos_pow(&num, t.t_double.exponent - 16383, bin_mult);
+		else
+			pos_pow(&num, t.t_double.exponent - 16383, bin_div);
+	}
+	return (num);
+}
+
+void    default_float(t_printf *list, double arg)
+{
+    char		sign;
+	t_bignum	*num;
+	char		*str;
+
+    list->precision = 6;
+    num = get_bits(arg);
+
+}
+
+
+// void    l_float(t_printf *list, double d)
+// {
+//     int count;
+//     char *string;
+//     long int new_d;
+//     long int tmp_d;
+//     int i;
+
+//     new_d = (long int)d;
+//     tmp_d = new_d;
+//     count = 0;
+//     i = 0;
+//     if (tmp_d < 0)
+//         tmp_d *= -1;
+//     if (tmp_d >= 10)
+//     {
+//         while (tmp_d >= 10)
+//         {
+//             tmp_d = tmp_d / 10;
+//             count++;
+//         }
+//         if (new_d >= 0)
+//             string = (char *)malloc(sizeof(char) * count + 1);
+//         else
+//         {
+//             string = (char *)malloc(sizeof(char) * count + 2);
+//             string[i] = '-';
+//             i++;
+//             new_d *= -1;
+//         }
+//         while (new_d >= 10)
+//         {
+//             string[i] = new_d % 10 + '0';
+//             new_d = new_d / 10;
+//             i++;
+//         }
+//         string[i] = new_d + '0';
+//         string[i + 1] = '\0';
+//     }
+//     else
+//     {
+//         if (new_d >= 0)
+//         {
+//             string = (char *)malloc(sizeof(char) * 1);
+//             string[i] = new_d + '0';
+//         }
+//         else
+//         {
+//             string = (char *)malloc(sizeof(char) * 2);
+//             string[0] = '-';
+//             string[1] = tmp_d + '0';
+//         }
         
-    }
-    print_float(reverse_string(string, list), list);
-    free(string);
-}
-
-void    L_float(t_printf *list, long double d)
-{
-    int count;
-    char *string;
-    signed char new_d;
-    signed char tmp_d;
-    int i;
-
-    new_d = (signed char)d;
-    tmp_d = new_d;
-    count = 0;
-    i = 0;
-    if (tmp_d < 0)
-        tmp_d *= -1;
-    if (tmp_d >= 10)
-    {
-        while (tmp_d >= 10)
-        {
-            tmp_d = tmp_d / 10;
-            count++;
-        }
-        if (new_d >= 0)
-            string = (char *)malloc(sizeof(char) * count + 1);
-        else
-        {
-            string = (char *)malloc(sizeof(char) * count + 2);
-            string[i] = '-';
-            i++;
-            new_d *= -1;
-        }
-        while (new_d >= 10)
-        {
-            string[i] = new_d % 10 + '0';
-            new_d = new_d / 10;
-            i++;
-        }
-        string[i] = new_d + '0';
-        string[i + 1] = '\0';
-    }
-    else
-    {
-        if (new_d >= 0)
-        {
-            string = (char *)malloc(sizeof(char) * 1);
-            string[i] = new_d + '0';
-        }
-        else
-        {
-            string = (char *)malloc(sizeof(char) * 2);
-            string[0] = '-';
-            string[1] = tmp_d + '0';
-        }
-        
-    }
-    print_float(reverse_string(string, list), list);
-    free(string);
-}
-
-
-void    l_float(t_printf *list, double d)
-{
-    int count;
-    char *string;
-    long int new_d;
-    long int tmp_d;
-    int i;
-
-    new_d = (long int)d;
-    tmp_d = new_d;
-    count = 0;
-    i = 0;
-    if (tmp_d < 0)
-        tmp_d *= -1;
-    if (tmp_d >= 10)
-    {
-        while (tmp_d >= 10)
-        {
-            tmp_d = tmp_d / 10;
-            count++;
-        }
-        if (new_d >= 0)
-            string = (char *)malloc(sizeof(char) * count + 1);
-        else
-        {
-            string = (char *)malloc(sizeof(char) * count + 2);
-            string[i] = '-';
-            i++;
-            new_d *= -1;
-        }
-        while (new_d >= 10)
-        {
-            string[i] = new_d % 10 + '0';
-            new_d = new_d / 10;
-            i++;
-        }
-        string[i] = new_d + '0';
-        string[i + 1] = '\0';
-    }
-    else
-    {
-        if (new_d >= 0)
-        {
-            string = (char *)malloc(sizeof(char) * 1);
-            string[i] = new_d + '0';
-        }
-        else
-        {
-            string = (char *)malloc(sizeof(char) * 2);
-            string[0] = '-';
-            string[1] = tmp_d + '0';
-        }
-        
-    }
-    print_float(reverse_string(string, list), list);
-    free(string);
-}
+//     }
+//     print_float(reverse_string(string, list), list);
+//     free(string);
+// }
