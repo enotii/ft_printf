@@ -6,7 +6,7 @@
 /*   By: caking <caking@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/29 18:53:51 by mbeahan           #+#    #+#             */
-/*   Updated: 2019/05/13 16:32:28 by caking           ###   ########.fr       */
+/*   Updated: 2019/05/13 16:55:26 by caking           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,8 @@ typedef struct		s_string
 
 typedef struct		s_bignum
 {
-	t_string	int_part;
+    char			sign;
+	t_string	    int_part;
 	t_string		frac_part;
 }					t_bignum;
 union
@@ -87,6 +88,11 @@ t_bignum	*big_num_create(void);
 void		bin_to_dec(t_bignum *num);
 void		do_frac_part(t_bignum *num);
 void		do_int_part(t_bignum *num);
+t_bignum	*dec_mult(t_bignum *n);
+t_string	str_create_size(int size);
+int         str_len(t_string *s);
+void        str_pushchar(t_string *s, char c);
+t_bignum	*dec_div(t_bignum *n);
 //--------------------Print X ----------------------//
 void     print_x(t_printf *lst, char *string);
 void     get_x_string(t_printf *list, int *array, int count);

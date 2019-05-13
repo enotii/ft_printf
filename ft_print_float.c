@@ -6,11 +6,32 @@
 /*   By: caking <caking@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/29 21:43:43 by gachibass22       #+#    #+#             */
-/*   Updated: 2019/05/13 16:21:00 by caking           ###   ########.fr       */
+/*   Updated: 2019/05/13 16:49:57 by caking           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
+
+t_string		str_create_size(int size)
+{
+	t_string	str;
+
+	str.data = ft_strnew(size - 1);
+	str.size = 0;
+	str.capacity = size;
+	return (str);
+}
+
+t_string		str_cut(t_string *str, int start, int end)
+{
+	t_string	new_str;
+
+	new_str = str_create_size(10);
+	start--;
+	while (++start < end && start < str_len(str))
+		str_pushchar(&new_str, str_at(str, start));
+	return (new_str);
+}
 
 t_bignum		*big_num_create(void)
 {
@@ -26,7 +47,7 @@ t_bignum		*big_num_create(void)
 t_bignum		*bin_mult(t_bignum *l)
 {
 	t_bignum	*res;
-	char	new_frac_part;
+	t_string	new_frac_part;
 
 	res = big_num_create();
 	res->sign = l->sign;
@@ -42,10 +63,15 @@ t_bignum		*bin_mult(t_bignum *l)
 	return (res);
 }
 
+int	str_len(t_string *s)
+{
+	return (s->size);
+}
+
 t_bignum		*bin_div(t_bignum *l)
 {
 	t_bignum	*res;
-	char	tmp;
+	t_string	tmp;
 
 	res = big_num_create();
 	res->sign = l->sign;
@@ -98,7 +124,7 @@ void    default_float(t_printf *list, double arg)
 
     list->precision = 6;
     num = get_bits(arg);
-
+    bin_to_dec(num);
 }
 
 
