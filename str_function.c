@@ -6,7 +6,7 @@
 /*   By: caking <caking@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/13 16:53:41 by caking            #+#    #+#             */
-/*   Updated: 2019/05/13 17:56:06 by caking           ###   ########.fr       */
+/*   Updated: 2019/05/13 18:33:45 by caking           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -204,6 +204,7 @@ char			*put_bignum_strings_into_one(t_bignum *num, t_printf *lst)
 		temp2 = cust_strdup(&num->frac_part);
 		temp3 = ft_strsub(temp2, 0, lst->precision);
 		str = ft_strjoin_free(temp, temp3, 3);
+       ft_putstr (str);
 		ft_strdel(&temp2); 
 	}
 	big_num_destroy(&num);

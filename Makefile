@@ -25,7 +25,7 @@ fclean: clean
 re: fclean all
 
 debug:
-	 gcc -ggdb ft_parse.c ft_print_pointer.c ft_print_string_char.c ft_print_unsigned.c ft_print_int.c ft_print_x.c ft_print_octal.c help_functions.c ft_printf.c ft_print_float.c str_function.c -I libft/ -L libft/ -lft
+	 gcc -ggdb ft_parse.c ft_print_pointer.c ft_print_string_char.c ft_print_unsigned.c ft_print_int.c ft_print_x.c ft_print_octal.c help_functions.c ft_printf.c ft_print_float.c bin_to_dec.c str_function.c -I libft/ -L libft/ -lft
 
 val:
 	valgrind --leak-check=full ./ft_printf test10.fillitf	
