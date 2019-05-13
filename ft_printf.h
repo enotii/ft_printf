@@ -6,7 +6,7 @@
 /*   By: caking <caking@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/29 18:53:51 by mbeahan           #+#    #+#             */
-/*   Updated: 2019/05/13 16:55:26 by caking           ###   ########.fr       */
+/*   Updated: 2019/05/13 17:55:08 by caking           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,20 +79,43 @@ void    ll_int(t_printf *list, long long int d);
 void    l_int(t_printf *list, long long int d);
 void    print_int(char *string, t_printf *list);
 //---------------------Print Float--------------------//
-void        default_float(t_printf *list, double d);
-void	    l_float(t_printf *list, double f);
-t_bignum	*bin_mult(t_bignum *l);
-t_bignum	*bin_div(t_bignum *l);
-t_bignum    *get_the_bits(long double arg);
-t_bignum	*big_num_create(void);
-void		bin_to_dec(t_bignum *num);
-void		do_frac_part(t_bignum *num);
-void		do_int_part(t_bignum *num);
-t_bignum	*dec_mult(t_bignum *n);
-t_string	str_create_size(int size);
-int         str_len(t_string *s);
-void        str_pushchar(t_string *s, char c);
-t_bignum	*dec_div(t_bignum *n);
+void            default_float(t_printf *list, double d);
+void	        l_float(t_printf *list, double f);
+t_bignum	    *bin_mult(t_bignum *l);
+t_bignum	    *bin_div(t_bignum *l);
+t_bignum        *get_the_bits(long double arg);
+t_bignum	    *big_num_create(void);
+void		    bin_to_dec(t_bignum *num);
+void		    do_frac_part(t_bignum *num);
+void		    do_int_part(t_bignum *num);
+t_bignum	    *dec_mult(t_bignum *n);
+t_string	    str_create_size(int size);
+int             str_len(t_string *s);
+void            str_pushchar(t_string *s, char c);
+t_bignum	    *dec_div(t_bignum *n);
+char	        str_at(t_string *s, int idx);
+void	        str_destroy(t_string *s);
+void	        str_push_cs(t_string *l, t_string *r);
+t_string	    str_cut(t_string *str, int start, int end);
+t_bignum	    *dec_sum(t_bignum *l, t_bignum *r, int n);
+static void		int_sum(t_string l, t_string r, t_string *res, char rem);
+static char		frac_sum(t_string l, t_string r, t_string *res);
+void	        big_num_destroy(t_bignum **num);
+t_bignum		*big_num_create_by_str(char sign, char *int_part, char *frac_part);
+t_string		str_create_str(char *s);
+void			pos_pow(t_bignum **n, int power, t_bignum *(*f)(t_bignum *));
+void			swap_comp_str(t_string *s1, t_string *s2);
+void		    str_rev(t_string *s);
+void		    str_resize(t_string *s, int new_size);
+void			rround(t_bignum **num, int precision);
+static void		put_zeros(int precision, t_string *str);
+int				find_digit(t_string *s, int start);
+char			*put_bignum_strings_into_one(t_bignum *num, t_printf *lst);
+void		    add_sign(char **str, char sign);
+static void		add_sign_float(char sign, char **str, t_printf *lst);
+char			*cust_strdup(t_string *src);
+char			*cust_strjoin_left(t_string *s1, char *s2);
+char	        *ft_strjoin_free(char *s1, char *s2, int n);
 //--------------------Print X ----------------------//
 void     print_x(t_printf *lst, char *string);
 void     get_x_string(t_printf *list, int *array, int count);

@@ -6,7 +6,7 @@
 /*   By: caking <caking@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 21:21:53 by mbeahan           #+#    #+#             */
-/*   Updated: 2019/05/13 16:17:40 by caking           ###   ########.fr       */
+/*   Updated: 2019/05/13 18:08:19 by caking           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,11 +128,11 @@ int main()
   //  printf("%f\n", 1.223543);
    // ft_printf("%f\n", 1.223543);
 double f = 8.0/3.0;
-double f1 = 234243.123;
+int f1 = 234243.123;
 double lf = 8.0/3.0;
 long double Lf = 8.0/3.0;
- ft_printf("%f", -f);
-printf("\nvalue       float: %f\n", -f);
+ ft_printf("%d\n", f1);
+printf("value       float: %f\n", -f);
 printf("value      double: %0.60lf\n", -lf);
 printf("value long double: %0.60Lf\n", -Lf); //666666666666666518636930049979127943515777587890625
     return(0);

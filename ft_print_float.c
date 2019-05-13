@@ -6,32 +6,11 @@
 /*   By: caking <caking@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/29 21:43:43 by gachibass22       #+#    #+#             */
-/*   Updated: 2019/05/13 16:49:57 by caking           ###   ########.fr       */
+/*   Updated: 2019/05/13 18:05:52 by caking           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
-
-t_string		str_create_size(int size)
-{
-	t_string	str;
-
-	str.data = ft_strnew(size - 1);
-	str.size = 0;
-	str.capacity = size;
-	return (str);
-}
-
-t_string		str_cut(t_string *str, int start, int end)
-{
-	t_string	new_str;
-
-	new_str = str_create_size(10);
-	start--;
-	while (++start < end && start < str_len(str))
-		str_pushchar(&new_str, str_at(str, start));
-	return (new_str);
-}
 
 t_bignum		*big_num_create(void)
 {
@@ -43,6 +22,30 @@ t_bignum		*big_num_create(void)
 	return (num);
 }
 
+t_bignum	*dec_div(t_bignum *n)
+{
+	t_bignum	*res;
+	int			i;
+
+	i = -1;
+	res = big_num_create();
+	res->sign = n->sign;
+	if (n->int_part.data[0] == '1')
+	{
+		big_num_destroy(&res);
+		res = big_num_create_by_str(n->sign, "0", "5");
+		return (res);
+	}
+	str_pushchar(&res->int_part, '0');
+	while (++i < n->frac_part.size)
+		if (i > 0)
+			str_pushchar(&res->frac_part, ((n->frac_part.data[i] - 48) +
+				(n->frac_part.data[i - 1] - 48) % 2 * 10) / 2 + 48);
+		else
+			str_pushchar(&res->frac_part, (n->frac_part.data[i] - 48) / 2 + 48);
+	str_pushchar(&res->frac_part, (n->frac_part.data[i - 1]));
+	return (res);
+}
 
 t_bignum		*bin_mult(t_bignum *l)
 {
@@ -61,11 +64,6 @@ t_bignum		*bin_mult(t_bignum *l)
 		str_pushchar(&res->frac_part, '0');
 	str_destroy(&new_frac_part);
 	return (res);
-}
-
-int	str_len(t_string *s)
-{
-	return (s->size);
 }
 
 t_bignum		*bin_div(t_bignum *l)
@@ -116,15 +114,106 @@ t_bignum		*get_the_bits(long double arg)
 	return (num);
 }
 
+static void		put_zeros(int precision, t_string *str)
+{
+	if (precision > str->size)
+		while (precision != str->size)
+			str_pushchar(str, '0');
+}
+
+int				find_digit(t_string *s, int start)
+{
+	while (start < str_len(s))
+		if (s->data[start++] > '0')
+			return (1);
+	return (0);
+}
+
+char			*cust_strdup(t_string *src)
+{
+	int			i;
+	char		*new_s1;
+
+	if (!src->size)
+		return (NULL);
+	i = 0;
+	if (!(new_s1 = malloc(sizeof(char) * (src->size + 1))))
+		return (0);
+	while (i < src->size)
+	{
+		new_s1[i] = str_at(src, i);
+		i++;
+	}
+	new_s1[i] = '\0';
+	return (new_s1);
+}
+
+static void		add_sign_float(char sign, char **str, t_printf *lst)
+{
+	if (sign == '-')
+		add_sign(str, '-');
+	else if (sign == '+')
+		add_sign(str, '+');
+	if (ft_strchr(&lst->space, ' ') && sign != '-')
+		add_sign(str, ' ');
+}
+
+void			rround(t_bignum **num, int precision)
+{
+	t_bignum *temp;
+
+	put_zeros(precision, &(*num)->frac_part);
+	if (((*num)->frac_part.size > precision &&
+		(*num)->frac_part.data[precision] <= '4') ||
+			!find_digit(&(*num)->frac_part, precision + 1))
+		return ;
+	if (precision == 0)
+	{
+		(*num)->int_part.data[(*num)->int_part.size - 1]++;
+		return ;
+	}
+	temp = big_num_create();
+	str_pushchar(&temp->int_part, '0');
+	while (precision-- > 1)
+		str_pushchar(&temp->frac_part, '0');
+	str_pushchar(&temp->frac_part, '1');
+	*num = dec_sum(*num, temp, 3);
+}
+
+void		add_sign(char **str, char sign)
+{
+	char	*new_str;
+	int		len;
+	int		i;
+
+	i = 0;
+	len = ft_strlen(*str) + 1;
+	new_str = ft_strnew(len);
+	new_str[0] = sign;
+	while (++i < len)
+		new_str[i] = (*str)[i - 1];
+	ft_strdel(str);
+	*str = new_str;
+}
+
 void    default_float(t_printf *list, double arg)
 {
     char		sign;
 	t_bignum	*num;
 	char		*str;
+    char        **format;
 
     list->precision = 6;
-    num = get_bits(arg);
+    num = get_the_bits(arg);
     bin_to_dec(num);
+	rround(&num, list->precision);
+	str = put_bignum_strings_into_one(num, list);
+	add_sign_float(sign, &str, list);
+//	width_insert(list, &str);
+	//  if (ft_strchr(&list->bar, '#') && list->precision == 0)
+	// 	*format = ft_strjoin_free(str, ".", 1);
+	//  else
+	// 	*format = str;
 }
 
 
