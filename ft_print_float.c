@@ -6,7 +6,7 @@
 /*   By: caking <caking@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/29 21:43:43 by gachibass22       #+#    #+#             */
-/*   Updated: 2019/05/13 18:05:52 by caking           ###   ########.fr       */
+/*   Updated: 2019/05/16 16:50:11 by caking           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -196,12 +196,119 @@ void		add_sign(char **str, char sign)
 	*str = new_str;
 }
 
-void    default_float(t_printf *list, double arg)
+char		del_minus(char **str)
+{
+	int		i;
+	int		len;
+	char	sign;
+
+	sign = **str;
+	i = -1;
+	len = ft_strlen(*str) - 1;
+	while (++i < len)
+		(*str)[i] = (*str)[i + 1];
+	(*str)[i] = 0;
+	return (sign);
+}
+
+void		width_insert_right(char **new_str, char *substr, int width, char c)
+{
+	int		i;
+	char	sign;
+
+	i = 0;
+	if (*substr && c == '0' && (*substr == '-' || *substr == '+' ||
+													*substr == ' '))
+		sign = del_minus(&substr);
+	while (*substr)
+		(*new_str)[i++] = *substr++;
+	while (width-- > 0)
+		(*new_str)[i++] = c;
+	if (c == '0' && sign != -1)
+	{
+		add_sign(new_str, sign);
+		i++;
+	}
+	(*new_str)[i] = '\0';
+}
+
+void		width_insert_left(char **new_str, char *substr, int width, char c)
+{
+	int		i;
+	char	sign;
+
+	i = 0;
+	sign = -1;
+	if (*substr && c == '0' && (*substr == '-' || *substr == '+' ||
+													*substr == ' '))
+		sign = del_minus(&substr);
+	while (width-- > 0)
+		(*new_str)[i++] = c;
+	while (*substr)
+		(*new_str)[i++] = *substr++;
+	if (c == '0' && sign != -1)
+	{
+		add_sign(new_str, sign);
+		i++;
+	}
+	(*new_str)[i] = '\0';
+}
+
+void		width_insert(t_printf *list, char **substr)
+{
+	int		width;
+	char	c;
+	char	*new_str;
+
+	c = ' ';
+	width = list->width - ft_strlen(*substr);
+	if (width <= 0)
+		return ;
+	new_str = ft_strnew((ft_strlen(*substr) + width));
+	if (list->zero)
+		c = '0';
+	if (list->minus)
+		width_insert_right(&new_str, *substr, width, c);
+	else
+		width_insert_left(&new_str, *substr, width, c);
+	ft_strdel(substr);
+	*substr = new_str;
+}
+
+char	*ft_strjoin_free(char *s1, char *s2, int n)
+{
+	char	*res;
+	size_t	len1;
+	size_t	len2;
+
+	if (s1 == NULL || s2 == NULL)
+		return (NULL);
+	len1 = ft_strlen(s1);
+	len2 = ft_strlen(s2);
+	res = NULL;
+	res = ft_strnew(len1 + len2);
+	if (res == NULL)
+		return (NULL);
+	ft_strcat(res, s1);
+	ft_strcat(res, s2);
+	if (n == 1)
+		free(s1);
+	else if (n == 2)
+		free(s2);
+	else if (n == 3)
+	{
+		free(s1);
+		free(s2);
+	}
+	return (res);
+}
+
+
+void    default_float(t_printf *list, double arg, char **format)
 {
     char		sign;
 	t_bignum	*num;
 	char		*str;
-    char        **format;
 
     list->precision = 6;
     num = get_the_bits(arg);
@@ -209,11 +316,11 @@ void    default_float(t_printf *list, double arg)
 	rround(&num, list->precision);
 	str = put_bignum_strings_into_one(num, list);
 	add_sign_float(sign, &str, list);
-//	width_insert(list, &str);
-	//  if (ft_strchr(&list->bar, '#') && list->precision == 0)
-	// 	*format = ft_strjoin_free(str, ".", 1);
-	//  else
-	// 	*format = str;
+	width_insert(list, &str);
+ if (ft_strchr(&list->bar, '#') && list->precision == 0)
+		*format = ft_strjoin_free(str, ".", 1);
+	else
+	 	*format = str;
 }
 
 

@@ -6,13 +6,13 @@
 /*   By: caking <caking@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 21:21:53 by mbeahan           #+#    #+#             */
-/*   Updated: 2019/05/13 18:27:17 by caking           ###   ########.fr       */
+/*   Updated: 2019/05/16 16:49:33 by caking           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-void    needed_to_print(t_printf *lst, va_list ap)
+void    needed_to_print(t_printf *lst, va_list ap,char *s)
 {
     if (lst->type == 'c')
         ft_print_char(lst, va_arg(ap, int));
@@ -73,7 +73,7 @@ void    needed_to_print(t_printf *lst, va_list ap)
         if (lst->type == 'f')
     {
         if (!(lst->size))
-            default_float(lst,va_arg(ap, double));
+            default_float(lst,va_arg(ap, double), &s);
         // else if (ft_strcmp(lst->size, "l") == 0)
         //     l_float(lst,va_arg(ap, double));
         // else if (ft_strcmp(lst->size, "L") == 0)
@@ -101,7 +101,7 @@ int     help_ft_printf(t_printf *lst, const char *string, va_list ap)
         parse_precision((char *)string, lst, i, stop);
         parse_size((char*)string, lst, i, stop);
         i = parse_type((char *)string, lst, i);
-        needed_to_print(lst, ap);
+        needed_to_print(lst, ap, (char *)string);
         while((!(string[i] == '%' && string[i + 1] != '%')) && string[i] != '\0')
         {
             ft_putchar(string[i]);
@@ -132,8 +132,8 @@ char *str = "this is ft_printf";
 double f1 = 234243.123;
 double lf = 8.0/3.0;
 long double Lf = 8.0/3.0;
- ft_printf("%s\t%f\n", str,f1);
-printf("value       float: %f\n", -f);
+ft_printf("%s\t%+f\n", str,f);
+printf("value       float: %+f\n", f);
 printf("value      double: %0.60lf\n", -lf);
 printf("value long double: %0.60Lf\n", -Lf); //666666666666666518636930049979127943515777587890625
     return(0);

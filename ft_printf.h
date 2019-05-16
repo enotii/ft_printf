@@ -6,7 +6,7 @@
 /*   By: caking <caking@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/29 18:53:51 by mbeahan           #+#    #+#             */
-/*   Updated: 2019/05/13 17:55:08 by caking           ###   ########.fr       */
+/*   Updated: 2019/05/16 16:43:51 by caking           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ void    ll_int(t_printf *list, long long int d);
 void    l_int(t_printf *list, long long int d);
 void    print_int(char *string, t_printf *list);
 //---------------------Print Float--------------------//
-void            default_float(t_printf *list, double d);
+void   			default_float(t_printf *list, double arg, char **format);
 void	        l_float(t_printf *list, double f);
 t_bignum	    *bin_mult(t_bignum *l);
 t_bignum	    *bin_div(t_bignum *l);
@@ -116,6 +116,11 @@ static void		add_sign_float(char sign, char **str, t_printf *lst);
 char			*cust_strdup(t_string *src);
 char			*cust_strjoin_left(t_string *s1, char *s2);
 char	        *ft_strjoin_free(char *s1, char *s2, int n);
+void			width_insert_right(char **new_str, char *substr, int width, char c);
+void			width_insert_left(char **new_str, char *substr, int width, char c);
+void			width_insert(t_printf *list, char **substr);
+char			del_minus(char **str);
+char			*ft_strjoin_free(char *s1, char *s2, int n);
 //--------------------Print X ----------------------//
 void     print_x(t_printf *lst, char *string);
 void     get_x_string(t_printf *list, int *array, int count);
@@ -139,6 +144,6 @@ char    *reverse_string(char *string, t_printf *list);
 //----------------------PRINTF----------------------//
 int     ft_printf(const char *format, ...);
 int     help_ft_printf(t_printf *lst, const char *string, va_list ap);
-void    needed_to_print(t_printf *lst, va_list ap);
+void    needed_to_print(t_printf *lst, va_list ap,char *s);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: caking <caking@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/13 16:53:41 by caking            #+#    #+#             */
-/*   Updated: 2019/05/13 18:33:45 by caking           ###   ########.fr       */
+/*   Updated: 2019/05/16 16:46:56 by caking           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,35 +159,6 @@ char			*cust_strjoin_left(t_string *s1, char *s2)
 	*(new_str + i) = '\0';
 	return (new_str);
 }
-
-char	*ft_strjoin_free(char *s1, char *s2, int n)
-{
-	char	*res;
-	size_t	len1;
-	size_t	len2;
-
-	if (s1 == NULL || s2 == NULL)
-		return (NULL);
-	len1 = ft_strlen(s1);
-	len2 = ft_strlen(s2);
-	res = NULL;
-	res = ft_strnew(len1 + len2);
-	if (res == NULL)
-		return (NULL);
-	ft_strcat(res, s1);
-	ft_strcat(res, s2);
-	if (n == 1)
-		free(s1);
-	else if (n == 2)
-		free(s2);
-	else if (n == 3)
-	{
-		free(s1);
-		free(s2);
-	}
-	return (res);
-}
-
 
 char			*put_bignum_strings_into_one(t_bignum *num, t_printf *lst)
 {
