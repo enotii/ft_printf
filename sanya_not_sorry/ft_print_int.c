@@ -6,7 +6,7 @@
 /*   By: mbeahan <mbeahan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/20 13:31:45 by mbeahan           #+#    #+#             */
-/*   Updated: 2019/04/30 15:55:36 by mbeahan          ###   ########.fr       */
+/*   Updated: 2019/06/26 20:27:52 by mbeahan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,57 +29,45 @@ void print_int(char *string, t_printf *list)
         if (list->width == list->precision)
         {
             if (list->space != 0 && string[0] != '-')
-                ft_putchar(' ');
+                print_n_times(1, ' ', list);
             if (list->plus || string[0] == '-')
             {
                 if (string[0] == '-')
-                    ft_putchar('-');
+                    print_n_times(1, '-', list);
                 else
-                    ft_putchar('+');
+                    print_n_times(1, '+', list);
             }
             i = list->width - len;
-            while (i)
-            {
-                ft_putchar('0');
-                i--;
-            }
+            print_n_times(i, '0', list);
             if (string[0] == '-')
-                ft_putstr(string + 1);
+                putstr_symbs(string + 1, list);
             else
-                ft_putstr(string);
+                putstr_symbs(string, list);
         }
         if ((list->width > list->precision) && list->precision != -1)
         {
             if (list->space && string[0] != '-')
-                ft_putchar(' ');
+                print_n_times(1, '0', list);
             if (list->minus)
             {
                 if (list->plus || string[0] == '-')
                 {
                     if (string[0] == '-')
-                        ft_putchar('-');
+                        print_n_times(1, '-', list);
                     else
-                        ft_putchar('+');
+                        print_n_times(1, '+', list);
                 }
                 i = list->precision - len;
-                while(i)
-                {
-                    ft_putchar('0');
-                    i--;
-                }
+                print_n_times(i, '0', list);
                 if (string[0] != '-')
-                    ft_putstr(string);
+                    putstr_symbs(string, list);
                 else
-                    ft_putstr(string + 1);
+                    putstr_symbs(string + 1, list);
                 if (string[0] == '-' || list->plus != 0 || list->space != 0)
                     i = list->width - list->precision - 1;
                 else
                     i = list->width - list->precision;
-                while (i)
-                {
-                    ft_putchar(' ');
-                    i--;
-                }
+                print_n_times(i, ' ', list);
             }
             else
             {
@@ -87,28 +75,20 @@ void print_int(char *string, t_printf *list)
                     i = list->width - list->precision - 1;
                 else
                     i = list->width - list->precision;
-                while (i)
-                {
-                    ft_putchar(' ');
-                    i--;
-                }
+                print_n_times(i, ' ', list);
                 i = list->precision - len;
                 if (list->plus || string[0] == '-')
                 {
                     if (string[0] == '-')
-                        ft_putchar('-');
+                        print_n_times(1, '-', list);
                     else
-                        ft_putchar('+');
+                        print_n_times(1, '+', list);
                 }
-                while(i)
-                {
-                    ft_putchar('0');
-                    i--;
-                }
+                print_n_times(i, '0', list);
                 if (string[0] != '-')
-                    ft_putstr(string);
+                    putstr_symbs(string, list);
                 else
-                    ft_putstr(string + 1);
+                    putstr_symbs(string + 1, list);
             }
         }
         if (list->precision > list->width)
@@ -116,22 +96,18 @@ void print_int(char *string, t_printf *list)
             if (list->plus || string[0] == '-')
             {
                 if (string[0] == '-')
-                    ft_putchar('-');
+                    print_n_times(1, '-', list);
                 else
-                    ft_putchar('+');
+                    print_n_times(1, '+', list);
             }
             if (list->space != 0 && string[0] != '-')
-                ft_putchar(' ');
+                print_n_times(1, ' ', list);
             i = list->precision - len;
-            while (i)
-            {
-                ft_putchar('0');
-                i--;
-            }
+            print_n_times(i, '0', list);
             if (string[0] != '-')
-                ft_putstr(string);
+                putstr_symbs(string, list);
             else
-                ft_putstr(string + 1);
+                putstr_symbs(string + 1, list);
         }
     }
     if (list->precision != -1 && list->width == 0)
@@ -139,25 +115,21 @@ void print_int(char *string, t_printf *list)
         if (list->plus || string[0] == '-')
         {
             if (string[0] == '-')
-                ft_putchar('-');
+                print_n_times(1, '-', list);
             else
-                ft_putchar('+');
+                print_n_times(1, '+', list);
         }
         if (list->space != 0 && string[0] != '-')
-                ft_putchar(' ');
+                print_n_times(1, ' ', list);
         if(list->precision > len)
         {
             i = list->precision - len;
-            while (i)
-            {
-                ft_putchar('0');
-                i--;
-            }
+            print_n_times(i, '0', list);
         }
         if (string[0] != '-')
-            ft_putstr(string);
+            putstr_symbs(string, list);
         else
-            ft_putstr(string + 1);
+            putstr_symbs(string + 1, list);
     }
     if (list->width != 0 && list->precision == -1)
     {
@@ -166,11 +138,11 @@ void print_int(char *string, t_printf *list)
             if (list->plus || string[0] == '-')
             {
                 if (string[0] == '-')
-                    ft_putstr(string);
+                    putstr_symbs(string, list);
                 else
                 {
-                    ft_putchar('+');
-                    ft_putstr(string + 1);
+                    print_n_times(1, '+', list);
+                    putstr_symbs(string + 1, list);
                 }   
             }
         }
@@ -182,45 +154,37 @@ void print_int(char *string, t_printf *list)
                     i = list->width - len - 1;
                 else
                     i = list->width - len;
-                while (i)
-                {
-                    ft_putchar(' ');
-                    i--;
-                }
+                print_n_times(i, ' ', list);
                 if (list->plus || string[0] == '-')
                 {
                     if (string[0] == '-')
-                        ft_putchar('-');
+                        print_n_times(1, '-', list);
                     else
-                        ft_putchar('+');
+                        print_n_times(1, '+', list);
                 }
                 if (string[0] == '-')
-                    ft_putstr(string + 1);
+                    putstr_symbs(string + 1, list);
                 else
-                    ft_putstr(string);
+                    putstr_symbs(string, list);
             }
             if (list->minus)
             {
                 if (list->plus || string[0] == '-')
                 {
                     if (string[0] == '-')
-                        ft_putchar('-');
+                        print_n_times(1, '-', list);
                     else
-                        ft_putchar('+');
+                        print_n_times(1, '+', list);
                 }
                 if (string[0] == '-')
-                    ft_putstr(string + 1);
+                    putstr_symbs(string + 1, list);
                 else
-                    ft_putstr(string);
+                    putstr_symbs(string, list);
                 if (string[0] == '-' || list->plus != 0 || list->space != 0)
                     i = list->width - len - 1;
                 else
                     i = list->width - len;
-                while (i)
-                {
-                    ft_putchar(' ');
-                    i--;
-                }
+                print_n_times(i, ' ', list);
             }
             if (list->zero)
             {
@@ -231,19 +195,15 @@ void print_int(char *string, t_printf *list)
                 if (list->plus || string[0] == '-')
                 {
                     if (string[0] == '-')
-                        ft_putchar('-');
+                        print_n_times(1, '-', list);
                     else
-                        ft_putchar('+');
+                        print_n_times(1, '+', list);
                 }
-                while (i)
-                {
-                    ft_putchar('0');
-                    i--;
-                }
+                print_n_times(i, '0', list);
                 if (string[0] == '-')
-                    ft_putstr(string + 1);
+                    putstr_symbs(string + 1, list);
                 else
-                    ft_putstr(string);
+                    putstr_symbs(string, list);
             }
         }
     }
@@ -252,14 +212,14 @@ void print_int(char *string, t_printf *list)
          if (list->plus || string[0] == '-')
         {
             if (string[0] == '-')
-                ft_putchar('-');
+                print_n_times(1, '-', list);
             else
-                ft_putchar('+');
+                print_n_times(1, '+', list);
         }
         if (string[0] == '-')
-            ft_putstr(string + 1);
+            putstr_symbs(string + 1, list);
         else
-            ft_putstr(string);
+            putstr_symbs(string, list);
     }
 }
 
@@ -306,18 +266,20 @@ void    default_int(t_printf *list, long long int d)
     {
         if (new_d >= 0)
         {
-            string = (char *)malloc(sizeof(char) * 1);
-            string[i] = new_d + '0';
+            string = (char *)malloc(sizeof(char) * 2);
+            string[0] = new_d + '0';
+            string[1] = '\0';
         }
         else
         {
-            string = (char *)malloc(sizeof(char) * 2);
+            string = (char *)malloc(sizeof(char) * 3);
             string[0] = '-';
             string[1] = tmp_d + '0';
+            string[2] = '\0';
         }
         
     }
-    print_int(reverse_string(string, list), list);
+    print_int(reverse_string(string), list);
     free(string);
 }
 
@@ -364,18 +326,21 @@ void    hh_int(t_printf *list, long long int d)
     {
         if (new_d >= 0)
         {
-            string = (char *)malloc(sizeof(char) * 1);
-            string[i] = new_d + '0';
+            string = (char *)malloc(sizeof(char) * 2);
+            string[0] = new_d + '0';
+            string[1] = '\0';
+
         }
         else
         {
-            string = (char *)malloc(sizeof(char) * 2);
+            string = (char *)malloc(sizeof(char) * 3);
             string[0] = '-';
             string[1] = tmp_d + '0';
+            string[2] = '\0';
         }
         
     }
-    print_int(reverse_string(string, list), list);
+    print_int(reverse_string(string), list);
     free(string);
 }
 
@@ -422,18 +387,20 @@ void    h_int(t_printf *list, long long int d)
     {
         if (new_d >= 0)
         {
-            string = (char *)malloc(sizeof(char) * 1);
-            string[i] = new_d + '0';
+            string = (char *)malloc(sizeof(char) * 2);
+            string[0] = new_d + '0';
+            string[1] = '\0';
         }
         else
         {
-            string = (char *)malloc(sizeof(char) * 2);
+            string = (char *)malloc(sizeof(char) * 3);
             string[0] = '-';
             string[1] = tmp_d + '0';
+            string[2] = '\0';
         }
         
     }
-    print_int(reverse_string(string, list), list);
+    print_int(reverse_string(string), list);
     free(string);
 }
 
@@ -480,18 +447,20 @@ void    ll_int(t_printf *list, long long int d)
     {
         if (new_d >= 0)
         {
-            string = (char *)malloc(sizeof(char) * 1);
-            string[i] = new_d + '0';
+            string = (char *)malloc(sizeof(char) * 2);
+            string[0] = new_d + '0';
+            string[1] = '\0';
         }
         else
         {
-            string = (char *)malloc(sizeof(char) * 2);
+            string = (char *)malloc(sizeof(char) * 3);
             string[0] = '-';
             string[1] = tmp_d + '0';
+            string[2] = '\0';
         }
         
     }
-    print_int(reverse_string(string, list), list);
+    print_int(reverse_string(string), list);
     free(string);
 }
 
@@ -538,17 +507,19 @@ void    l_int(t_printf *list, long long int d)
     {
         if (new_d >= 0)
         {
-            string = (char *)malloc(sizeof(char) * 1);
-            string[i] = new_d + '0';
+            string = (char *)malloc(sizeof(char) * 2);
+            string[0] = new_d + '0';
+            string[1] = '\0';
         }
         else
         {
             string = (char *)malloc(sizeof(char) * 2);
             string[0] = '-';
             string[1] = tmp_d + '0';
+            string[2] = '\0';
         }
         
     }
-    print_int(reverse_string(string, list), list);
+    print_int(reverse_string(string), list);
     free(string);
 }

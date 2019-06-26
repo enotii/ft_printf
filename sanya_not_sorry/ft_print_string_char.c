@@ -6,7 +6,7 @@
 /*   By: mbeahan <mbeahan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 20:54:36 by mbeahan           #+#    #+#             */
-/*   Updated: 2019/05/07 16:43:16 by mbeahan          ###   ########.fr       */
+/*   Updated: 2019/06/26 20:56:29 by mbeahan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ void    ft_print_char(t_printf *list, int c)
     int i;
 
     i = 0;
+    list->symbs++;
     if (list->width && list->minus)
     {
         write(1, &c, 1);
@@ -24,6 +25,7 @@ void    ft_print_char(t_printf *list, int c)
         {
             ft_putchar(' ');
             i++;
+            list->symbs++;
         }
     }
     if (list->width && !list->minus)
@@ -32,6 +34,7 @@ void    ft_print_char(t_printf *list, int c)
         {
             ft_putchar(' ');
             i++;
+            list->symbs++;
         }
         write(1, &c, 1);
     }
@@ -51,7 +54,7 @@ void    ft_print_string(t_printf *list, char *string)
         flag = 1;
     }
     if (list->width == 0 && list->precision == -1)
-        ft_putstr(string);
+        putstr_symbs(string, list);
     if (list->width != 0 && list->precision != -1)
     {
         if (list->width == list->precision)
@@ -61,32 +64,19 @@ void    ft_print_string(t_printf *list, char *string)
             {
                 if (list->minus == 0)
                 {
-                    while (i)
-                    {
-                        ft_putchar(' ');
-                        i--;
-                    }
-                    ft_putstr(string);
+                    print_n_times(i, ' ', list);
+                    putstr_symbs(string, list);
                 }
                 if (list->minus != 0)
                 {
-                    ft_putstr(string);
-                    while (i)
-                    {
-                        ft_putchar(' ');
-                        i--;
-                    }
+                    putstr_symbs(string, list);
+                    print_n_times(i, ' ', list);
                 }
             }
             if (i < 0)
             {
                 i = list->precision;
-                while (i)
-                {
-                    ft_putchar(*string);
-                    string++;
-                    i--;
-                }
+                print_n_symbs(string, i, list);
             }
         }
          if ((list->width > list->precision) && list->minus == 0)
@@ -95,50 +85,24 @@ void    ft_print_string(t_printf *list, char *string)
                 i = list->width - ft_strlen(string);
             else
                 i = list->width - list->precision;
-            while (i)
-            {
-                ft_putchar(' ');
-                i--;
-            }
+            print_n_times(i, ' ', list);
             if (list->precision >= ft_strlen(string))
-            {
-                while (i < ft_strlen(string))
-                {
-                    ft_putchar(string[i]);
-                    i++;
-                }
-            }
+                putstr_symbs(string, list);
             else
-            {
-                while (i < list->precision)
-                {
-                    ft_putchar(string[i]);
-                    i++;
-                }
-            }
+                print_n_symbs(string, list->precision, list);
         }
         if ((list->width > list->precision) && list->minus != 0)
         {
             i = 0;
             if (list->precision >= ft_strlen(string))
-                ft_putstr(string);
+                putstr_symbs(string, list);
             else
-            {
-                while (i < list->precision)
-                {
-                    ft_putchar(string[i]);
-                    i++;
-                }
-            }
+                print_n_symbs(string, list->precision, list);
             if (list->precision >= ft_strlen(string))
                 i = list->width - ft_strlen(string);
             else
                 i = list->width - list->precision;
-            while (i)
-            {
-                ft_putchar(' ');
-                i--;
-            }
+            print_n_times(i, ' ', list);
         }
         if (list->precision > list->width && list->minus == 0)
         {
@@ -148,36 +112,21 @@ void    ft_print_string(t_printf *list, char *string)
                 i = list->precision;
             if (list->width < ft_strlen(string))
                 i = 0;
-            while (i)
-            {
-                ft_putchar(' ');
-                i--;
-            }
+            print_n_times(i, ' ', list);
             if (list->precision >= ft_strlen(string))
-                ft_putstr(string);
+                putstr_symbs(string, list);
             else
-            {
-                while(i < list->precision)
-                {
-                    ft_putchar(string[i]);
-                    i++;
-                }
-            }
+                print_n_symbs(string, list->precision, list);
         }
     }
     if (list->precision != -1 && list->width == 0)
     {
         if (list->precision >= ft_strlen(string))
-            ft_putstr(string);
+            putstr_symbs(string, list);
         if (list->precision < ft_strlen(string))
         {
             i = list->precision;
-            while (i)
-            {
-                ft_putchar(*string);
-                string++;
-                i--;
-            }
+            print_n_symbs(string, i, list);
         }
     }
     if (list->width != 0 && list->precision == -1)
@@ -187,25 +136,17 @@ void    ft_print_string(t_printf *list, char *string)
             i = list->width - ft_strlen(string);
             if (list->minus != 0)
             {
-                ft_putstr(string);
-                while(i)
-                {
-                    ft_putchar(' ');
-                    i--;
-                }
+                putstr_symbs(string, list);
+                print_n_times(i, ' ', list);
             }
             if (list->minus == 0)
             {
-                while(i)
-                {
-                    ft_putchar(' ');
-                    i--;
-                }
-                ft_putstr(string);
+                print_n_times(i, ' ', list);
+                putstr_symbs(string, list);
             }
         }
         if (list->width <= ft_strlen(string))
-            ft_putstr(string);
+            putstr_symbs(string, list);
     }
     if (flag == 1)
         free(string);

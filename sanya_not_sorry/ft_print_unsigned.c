@@ -6,7 +6,7 @@
 /*   By: mbeahan <mbeahan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 20:47:57 by mbeahan           #+#    #+#             */
-/*   Updated: 2019/04/30 17:59:10 by mbeahan          ###   ########.fr       */
+/*   Updated: 2019/06/26 21:19:12 by mbeahan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,30 +28,18 @@ void print_unsigned(char *string, t_printf *list)
                 i = 0;
             else
                 i = list->width - ft_strlen(string);
-            while (i)
-            {
-                ft_putchar('0');
-                i--;
-            }
-            ft_putstr(string);
+            print_n_times(i, '0', list);
+            putstr_symbs(string, list);
         }
         if (list->width > list->precision)
         {
             if (list->minus)
             {
                 i = list->precision - len;
-                while(i)
-                {
-                    ft_putchar('0');
-                    i--;
-                }
-                ft_putstr(string);
+                print_n_times(i, '0', list);
+                putstr_symbs(string, list);
                 i = list->width - list->precision;
-                while (i)
-                {
-                    ft_putchar(' ');
-                    i--;
-                }
+                print_n_times(i, ' ', list);
             }
             else
             {
@@ -59,21 +47,13 @@ void print_unsigned(char *string, t_printf *list)
                     i = list->width - list->precision;
                 else
                     i = list->width - ft_strlen(string);
-                while (i)
-                {
-                    ft_putchar(' ');
-                    i--;
-                }
+                print_n_times(i, ' ', list);
                 if (list->precision >= ft_strlen(string))
                     i = list->precision - ft_strlen(string);
                 else
                     i = 0;
-                while(i)
-                {
-                    ft_putchar('0');
-                    i--;
-                }
-                ft_putstr(string);
+                print_n_times(i, '0', list);
+                putstr_symbs(string, list);
             }
         }
         if (list->precision > list->width)
@@ -82,68 +62,48 @@ void print_unsigned(char *string, t_printf *list)
                 i = list->precision - len;
             if (list->precision < len)
                 i = 0;
-            while (i)
-            {
-                ft_putchar('0');
-                i--;
-            }
-            ft_putstr(string);
+            print_n_times(i, '0', list);
+            putstr_symbs(string, list);
         }
     }
     if (list->precision != -1 && list->width == 0)
     {
         if (list->precision <= len)
-            ft_putstr(string);
+            putstr_symbs(string, list);
         if(list->precision > len)
         {
             i = list->precision - len;
-            while (i)
-            {
-                ft_putchar('0');
-                i--;
-            }
+            print_n_times(i, '0', list);
         }
     }
     if (list->width != 0 && list->precision == -1)
     {
         if (list->width <= len)
-            ft_putstr(string);
+            putstr_symbs(string, list);
         if(list->width > len)
         {
             if (list->minus == 0 && list->zero == 0)
             {
                 i = list->width - len;
-                while (i)
-                {
-                    ft_putchar(' ');
-                    i--;
-                }
-                ft_putstr(string);
+                print_n_times(i, ' ', list);
+                putstr_symbs(string, list);
             }
             if (list->minus)
             {
-                ft_putstr(string);
+                putstr_symbs(string, list);
                 i = list->width - len;
-                while (i)
-                {
-                    ft_putchar(' ');
-                    i--;
-                }
+                print_n_times(i, ' ', list);
             }
             if (list->zero)
             {
                 i = list->width - len;
-                while (i)
-                {
-                    ft_putchar('0');
-                    i--;
-                }
-                ft_putstr(string);
+                print_n_times(i, '0', list);
+                putstr_symbs(string, list);
             }
         }
     }
     if (list->width == 0 && list->precision == 0)
-        ft_putstr(string);
+        putstr_symbs(string, list);
 }
 
 void    unsigned_hh(t_printf *list, unsigned long long u)
@@ -177,10 +137,11 @@ void    unsigned_hh(t_printf *list, unsigned long long u)
     }
     else
     {
-        string = (char *)malloc(sizeof(char) * 1);
+        string = (char *)malloc(sizeof(char) * 2);
         string[i] = new_u + '0';
+        string[i + 1] = '\0';
     }
-    print_unsigned(reverse_string(string, list), list);
+    print_unsigned(reverse_string(string), list);
     free(string);
 }
 
@@ -215,10 +176,11 @@ void    unsigned_h(t_printf *list, unsigned long long u)
     }
     else
     {
-        string = (char *)malloc(sizeof(char) * 1);
+        string = (char *)malloc(sizeof(char) * 2);
         string[i] = new_u + '0';
+        string[i + 1] = '\0';
     }
-    print_unsigned(reverse_string(string, list), list);
+    print_unsigned(reverse_string(string), list);
     free(string);
 }
 
@@ -253,10 +215,11 @@ void    unsigned_ll(t_printf *list, unsigned long long u)
     }
     else
     {
-        string = (char *)malloc(sizeof(char) * 1);
+        string = (char *)malloc(sizeof(char) * 2);
         string[i] = new_u + '0';
+        string[i + 1] = '\0';
     }
-    print_unsigned(reverse_string(string, list), list);
+    print_unsigned(reverse_string(string), list);
     free(string);
 }
 
@@ -291,9 +254,10 @@ void    unsigned_l(t_printf *list, unsigned long long u)
     }
     else
     {
-        string = (char *)malloc(sizeof(char) * 1);
+        string = (char *)malloc(sizeof(char) * 2);
         string[i] = new_u + '0';
+        string[i + 1] = '\0';
     }
-    print_unsigned(reverse_string(string, list), list);
+    print_unsigned(reverse_string(string), list);
     free(string);
 }

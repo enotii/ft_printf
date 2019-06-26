@@ -6,7 +6,7 @@
 /*   By: mbeahan <mbeahan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 20:51:54 by mbeahan           #+#    #+#             */
-/*   Updated: 2019/04/20 14:31:01 by mbeahan          ###   ########.fr       */
+/*   Updated: 2019/06/26 21:19:11 by mbeahan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void     ft_print(char *string, int start)
     }
 }
 
-char    *reverse_string(char *string, t_printf *list)
+char    *reverse_string(char *string)
 {
     char *str;
     int len;
@@ -66,4 +66,31 @@ char    *reverse_string(char *string, t_printf *list)
     string[i] = '\0';
     free(str);
     return (string);
+}
+
+void    print_n_times(int i, char c, t_printf *lst)
+{
+    lst->symbs += i;
+    while (i)
+    {
+        ft_putchar(' ');
+        i--;
+    }
+}
+
+void    putstr_symbs(char *str, t_printf *lst)
+{
+    lst->symbs += ft_strlen(str);
+    ft_putstr(str);
+}
+
+void    print_n_symbs(char *str, int i, t_printf *lst)
+{
+    lst->symbs += i;
+    while (i)
+    {
+        ft_putchar(*str);
+        str++;
+        i--;
+    }
 }

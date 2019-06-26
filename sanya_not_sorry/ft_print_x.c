@@ -6,7 +6,7 @@
 /*   By: mbeahan <mbeahan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/23 15:06:56 by mbeahan           #+#    #+#             */
-/*   Updated: 2019/05/07 16:37:45 by mbeahan          ###   ########.fr       */
+/*   Updated: 2019/06/26 21:19:13 by mbeahan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void    print_x(t_printf *lst, char *string)
     if (lst->minus && lst->zero)
         lst->zero = 0;
     if (lst->precision == -1 && lst->width == 0)
-        ft_putstr(string);
+        putstr_symbs(string, lst);
     if (lst->zero != 0)
         symb = '0';
     if (lst->width != 0 && lst->precision != -1)
@@ -43,16 +43,12 @@ void    print_x(t_printf *lst, char *string)
             else
                 i = 0;
             if (lst->bar != 0)
-                ft_putstr(up_or_low);
-            while (i)
-            {
-                ft_putchar('0');
-                i--;
-            }
+                putstr_symbs(up_or_low, lst);
+            print_n_times(i, '0', lst);
             if (lst->bar != 0)
-                ft_putstr(string + 2);
+                putstr_symbs(string + 2, lst);
             else
-                ft_putstr(string);
+                putstr_symbs(string, lst);
         }
         if (lst->width > lst->precision && lst->minus == 0)
         {
@@ -66,26 +62,18 @@ void    print_x(t_printf *lst, char *string)
                 i = lst->width - ft_strlen(string);
             if (i < 0)
                 i = 0;
-            while (i)
-            {
-                ft_putchar(' ');
-                i--;
-            }
+            print_n_times(i, ' ', lst);
             if (lst->precision >= len)
                 i = lst->precision - len;
             else
                 i = 0;
             if (lst->bar != 0)
-                ft_putstr(up_or_low);
-            while(i)
-            {
-                ft_putchar('0');
-                i--;
-            }
+                putstr_symbs(up_or_low, lst);
+            print_n_times(i, '0', lst);
             if (lst->bar != 0)
-                ft_putstr(string + 2);
+                putstr_symbs(string + 2, lst);
             else
-                ft_putstr(string);
+                putstr_symbs(string, lst);
         }
          if (lst->width > lst->precision && lst->minus != 0)
         {
@@ -94,16 +82,12 @@ void    print_x(t_printf *lst, char *string)
             else
                 i = 0;
             if (lst->bar != 0)
-                ft_putstr(up_or_low);
-            while(i)
-            {
-                ft_putchar('0');
-                i--;
-            }
+                putstr_symbs(up_or_low, lst);
+            print_n_times(i, '0', lst);
             if (lst->bar != 0)
-                ft_putstr(string + 2);
+                putstr_symbs(string + 2, lst);
             else
-                ft_putstr(string);
+                putstr_symbs(string, lst);
             if (lst->precision >= len)
             {
                 i = lst->width - (ft_strlen(string) + lst->precision - len);
@@ -114,88 +98,68 @@ void    print_x(t_printf *lst, char *string)
                 i = lst->width - ft_strlen(string);
             if (i < 0)
                 i = 0;
-            while (i)
-            {
-                ft_putchar(' ');
-                i--;
-            }
+            print_n_times(i, ' ', lst);
         }
         if (lst->width == lst->precision)
         {
             if (lst->precision < len)
-                ft_putstr(string);
+                putstr_symbs(string, lst);
             if (lst->precision >= len)
             {
                 if (lst->bar != 0)
-                    ft_putstr(up_or_low);
+                    putstr_symbs(up_or_low, lst);
                 i = lst->precision - len;
-                while (i)
-                {
-                    ft_putchar('0');
-                    i--;
-                }
+                print_n_times(i, '0', lst);
                 if (lst->bar != 0)
-                    ft_putstr(string + 2);
+                    putstr_symbs(string + 2, lst);
                 else
-                    ft_putstr(string);
+                    putstr_symbs(string, lst);
             }
         }
     }
     if (lst->precision == -1 && lst->width != 0)
         {
             if (lst->width < ft_strlen(string))
-                ft_putstr(string);
+                putstr_symbs(string, lst);
             if (lst->width >= ft_strlen(string) && lst->minus == 0)
             {
                 if (lst->zero)
                 {
                     symb = '0';
                     if (lst->bar != 0)
-                        ft_putstr(up_or_low);
+                        putstr_symbs(up_or_low, lst);
                 }
                 i = lst->width - ft_strlen(string);
-                while (i)
-                {
-                    ft_putchar(symb);
-                    i--;
-                }
+                print_n_times(i, symb, lst);
                 if (lst->zero != 0 && lst->bar != 0)
-                    ft_putstr(string + 2);
+                    putstr_symbs(string + 2, lst);
                 else
-                    ft_putstr(string);
+                    putstr_symbs(string, lst);
             }
             if (lst->width >= ft_strlen(string) && lst->minus != 0)
             {
                 if (lst->zero != 0 && lst->bar != 0)
-                    ft_putstr(string + 2);
+                    putstr_symbs(string + 2, lst);
                 else
-                    ft_putstr(string);
+                    putstr_symbs(string, lst);
                 i = lst->width - ft_strlen(string);
-                while (i)
-                {
-                    ft_putchar(' ');
-                    i--;
-                }
+                print_n_times(i, ' ', lst);
             }
         }
     if (lst->precision != -1 && lst->width == 0)
     {
         if (lst->precision < len)
-            ft_putstr(string);
+            putstr_symbs(string, lst);
         if (lst->precision >= len)
         {
             if (lst->bar != 0)
-                ft_putstr(up_or_low);
+                putstr_symbs(up_or_low, lst);
             i = lst->precision - len;
-            while (i)
-            {
-                ft_putchar('0');
-                i--;
-            }
+            print_n_times(i, '0', lst);
             if (lst->bar != 0)
-                ft_putstr(string + 2);
+                putstr_symbs(string + 2, lst);
             else
-                ft_putstr(string);
+                putstr_symbs(string, lst);
         }
     }
 }
