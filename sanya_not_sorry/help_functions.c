@@ -6,7 +6,7 @@
 /*   By: mbeahan <mbeahan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 20:51:54 by mbeahan           #+#    #+#             */
-/*   Updated: 2019/06/26 21:19:11 by mbeahan          ###   ########.fr       */
+/*   Updated: 2019/06/30 20:48:08 by mbeahan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,10 +70,11 @@ char    *reverse_string(char *string)
 
 void    print_n_times(int i, char c, t_printf *lst)
 {
-    lst->symbs += i;
-    while (i)
+    if (i > 0)
+        lst->symbs += i;
+    while (i > 0)
     {
-        ft_putchar(' ');
+        ft_putchar(c);
         i--;
     }
 }

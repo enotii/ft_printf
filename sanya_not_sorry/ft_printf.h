@@ -6,7 +6,7 @@
 /*   By: mbeahan <mbeahan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/29 18:53:51 by mbeahan           #+#    #+#             */
-/*   Updated: 2019/06/26 21:19:10 by mbeahan          ###   ########.fr       */
+/*   Updated: 2019/06/30 21:45:42 by mbeahan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ union
 
 //-----------------Parse function's-----------------//
 void    parse_flags(char *string, t_printf *list, int i, int stop);
-void    parse_size(char *string, t_printf *list, int i, int stop);
+int     parse_size(char *string, t_printf *list, int i, int stop);
 int     parse_type(char *string, t_printf *list, int i);
 void    parse_precision(char *string, t_printf *list, int i, int stop);
 void    parse_width(char *string, t_printf *list, int i, int stop);
@@ -66,11 +66,13 @@ void    ft_print_string(t_printf *list, char *string);
 void    parse_address(t_printf *list, void *address);
 void    get_string_addres(t_printf *list, int *array, int count);
 //-------------------Print unsigned-----------------//
+void    default_unsigned(t_printf *list, unsigned long long u);
 void    unsigned_l(t_printf *list, unsigned long long u);
 void    unsigned_ll(t_printf *list, unsigned long long u);
 void    unsigned_h(t_printf *list, unsigned long long u);
 void    unsigned_hh(t_printf *list, unsigned long long u);
 void    print_unsigned(char *string, t_printf *list);
+void 	unsigned_j(t_printf *list, unsigned long long u);
 //---------------------Print INT---------------------//
 void    default_int(t_printf *list, long long int d);
 void    hh_int(t_printf *list, long long int d);
@@ -78,6 +80,7 @@ void    h_int(t_printf *list, long long int d);
 void    ll_int(t_printf *list, long long int d);
 void    l_int(t_printf *list, long long int d);
 void    print_int(char *string, t_printf *list);
+void    j_int(t_printf *list, long long int d);
 //--------------------Print X ----------------------//
 void     print_x(t_printf *lst, char *string);
 void     get_x_string(t_printf *list, int *array, int count);
@@ -86,6 +89,7 @@ void     hh_x(t_printf *list, unsigned long long x);
 void     h_x(t_printf *list, unsigned long long x);
 void     ll_x(t_printf *list, unsigned long long x);
 void     l_x(t_printf *list, unsigned long long x);
+void     j_x(t_printf *list, unsigned long long x);
 //--------------------Print Octal-------------------//
 void    print_octal(t_printf *lst, char *string);
 void    get_o_string(t_printf *list, int *array, int count);

@@ -6,7 +6,7 @@
 /*   By: mbeahan <mbeahan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 21:00:20 by mbeahan           #+#    #+#             */
-/*   Updated: 2019/05/08 20:48:22 by mbeahan          ###   ########.fr       */
+/*   Updated: 2019/06/30 21:39:44 by mbeahan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void     parse_flags(char *string, t_printf *list, int i, int stop)
     }
 }
 
-void    parse_size(char *string, t_printf *list, int i, int stop)
+int     parse_size(char *string, t_printf *list, int i, int stop)
 {
     int check;
 
@@ -60,38 +60,46 @@ void    parse_size(char *string, t_printf *list, int i, int stop)
             list->size = (char *)malloc(sizeof(char) * 2);
             list->size[0] = 'h';
             list->size[1] = 'h';
-            break;
+            return (1);
         }
          if (check == 1 && (string[i] == 'h' && string[i + 1] != 'h'))
         {
             list->size = (char *)malloc(sizeof(char) * 2);
             list->size[0] = 'h';
             list->size[1] = '\0';
-            break;
+            return (1);
         }
         if (check == 1 && (string[i] == 'l' && string[i + 1] == 'l'))
         {
             list->size = (char *)malloc(sizeof(char) * 2);
             list->size[0] = 'l';
             list->size[1] = 'l';
-            break;
+            return (1);
         }
          if (check == 1 && (string[i] == 'l' && string[i + 1] != 'l'))
         {
             list->size = (char *)malloc(sizeof(char) * 2);
             list->size[0] = 'l';
             list->size[1] = '\0';
-            break;
+            return (1);
         }
          if (check == 1 && (string[i] == 'L' && string[i + 1] == 'f'))
         {
             list->size = (char *)malloc(sizeof(char) * 2);
             list->size[0] = 'L';
             list->size[1] = '\0';
-            break;
+            return (1);
+        }
+         if (check == 1 && string[i] == 'j' && (string[i + 1] == 'u' || string[i + 1] == 'd' || string[i + 1] == 'x'))
+        {
+            list->size = (char *)malloc(sizeof(char) * 2);
+            list->size[0] = 'j';
+            list->size[1] = '\0';
+            return (1);
         }
          i++;
     }
+    return (0);
 }
 
 int    parse_type(char *string, t_printf *list, int i)

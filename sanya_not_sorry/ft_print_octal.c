@@ -6,7 +6,7 @@
 /*   By: mbeahan <mbeahan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/23 18:01:26 by mbeahan           #+#    #+#             */
-/*   Updated: 2019/06/26 21:19:12 by mbeahan          ###   ########.fr       */
+/*   Updated: 2019/06/30 20:31:28 by mbeahan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,10 @@ void    print_octal(t_printf *lst, char *string)
         putstr_symbs(string, lst);
     if (lst->zero != 0)
         symb = '0';
+    if (lst->bar != '#' && len == 1 && string[0] == '0')
+        string[0] = '\0';
+    if (lst->bar != '#' && ft_strlen(string + 1) == 1 && string[1] == '0')
+        string[0] = '\0';
     if (lst->width != 0 && lst->precision != -1)
     {
         if (lst->width < lst->precision)
@@ -164,7 +168,9 @@ void    get_o_string(t_printf *list, int *array, int count)
     char *address;
     int len;
     int i;
+    int flag;
 
+    flag = 0;
     len = count;
     if (list->bar != 0)
     {
@@ -177,13 +183,18 @@ void    get_o_string(t_printf *list, int *array, int count)
         address = (char *)malloc(sizeof(char) * (len + 1));
         i = 0;
     }
-    while (len >= 0)
+    if (address[0] == '0' && !(address[1]) && list->precision == 0)
+    {
+        address[1] = '\0';
+        flag = 1;
+    }
+    while (len >= 0 && flag == 0)
     {
         address[i] = array[len] + '0';
         i++;
         len--;
     }
-    address[i] = '\0';
+    flag == 0 ? address[i] = '\0' : 0;
     print_octal(list, address);
     free(address);
 }
@@ -200,13 +211,13 @@ void     default_o(t_printf *list, unsigned long long x)
     new = (unsigned int)x;
     tmp = new;
     count = 0;
-    while(tmp > 8)
+    while(tmp >= 8)
     {
         tmp = tmp / 8;
         count++;
     }
     array = (int *)malloc(sizeof(unsigned long long) * (count + 1));
-    while(new > 8)
+    while(new >= 8)
     {
         array[i] = new % 8;
         new = new / 8;
@@ -229,13 +240,13 @@ void     hh_o(t_printf *list, unsigned long long x)
     new = (unsigned char)x;
     tmp = new;
     count = 0;
-    while(tmp > 8)
+    while(tmp >= 8)
     {
         tmp = tmp / 8;
         count++;
     }
     array = (int *)malloc(sizeof(unsigned long long) * (count + 1));
-    while(new > 8)
+    while(new >= 8)
     {
         array[i] = new % 8;
         new = new / 8;
@@ -258,7 +269,7 @@ void     h_o(t_printf *list, unsigned long long x)
     new = (unsigned short)x;
     tmp = new;
     count = 0;
-    while(tmp > 8)
+    while(tmp >= 8)
     {
         tmp = tmp / 8;
         count++;
@@ -287,13 +298,13 @@ void     ll_o(t_printf *list, unsigned long long x)
     new = (unsigned long long)x;
     tmp = new;
     count = 0;
-    while(tmp > 8)
+    while(tmp >= 8)
     {
         tmp = tmp / 8;
         count++;
     }
     array = (int *)malloc(sizeof(unsigned long long) * (count + 1));
-    while(new > 8)
+    while(new >= 8)
     {
         array[i] = new % 8;
         new = new / 8;
@@ -316,13 +327,13 @@ void     l_o(t_printf *list, unsigned long long x)
     new = (unsigned int)x;
     tmp = new;
     count = 0;
-    while(tmp > 8)
+    while(tmp >= 8)
     {
         tmp = tmp / 8;
         count++;
     }
     array = (int *)malloc(sizeof(unsigned long long) * (count + 1));
-    while(new > 8)
+    while(new >= 8)
     {
         array[i] = new % 8;
         new = new / 8;

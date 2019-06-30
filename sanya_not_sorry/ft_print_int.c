@@ -6,7 +6,7 @@
 /*   By: mbeahan <mbeahan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/20 13:31:45 by mbeahan           #+#    #+#             */
-/*   Updated: 2019/06/26 20:27:52 by mbeahan          ###   ########.fr       */
+/*   Updated: 2019/06/30 21:50:11 by mbeahan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,11 @@ void print_int(char *string, t_printf *list)
         len -= 1;
     if (list->minus && list->zero)
         list->zero = 0;
-    if (list->space && list->plus)
+    if (list->space  && (list->plus || list->minus || string[0] == '-'))
         list->space = 0;
-    if (list->width && list->precision)
+    if (list->precision == 0 && len == 1 && string[0] == '0')
+        string[0] = '\0';
+    if (list->width != 0 && list->precision != -1)
     {
         if (list->width == list->precision)
         {
@@ -47,7 +49,7 @@ void print_int(char *string, t_printf *list)
         if ((list->width > list->precision) && list->precision != -1)
         {
             if (list->space && string[0] != '-')
-                print_n_times(1, '0', list);
+                print_n_times(1, ' ', list);
             if (list->minus)
             {
                 if (list->plus || string[0] == '-')
@@ -209,7 +211,9 @@ void print_int(char *string, t_printf *list)
     }
     if (list->width == 0 && list->precision == -1)
     {
-         if (list->plus || string[0] == '-')
+        if (list->space)
+            print_n_times(1, ' ', list);
+        if (list->plus || string[0] == '-')
         {
             if (string[0] == '-')
                 print_n_times(1, '-', list);
@@ -223,12 +227,70 @@ void print_int(char *string, t_printf *list)
     }
 }
 
+void    j_int(t_printf *list, long long int d)
+{
+    int count;
+    char *string;
+    uintmax_t new_d;
+    uintmax_t tmp_d;
+    int i;
+
+    new_d = (uintmax_t)d;
+    tmp_d = new_d;
+    count = 0;
+    i = 0;
+    if (tmp_d >= 10)
+    {
+        while (tmp_d >= 10)
+        {
+            tmp_d = tmp_d / 10;
+            count++;
+        }
+        if (d >= 0)
+            string = (char *)malloc(sizeof(char) * count + 1);
+        else
+        {
+            string = (char *)malloc(sizeof(char) * count + 2);
+            string[i] = '-';
+            i++;
+            new_d *= -1;
+        }
+        while (new_d >= 10)
+        {
+            string[i] = new_d % 10 + '0';
+            new_d = new_d / 10;
+            i++;
+        }
+        string[i] = new_d + '0';
+        string[i + 1] = '\0';
+    }
+    else
+    {
+        if (d >= 0)
+        {
+            string = (char *)malloc(sizeof(char) * 2);
+            string[0] = new_d + '0';
+            string[1] = '\0';
+        }
+        else
+        {
+            string = (char *)malloc(sizeof(char) * 3);
+            string[0] = '-';
+            string[1] = tmp_d + '0';
+            string[2] = '\0';
+        }
+        
+    }
+    print_int(reverse_string(string), list);
+    free(string);
+}
+
 void    default_int(t_printf *list, long long int d)
 {
     int count;
     char *string;
-    int new_d;
-    int tmp_d;
+    long long int new_d;
+    long long int tmp_d;
     int i;
 
     new_d = (int)d;
@@ -287,8 +349,8 @@ void    hh_int(t_printf *list, long long int d)
 {
     int count;
     char *string;
-    signed char new_d;
-    signed char tmp_d;
+    long long int new_d;
+    long long int tmp_d;
     int i;
 
     new_d = (signed char)d;
@@ -348,8 +410,8 @@ void    h_int(t_printf *list, long long int d)
 {
     int count;
     char *string;
-    short int new_d;
-    short int tmp_d;
+    long long int new_d;
+    long long int tmp_d;
     int i;
 
     new_d = (short int)d;
@@ -408,16 +470,14 @@ void    ll_int(t_printf *list, long long int d)
 {
     int count;
     char *string;
-    long long int new_d;
-    long long int tmp_d;
+    unsigned long long int new_d;
+    unsigned long long int tmp_d;
     int i;
 
-    new_d = (long long int)d;
+    new_d = (unsigned long long int)d;
     tmp_d = new_d;
     count = 0;
     i = 0;
-    if (tmp_d < 0)
-        tmp_d *= -1;
     if (tmp_d >= 10)
     {
         while (tmp_d >= 10)
@@ -425,7 +485,7 @@ void    ll_int(t_printf *list, long long int d)
             tmp_d = tmp_d / 10;
             count++;
         }
-        if (new_d >= 0)
+        if (d > 0)
             string = (char *)malloc(sizeof(char) * count + 1);
         else
         {
@@ -445,7 +505,7 @@ void    ll_int(t_printf *list, long long int d)
     }
     else
     {
-        if (new_d >= 0)
+        if (d > 0)
         {
             string = (char *)malloc(sizeof(char) * 2);
             string[0] = new_d + '0';
@@ -468,8 +528,8 @@ void    l_int(t_printf *list, long long int d)
 {
     int count;
     char *string;
-    long int new_d;
-    long int tmp_d;
+    long long int new_d;
+    long long int tmp_d;
     int i;
 
     new_d = (long int)d;

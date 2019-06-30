@@ -6,7 +6,7 @@
 /*   By: mbeahan <mbeahan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 20:47:57 by mbeahan           #+#    #+#             */
-/*   Updated: 2019/06/26 21:19:12 by mbeahan          ###   ########.fr       */
+/*   Updated: 2019/06/30 21:43:28 by mbeahan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ void print_unsigned(char *string, t_printf *list)
             i = list->precision - len;
             print_n_times(i, '0', list);
         }
+        putstr_symbs(string, list);
     }
     if (list->width != 0 && list->precision == -1)
     {
@@ -102,8 +103,48 @@ void print_unsigned(char *string, t_printf *list)
             }
         }
     }
-    if (list->width == 0 && list->precision == 0)
+    if (list->width == 0 && list->precision == -1)
         putstr_symbs(string, list);
+}
+
+void unsigned_j(t_printf *list, unsigned long long u)
+{
+    int count;
+    char *string;
+    uintmax_t new_u;
+    uintmax_t tmp_u;
+    int i;
+
+    new_u = (uintmax_t)u;
+    tmp_u = new_u;
+    count = 0;
+    i = 0;
+    if (tmp_u >= 10)
+    {
+        while (tmp_u >= 10)
+        {
+            tmp_u = tmp_u / 10;
+            count++;
+        }
+        string = (char *)malloc(sizeof(char) * count + 1);
+        while (new_u >= 10)
+        {
+            string[i] = new_u % 10 + '0';
+            new_u = new_u / 10;
+            i++;
+        }
+        string[i] = new_u + '0';
+        string[count + 1] = '\0';
+    }
+    else
+    {
+        string = (char *)malloc(sizeof(char) * 2);
+        string[i] = new_u + '0';
+        string[i + 1] = '\0';
+    }
+    print_unsigned(reverse_string(string), list);
+    free(string);
+
 }
 
 void    unsigned_hh(t_printf *list, unsigned long long u)
@@ -232,6 +273,45 @@ void    unsigned_l(t_printf *list, unsigned long long u)
     int i;
 
     new_u = (unsigned long)u;
+    tmp_u = new_u;
+    count = 0;
+    i = 0;
+    if (tmp_u >= 10)
+    {
+        while (tmp_u >= 10)
+        {
+            tmp_u = tmp_u / 10;
+            count++;
+        }
+        string = (char *)malloc(sizeof(char) * count + 1);
+        while (new_u >= 10)
+        {
+            string[i] = new_u % 10 + '0';
+            new_u = new_u / 10;
+            i++;
+        }
+        string[i] = new_u + '0';
+        string[count + 1] = '\0';
+    }
+    else
+    {
+        string = (char *)malloc(sizeof(char) * 2);
+        string[i] = new_u + '0';
+        string[i + 1] = '\0';
+    }
+    print_unsigned(reverse_string(string), list);
+    free(string);
+}
+
+void    default_unsigned(t_printf *list, unsigned long long u)
+{
+    int count;
+    char *string;
+    unsigned new_u;
+    unsigned tmp_u;
+    int i;
+
+    new_u = (unsigned)u;
     tmp_u = new_u;
     count = 0;
     i = 0;

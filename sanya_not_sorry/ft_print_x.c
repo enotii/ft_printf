@@ -6,7 +6,7 @@
 /*   By: mbeahan <mbeahan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/23 15:06:56 by mbeahan           #+#    #+#             */
-/*   Updated: 2019/06/26 21:19:13 by mbeahan          ###   ########.fr       */
+/*   Updated: 2019/06/30 21:35:50 by mbeahan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ void    print_x(t_printf *lst, char *string)
         putstr_symbs(string, lst);
     if (lst->zero != 0)
         symb = '0';
+    if (string[0] == '0' && len == 1)
+        string[0] = '\0';
     if (lst->width != 0 && lst->precision != -1)
     {
         if (lst->width < lst->precision)
@@ -213,10 +215,41 @@ void    get_x_string(t_printf *list, int *array, int count)
     free(address);
 }
 
+void     j_x(t_printf *list, unsigned long long x)
+{
+    uintmax_t tmp;
+    uintmax_t new;
+    int *array;
+    int count;
+    int i;
+
+    i = 0;
+    new = (uintmax_t)x;
+    tmp = new;
+    count = 0;
+    while(tmp >= 16)
+    {
+        tmp = tmp / 16;
+        count++;
+    }
+    array = (int *)malloc(sizeof(unsigned long long) * (count + 1));
+    while(new >= 16)
+    {
+        array[i] = new % 16;
+        new = new / 16;
+        i++;
+    }
+    array[i] = new;
+    if (x == 0)
+        list->bar = 0;
+    get_x_string(list, array, count);
+    free(array);
+}
+
 void     default_x(t_printf *list, unsigned long long x)
 {
-    unsigned int tmp;
-    unsigned int new;
+    unsigned long long tmp;
+    unsigned long long new;
     int *array;
     int count;
     int i;
@@ -225,19 +258,21 @@ void     default_x(t_printf *list, unsigned long long x)
     new = (unsigned int)x;
     tmp = new;
     count = 0;
-    while(tmp > 16)
+    while(tmp >= 16)
     {
         tmp = tmp / 16;
         count++;
     }
     array = (int *)malloc(sizeof(unsigned long long) * (count + 1));
-    while(new > 16)
+    while(new >= 16)
     {
         array[i] = new % 16;
         new = new / 16;
         i++;
     }
     array[i] = new;
+    if (x == 0)
+        list->bar = 0;
     get_x_string(list, array, count);
     free(array);
 }
@@ -254,19 +289,21 @@ void     hh_x(t_printf *list, unsigned long long x)
     new = (unsigned char)x;
     tmp = new;
     count = 0;
-    while(tmp > 16)
+    while(tmp >= 16)
     {
         tmp = tmp / 16;
         count++;
     }
     array = (int *)malloc(sizeof(unsigned long long) * (count + 1));
-    while(new > 16)
+    while(new >= 16)
     {
         array[i] = new % 16;
         new = new / 16;
         i++;
     }
     array[i] = new;
+    if (x == 0)
+        list->bar = 0;
     get_x_string(list, array, count);
     free(array);
 }
@@ -283,19 +320,21 @@ void     h_x(t_printf *list, unsigned long long x)
     new = (unsigned short)x;
     tmp = new;
     count = 0;
-    while(tmp > 16)
+    while(tmp >= 16)
     {
         tmp = tmp / 16;
         count++;
     }
     array = (int *)malloc(sizeof(unsigned long long) * (count + 1));
-    while(new > 16)
+    while(new >= 16)
     {
         array[i] = new % 16;
         new = new / 16;
         i++;
     }
     array[i] = new;
+    if (x == 0)
+        list->bar = 0;
     get_x_string(list, array, count);
     free(array);
 }
@@ -312,48 +351,52 @@ void     ll_x(t_printf *list, unsigned long long x)
     new = (unsigned long long)x;
     tmp = new;
     count = 0;
-    while(tmp > 16)
+    while(tmp >= 16)
     {
         tmp = tmp / 16;
         count++;
     }
     array = (int *)malloc(sizeof(unsigned long long) * (count + 1));
-    while(new > 16)
+    while(new >= 16)
     {
         array[i] = new % 16;
         new = new / 16;
         i++;
     }
     array[i] = new;
+    if (x == 0)
+        list->bar = 0;
     get_x_string(list, array, count);
     free(array);
 }
 
 void     l_x(t_printf *list, unsigned long long x)
 {
-    unsigned long tmp;
-    unsigned long new;
+    unsigned long int tmp;
+    unsigned long int new;
     int *array;
     int count;
     int i;
 
     i = 0;
-    new = (unsigned long)x;
+    new = (unsigned long int)x;
     tmp = new;
     count = 0;
-    while(tmp > 16)
+    while(tmp >= 16)
     {
         tmp = tmp / 16;
         count++;
     }
     array = (int *)malloc(sizeof(unsigned long long) * (count + 1));
-    while(new > 16)
+    while(new >= 16)
     {
         array[i] = new % 16;
         new = new / 16;
         i++;
     }
     array[i] = new;
+    if (x == 0)
+        list->bar = 0;
     get_x_string(list, array, count);
     free(array);
 }
