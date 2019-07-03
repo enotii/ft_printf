@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: mbeahan <mbeahan@student.42.fr>            +#+  +:+       +#+         #
+#    By: caking <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/06/30 16:06:21 by mbeahan           #+#    #+#              #
-#    Updated: 2019/06/30 16:06:23 by mbeahan          ###   ########.fr        #
+#    Updated: 2019/07/03 22:51:07 by caking           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,6 +15,9 @@ SRCS = ft_printf.c ft_parse.c ft_print_float.c ft_print_int.c ft_print_octal.c f
 	   ft_print_string_char.c ft_print_unsigned.c ft_print_x.c help_functions.c 
 
 OBJS = $(SRCS:.c=.o)
+
+TEST = main.c
+HEADER = include
 
 all: $(NAME) 
 
@@ -30,3 +33,6 @@ fclean: clean
 	@rm -rf $(NAME)
 
 re: fclean all
+
+test:
+	gcc $(TEST) $(NAME)	-I $(HEADER)
