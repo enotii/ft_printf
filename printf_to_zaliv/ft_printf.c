@@ -6,7 +6,7 @@
 /*   By: mbeahan <mbeahan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 21:21:53 by mbeahan           #+#    #+#             */
-/*   Updated: 2019/07/04 00:31:03 by mbeahan          ###   ########.fr       */
+/*   Updated: 2019/07/04 17:35:41 by mbeahan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,8 +135,36 @@ int     help_ft_printf(t_printf *lst, const char *string, va_list ap)
         parse_width((char *)string, lst, i, stop);
         parse_precision((char *)string, lst, i, stop);
         freed = parse_size((char*)string, lst, i, stop);
-        i = parse_type((char *)string, lst, i);
+        if (stop != 0)
+            i = parse_type((char *)string, lst, i);
         needed_to_print(lst, ap, (char *)string);
+        if (string[i] == '%' && string[i + 1] != '%' && stop == 0)
+        {
+            percent = 0;
+            parse_width((char *)string, lst, i, ft_strlen((char *)string));
+            parse_flags((char *)string, lst, i, ft_strlen((char *)string));
+            while (string[i])
+            {
+                if (string[i] == '%')
+                    percent++;
+                i++;
+            }
+            if (percent % 2 == 0)
+                percent /= 2;
+                
+            else
+                percent = (percent - 1)/2;
+            if (lst->minus != '-')
+            {
+                print_n_times(lst->width - percent, ' ', lst);
+                print_n_times(percent, '%', lst);
+            }
+            else
+            {
+                print_n_times(percent, '%', lst);
+                print_n_times(lst->width - percent, ' ', lst);
+            }
+        }
         while((!(string[i] == '%' && string[i + 1] != '%')) && string[i] != '\0')
         {
             if (string[i] == '%')
@@ -188,11 +216,4 @@ int     ft_printf(const char *format, ...)
     free(lst);
     va_end(ap);
     return(typed);
-}
-
-int main(int argc, char const *argv[])
-{
-    printf("% %");
-    //ft_printf("% %");
-    return 0;
 }
