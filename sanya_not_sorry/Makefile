@@ -1,4 +1,29 @@
+<<<<<<< HEAD
 NAME = ft_printf
+=======
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: caking <marvin@42.fr>                      +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2019/06/30 16:06:21 by mbeahan           #+#    #+#              #
+#    Updated: 2019/07/03 22:51:07 by caking           ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
+NAME = libftprintf.a
+SRCS = ft_printf.c ft_parse.c ft_print_float.c ft_print_int.c ft_print_octal.c ft_print_pointer.c \
+	   ft_print_string_char.c ft_print_unsigned.c ft_print_x.c help_functions.c 
+
+OBJS = $(SRCS:.c=.o)
+
+TEST = main.c
+HEADER = include
+
+all: $(NAME) 
+>>>>>>> bf6d9a38b9f32a060f9063247fa7d0315445df21
 
 all: $(NAME)
 $(NAME):
@@ -25,5 +50,12 @@ re: fclean all
 debug:
 	 gcc -ggdb ft_parse.c ft_print_pointer.c ft_print_string_char.c ft_print_unsigned.c ft_print_int.c ft_print_x.c ft_print_octal.c ft_print_float.c help_functions.c ft_printf.c -I libft/ -L libft/ -lft
 
+<<<<<<< HEAD
 val:
 	valgrind --leak-check=full ./ft_printf test10.fillitf	
+=======
+re: fclean all
+
+test:
+	gcc $(TEST) $(NAME)	-I $(HEADER)
+>>>>>>> bf6d9a38b9f32a060f9063247fa7d0315445df21
