@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbeahan <mbeahan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: caking <caking@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 21:21:53 by mbeahan           #+#    #+#             */
-/*   Updated: 2019/06/30 21:47:04 by mbeahan          ###   ########.fr       */
+/*   Updated: 2019/07/02 00:56:32 by caking           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,4 +137,10 @@ int     ft_printf(const char *format, ...)
     free(lst);
     va_end(ap);
     return(typed);
+}
+int main()
+{
+   // printf("%#o\n", 0);
+   ft_printf("%#o", 0);
+    return(0);
 }

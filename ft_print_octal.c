@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_print_octal.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbeahan <mbeahan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: caking <caking@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/23 18:01:26 by mbeahan           #+#    #+#             */
-/*   Updated: 2019/05/08 20:51:09 by mbeahan          ###   ########.fr       */
+/*   Updated: 2019/07/02 00:52:57 by caking           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,13 @@ void    print_octal(t_printf *lst, char *string)
     if (lst->minus && lst->zero)
         lst->zero = 0;
     if (lst->precision == -1 && lst->width == 0)
-        ft_putstr(string);
+        putstr_symbs(string, lst);
     if (lst->zero != 0)
         symb = '0';
+    if (lst->bar != '#' && len == 1 && string[0] == '0')
+        string[0] = '\0';
+    if (lst->bar != '#' && ft_strlen(string + 1) == 1 && string[1] == '0')
+        string[0] = '\0';
     if (lst->width != 0 && lst->precision != -1)
     {
         if (lst->width < lst->precision)
@@ -38,16 +42,12 @@ void    print_octal(t_printf *lst, char *string)
             else
                 i = 0;
             if (lst->bar != 0)
-                ft_putchar('0');
-            while (i)
-            {
-                ft_putchar('0');
-                i--;
-            }
+                print_n_times(1, '0', lst);
+            print_n_times(i, '0', lst);
             if (lst->bar != 0)
-                ft_putstr(string + 1);
+                putstr_symbs(string + 1, lst);
             else
-                ft_putstr(string);
+                putstr_symbs(string, lst);
         }
         if (lst->width > lst->precision && lst->minus == 0)
         {
@@ -61,26 +61,18 @@ void    print_octal(t_printf *lst, char *string)
                 i = lst->width - ft_strlen(string);
             if (i < 0)
                 i = 0;
-            while (i)
-            {
-                ft_putchar(' ');
-                i--;
-            }
+            print_n_times(i, ' ', lst);
             if (lst->precision >= len)
                 i = lst->precision - len;
             else
                 i = 0;
             if (lst->bar != 0)
-                ft_putchar('0');
-            while(i)
-            {
-                ft_putchar('0');
-                i--;
-            }
+                print_n_times(1, '0', lst);
+            print_n_times(i, '0', lst);
             if (lst->bar != 0)
-                ft_putstr(string + 1);
+                putstr_symbs(string + 1, lst);
             else
-                ft_putstr(string);
+                putstr_symbs(string, lst);
         }
          if (lst->width > lst->precision && lst->minus != 0)
         {
@@ -89,16 +81,12 @@ void    print_octal(t_printf *lst, char *string)
             else
                 i = 0;
             if (lst->bar != 0)
-                ft_putchar('0');
-            while(i)
-            {
-                ft_putchar('0');
-                i--;
-            }
+                print_n_times(1, '0', lst);
+            print_n_times(i, '0', lst);
             if (lst->bar != 0)
-                ft_putstr(string + 1);
+                putstr_symbs(string + 1, lst);
             else
-                ft_putstr(string);
+                putstr_symbs(string, lst);
             if (lst->precision >= len)
             {
                 i = lst->width - (ft_strlen(string) + lst->precision - len);
@@ -109,88 +97,68 @@ void    print_octal(t_printf *lst, char *string)
                 i = lst->width - ft_strlen(string);
             if (i < 0)
                 i = 0;
-            while (i)
-            {
-                ft_putchar(' ');
-                i--;
-            }
+            print_n_times(i, ' ', lst);
         }
         if (lst->width == lst->precision)
         {
             if (lst->precision < len)
-                ft_putstr(string);
+                putstr_symbs(string, lst);
             if (lst->precision >= len)
             {
                 if (lst->bar != 0)
-                    ft_putchar('0');
+                    print_n_times(1, '0', lst);
                 i = lst->precision - len;
-                while (i)
-                {
-                    ft_putchar('0');
-                    i--;
-                }
+                print_n_times(i, '0', lst);
                 if (lst->bar != 0)
-                    ft_putstr(string + 1);
+                    putstr_symbs(string + 1, lst);
                 else
-                    ft_putstr(string);
+                    putstr_symbs(string, lst);
             }
         }
     }
     if (lst->precision == -1 && lst->width != 0)
         {
             if (lst->width < ft_strlen(string))
-                ft_putstr(string);
+                putstr_symbs(string, lst);
             if (lst->width >= ft_strlen(string) && lst->minus == 0)
             {
                 if (lst->zero)
                 {
                     symb = '0';
                     if (lst->bar != 0)
-                        ft_putchar('0');
+                        print_n_times(1, '0', lst);
                 }
                 i = lst->width - ft_strlen(string);
-                while (i)
-                {
-                    ft_putchar(symb);
-                    i--;
-                }
+                print_n_times(i, symb, lst);
                 if (lst->zero != 0 && lst->bar != 0)
-                    ft_putstr(string + 1);
+                    putstr_symbs(string + 1, lst);
                 else
-                    ft_putstr(string);
+                    putstr_symbs(string, lst);
             }
             if (lst->width >= ft_strlen(string) && lst->minus != 0)
             {
                 if (lst->zero != 0 && lst->bar != 0)
-                    ft_putstr(string + 1);
+                    putstr_symbs(string + 1, lst);
                 else
-                    ft_putstr(string);
+                    putstr_symbs(string, lst);
                 i = lst->width - ft_strlen(string);
-                while (i)
-                {
-                    ft_putchar(' ');
-                    i--;
-                }
+                print_n_times(i, ' ', lst);
             }
         }
     if (lst->precision != -1 && lst->width == 0)
     {
         if (lst->precision < len)
-            ft_putstr(string);
+            putstr_symbs(string, lst);
         if (lst->precision >= len)
         {
             if (lst->bar != 0)
-                ft_putchar('0');
+                print_n_times(1, '0', lst);
             i = lst->precision - len;
-            while (i)
-            {
-                ft_putchar('0');
-                i--;
-            }
+            print_n_times(i, '0', lst);
             if (lst->bar != 0)
-                ft_putstr(string + 1);
+                putstr_symbs(string + 1, lst);
             else
-                ft_putstr(string);
+                putstr_symbs(string, lst);
         }
     }
 }
@@ -200,7 +168,9 @@ void    get_o_string(t_printf *list, int *array, int count)
     char *address;
     int len;
     int i;
+    int flag;
 
+    flag = 0;
     len = count;
     if (list->bar != 0)
     {
@@ -213,13 +183,18 @@ void    get_o_string(t_printf *list, int *array, int count)
         address = (char *)malloc(sizeof(char) * (len + 1));
         i = 0;
     }
-    while (len >= 0)
+    if (address[0] == '0' && !(address[1]) && list->precision == 0)
+    {
+        address[1] = '\0';
+        flag = 1;
+    }
+    while (len >= 0 && flag == 0)
     {
         address[i] = array[len] + '0';
-        i++;
+      //  i++;
         len--;
     }
-    address[i] = '\0';
+    flag == 0 ? address[i] = '\0' : 0;
     print_octal(list, address);
     free(address);
 }
@@ -236,13 +211,13 @@ void     default_o(t_printf *list, unsigned long long x)
     new = (unsigned int)x;
     tmp = new;
     count = 0;
-    while(tmp > 8)
+    while(tmp >= 8)
     {
         tmp = tmp / 8;
         count++;
     }
     array = (int *)malloc(sizeof(unsigned long long) * (count + 1));
-    while(new > 8)
+    while(new >= 8)
     {
         array[i] = new % 8;
         new = new / 8;
@@ -265,13 +240,13 @@ void     hh_o(t_printf *list, unsigned long long x)
     new = (unsigned char)x;
     tmp = new;
     count = 0;
-    while(tmp > 8)
+    while(tmp >= 8)
     {
         tmp = tmp / 8;
         count++;
     }
     array = (int *)malloc(sizeof(unsigned long long) * (count + 1));
-    while(new > 8)
+    while(new >= 8)
     {
         array[i] = new % 8;
         new = new / 8;
@@ -294,7 +269,7 @@ void     h_o(t_printf *list, unsigned long long x)
     new = (unsigned short)x;
     tmp = new;
     count = 0;
-    while(tmp > 8)
+    while(tmp >= 8)
     {
         tmp = tmp / 8;
         count++;
@@ -323,13 +298,13 @@ void     ll_o(t_printf *list, unsigned long long x)
     new = (unsigned long long)x;
     tmp = new;
     count = 0;
-    while(tmp > 8)
+    while(tmp >= 8)
     {
         tmp = tmp / 8;
         count++;
     }
     array = (int *)malloc(sizeof(unsigned long long) * (count + 1));
-    while(new > 8)
+    while(new >= 8)
     {
         array[i] = new % 8;
         new = new / 8;
@@ -352,13 +327,13 @@ void     l_o(t_printf *list, unsigned long long x)
     new = (unsigned int)x;
     tmp = new;
     count = 0;
-    while(tmp > 8)
+    while(tmp >= 8)
     {
         tmp = tmp / 8;
         count++;
     }
     array = (int *)malloc(sizeof(unsigned long long) * (count + 1));
-    while(new > 8)
+    while(new >= 8)
     {
         array[i] = new % 8;
         new = new / 8;
