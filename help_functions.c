@@ -5,93 +5,83 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: mbeahan <mbeahan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/04/16 20:51:54 by mbeahan           #+#    #+#             */
-/*   Updated: 2019/06/30 20:48:08 by mbeahan          ###   ########.fr       */
+/*   Created: 2019/07/04 22:21:02 by mbeahan           #+#    #+#             */
+/*   Updated: 2019/07/05 17:35:05 by mbeahan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-void       zeroing_args(t_printf **list)
+void    print_buff(t_printf *storage)
 {
-    (*list)->minus = 0;
-    (*list)->plus = 0;
-    (*list)->space = 0;
-    (*list)->bar = 0;
-    (*list)->zero = 0;
-    (*list)->width = 0;
-    (*list)->precision = -1;
-    (*list)->size = 0;
-    (*list)->type = 0;
+    write(1, storage->buff, storage->b_i);
+    storage->b_i = 0;
+    ft_bzero(storage->buff, MAXBUFFSIZE); 
 }
 
-void     ft_print(char *string, int start)
+void    write_into_buff(t_printf *storage, size_t len, char symb)
 {
-    while (string[start] && (!(string[start] == '%' && string[start + 1] != '%')))
+    storage->len += len;
+
+    while (len)
     {
-        ft_putchar(string[start]);
-        start++;
+        storage->b_i == MAXBUFFSIZE ? print_buff(storage) : 0;
+        storage->buff[storage->b_i] = symb;
+        --len;
+        ++storage->b_i;
     }
 }
 
-char    *reverse_string(char *string)
+int    symbs_count(unsigned long long d, int base)
 {
-    char *str;
-    int len;
-    int i;
+    int count;
 
-    i = 0;
-    len = ft_strlen(string);
-    str = ft_strdup(string);
-    len = len - 1;
-    if (string[i] != '-')
+    count = 0;
+    if (!d)
     {
-        while (len >= 0)
-        {
-            string[i] = str[len];
-            i++;
-            len--;
-        }
+        return (1);
     }
-    if (string[i] == '-')
+    while (d)
     {
-        i++;
-        while (len != 0)
-        {
-            string[i] = str[len];
-            i++;
-            len--;
-        }
+        ++count;
+        d /= base;
     }
-    string[i] = '\0';
-    free(str);
-    return (string);
+    return (count);
 }
 
-void    print_n_times(int i, char c, t_printf *lst)
+void	modified_itoa(t_help_struct *lst, t_printf *storage, int flag)
 {
-    if (i > 0)
-        lst->symbs += i;
-    while (i > 0)
-    {
-        ft_putchar(c);
-        i--;
-    }
+	char	symbol;
+	int		end;
+
+	symbol = !flag ? 'a' : 'A';
+	end = lst->len + storage->b_i;
+	if (end >= MAXBUFFSIZE)
+	{
+		print_buff(storage);
+		end = lst->len;
+	}
+	!lst->number && lst->len > 0 ? storage->buff[storage->b_i++] = '0' : 0;
+	storage->b_i = end;
+	storage->len += lst->len;
+	while (lst->number)
+	{
+		storage->buff[--end] = lst->number % lst->base < 10 ? lst->number % lst->base + '0' :
+			lst->number % lst->base - 10 + symbol;
+		lst->number /= lst->base;
+	}
 }
 
-void    putstr_symbs(char *str, t_printf *lst)
+void	zeroing_args(t_printf *storage)
 {
-    lst->symbs += ft_strlen(str);
-    ft_putstr(str);
-}
-
-void    print_n_symbs(char *str, int i, t_printf *lst)
-{
-    lst->symbs += i;
-    while (i)
-    {
-        ft_putchar(*str);
-        str++;
-        i--;
-    }
+	storage->width = 0;
+	storage->precision = 0;
+	storage->precision_status = 0;
+	storage->type = 0;
+	storage->minus = 0;
+	storage->plus = 0;
+	storage->space = 0;
+	storage->sharp = 0;
+	storage->zero = 0;
+    storage->size = 0;
 }

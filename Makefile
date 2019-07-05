@@ -3,17 +3,17 @@ NAME = ft_printf
 all: $(NAME)
 $(NAME):
 	make -C libft/ 
-	clang -I libft/ -o ft_parse.o -c ft_parse.c
-	clang -I libft/ -o ft_print_pointer.o -c ft_print_pointer.c
-	clang -I libft/ -o ft_print_string_char.o -c ft_print_string_char.c
-	clang -I libft/ -o ft_print_unsigned.o -c ft_print_unsigned.c
-	clang -I libft/ -o ft_print_int.o -c ft_print_int.c
-	clang -I libft/ -o ft_print_x.o -c ft_print_x.c
-	clang -I libft/ -o ft_print_octal.o -c ft_print_octal.c
-	clang -I libft/ -o ft_print_float.o -c ft_print_float.c
-	clang -I libft/ -o ft_printf.o -c ft_printf.c
-	clang -I libft/ -o help_functions.o -c help_functions.c
-	clang -o $(NAME) ft_parse.o ft_print_pointer.o ft_print_string_char.o ft_print_unsigned.o ft_print_int.o ft_print_x.o ft_print_octal.o ft_print_float.o help_functions.o ft_printf.o -I libft/ -L libft/ -lft
+	clang -I libft/ -o ft_print_float.o ft_print_float.c
+	clang -I libft/ -o ft_parse_nbr.o ft_parse_nbr.c
+	clang -I libft/ -o ft_parse_size.o ft_parse_size.c
+	clang -I libft/ -o ft_parse_size.o ft_parse_string.c
+	clang -I libft/ -o ft_print_char_string.o ft_print_char_string.c
+	clang -I libft/ -o ft_print_other.o ft_print_other.c
+	clang -I libft/ -o ft_printf.o ft_printf.c
+	clang -I libft/ -o ft_printnbr_logic.o ft_printnbr_logic.c
+	clang -I libft/ -o help_functions.o help_functions.c
+	clang -I libft/ -o main.o -c main.c
+	clang -o $(NAME) main.o ft_print_float.o ft_parse_nbr.o ft_parse_size.o ft_parse_string.o ft_print_char_string.o ft_print_other.o ft_printf.o ft_printnbr_logic.o help_functions.o -I libft/ -L libft/ -lft
 clean:
 	rm -rf libft/*.o
 	rm -rf *.o
@@ -23,7 +23,7 @@ fclean: clean
 re: fclean all
 
 debug:
-	 gcc -ggdb ft_parse.c ft_print_pointer.c ft_print_string_char.c ft_print_unsigned.c ft_print_int.c ft_print_x.c ft_print_octal.c ft_print_float.c help_functions.c ft_printf.c -I libft/ -L libft/ -lft
+	 gcc -ggdb main.c ft_print_float.c ft_bzero.c ft_parse_nbr.c ft_parse_size.c ft_parse_string.c ft_print_char_string.c ft_print_other.c ft_printf.c ft_printnbr.c ft_printnbr_logic.c ft_strlen.c help_functions.c -I libft/ -L libft/ -lft
 
 val:
 	valgrind --leak-check=full ./ft_printf test10.fillitf	

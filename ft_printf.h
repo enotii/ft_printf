@@ -5,29 +5,49 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: mbeahan <mbeahan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/03/29 18:53:51 by mbeahan           #+#    #+#             */
-/*   Updated: 2019/06/30 21:45:42 by mbeahan          ###   ########.fr       */
+/*   Created: 2019/07/04 22:07:41 by mbeahan           #+#    #+#             */
+/*   Updated: 2019/07/05 17:42:01 by mbeahan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FT_PRINTF_H
-#include "libft/libft.h"
-#include <stdarg.h>
-#include <stdio.h>
+# define FT_PRINTF_H
+# define MAXBUFFSIZE 100
+# include <stdarg.h>
+# include "libft/libft.h"
+# include <unistd.h>
+# include <stdlib.h>
+# include <stdio.h>
 
-typedef struct  s_printf
+typedef struct s_printf 
 {
+    char            buff[MAXBUFFSIZE];
+    unsigned int    b_i;
+    int             len;
+    int             width;
+    int     precision;
+    char    *str;
+    va_list arg;
     char    minus;
     char    plus;
     char    space;
-    char    bar;
+    char    sharp;
     char    zero;
-    int     width;
-    int     precision;
-    char    *size;
+    char    precision_status;
     char    type;
-    int     symbs;
+    char    size;
 }               t_printf;
+
+typedef struct s_help_struct
+{
+    unsigned long long int number;
+    int space;
+    int zero;
+    int minus;
+    int plus;
+    int base;
+    int len;
+}              t_help_struct;
 
 typedef struct		s_string
 {
@@ -53,53 +73,36 @@ union
 	}				t_double;
 }					t;
 
-//-----------------Parse function's-----------------//
-void    parse_flags(char *string, t_printf *list, int i, int stop);
-int     parse_size(char *string, t_printf *list, int i, int stop);
-int     parse_type(char *string, t_printf *list, int i);
-void    parse_precision(char *string, t_printf *list, int i, int stop);
-void    parse_width(char *string, t_printf *list, int i, int stop);
-//----------------Print char and string-------------//
-void    ft_print_char(t_printf *list, int c);
-void    ft_print_string(t_printf *list, char *string);
-//------------------Print pointer-------------------//
-void    parse_address(t_printf *list, void *address);
-void    get_string_addres(t_printf *list, int *array, int count);
-//-------------------Print unsigned-----------------//
-void    default_unsigned(t_printf *list, unsigned long long u);
-void    unsigned_l(t_printf *list, unsigned long long u);
-void    unsigned_ll(t_printf *list, unsigned long long u);
-void    unsigned_h(t_printf *list, unsigned long long u);
-void    unsigned_hh(t_printf *list, unsigned long long u);
-void    print_unsigned(char *string, t_printf *list);
-void 	unsigned_j(t_printf *list, unsigned long long u);
-//---------------------Print INT---------------------//
-void    default_int(t_printf *list, long long int d);
-void    hh_int(t_printf *list, long long int d);
-void    h_int(t_printf *list, long long int d);
-void    ll_int(t_printf *list, long long int d);
-void    l_int(t_printf *list, long long int d);
-void    print_int(char *string, t_printf *list);
-void    j_int(t_printf *list, long long int d);
-//--------------------Print X ----------------------//
-void     print_x(t_printf *lst, char *string);
-void     get_x_string(t_printf *list, int *array, int count);
-void     default_x(t_printf *list, unsigned long long x);
-void     hh_x(t_printf *list, unsigned long long x);
-void     h_x(t_printf *list, unsigned long long x);
-void     ll_x(t_printf *list, unsigned long long x);
-void     l_x(t_printf *list, unsigned long long x);
-void     j_x(t_printf *list, unsigned long long x);
-//--------------------Print Octal-------------------//
-void    print_octal(t_printf *lst, char *string);
-void    get_o_string(t_printf *list, int *array, int count);
-void    default_o(t_printf *list, unsigned long long x);
-void    hh_o(t_printf *list, unsigned long long x);
-void    h_o(t_printf *list, unsigned long long x);
-void    ll_o(t_printf *list, unsigned long long x);
-void    l_o(t_printf *list, unsigned long long x);
+void    print_buff(t_printf *storage);
+void    write_into_buff(t_printf *storage, size_t len, char symb);
+void    parse_flags(t_printf *storage);
+void    parse_width(t_printf *storage);
+void    parse_precision(t_printf *storage);
+void    parse_size(t_printf *storage);
+void    int_format(t_printf *storage, t_help_struct *lst, int flag);
+void	modified_itoa(t_help_struct *lst, t_printf *storage, int flag);
+void	zeroing_args(t_printf *storage);
+void	ft_bzero(void *s, size_t n);
+int     print_char(t_printf *storage);
+int     parse_int(t_printf *storage);
+int     parse_unsigned(t_printf *storage);
+int	    parse_other(t_printf *storage);
+int     symbs_count(unsigned long long d, int base);
+int     change_values(t_printf *storage, int len, int flag, size_t number);
+int     ft_printnbr_unsigned(t_printf *storage, unsigned long long number);
+int		print_other(t_printf *storage, unsigned long long int number, int flag);
+int     ft_format(t_printf *storage);
+int     ft_printnbr(t_printf *storage, long long number);
+int     print_string(t_printf *storage);
+size_t	ft_strlen(const char *str);
+int	    ft_printf(char const *s, ...);
 //--------------------Print Float-------------------//
-void        default_float(t_printf *list, double arg, char **format);
+
+
+
+//void    print_float(t_printf *list, long double arg);
+void        long_float(t_printf *list, long double arg);
+void        default_float(t_printf *list, double arg);
 t_bignum    *get_the_bits(long double arg);
 t_bignum    *big_num_create(void);
 t_string    str_create_size(int size);
@@ -140,17 +143,7 @@ void		width_insert_right(char **new_str, char *substr, int width, char c);
 char		del_minus(char **str);
 int			str_len(t_string *s);
 void		int_dec_mult(t_string *n, t_string *res, char rem);
-void		long_float(t_printf *list, long double arg, char **format);
-//------------------Help function's-----------------//
-void    zeroing_args(t_printf **list);
-void    ft_print(char *string, int start);
-char    *reverse_string(char *string);
-void    putstr_symbs(char *str, t_printf *lst);
-void    print_n_times(int i, char c, t_printf *lst);
-void    print_n_symbs(char *str, int i, t_printf *lst);
-//----------------------PRINTF----------------------//
-int     ft_printf(const char *format, ...);
-int     help_ft_printf(t_printf *lst, const char *string, va_list ap);
-void    needed_to_print(t_printf *lst, va_list ap, char *s);
+///void		long_float(t_printf *list, long double arg, char **format);
+
 
 #endif

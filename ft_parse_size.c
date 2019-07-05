@@ -46,6 +46,15 @@ int  ft_format(t_printf *storage)
         return(print_char(storage));
     if (storage->type == 's')
         return (print_string(storage));
+    if (storage->type == 'f')
+    {
+        va_list ap;
+       // print_float(storage ,va_arg(ap, long double));
+    if (storage->size == 0)
+            default_float(storage,va_arg(ap, double));
+        else if (storage->size == 'l' || storage->size == 'L')
+            long_float(storage,va_arg(ap, long double));
+    }
     if (storage->type == 'd' || storage->type == 'i')
         return (parse_int(storage));
     if (storage->type == 'u' || storage->type == 'U')

@@ -673,11 +673,36 @@ t_bignum		*get_the_bits(long double arg)
 	return (num);
 }
 
-void    long_float(t_printf *list, long double arg, char **format)
+/*void    print_float(t_printf *list, long double arg)
 {
     char		sign;
 	t_bignum	*num;
 	char		*str;
+	char 		*str1;
+	if (list->precision == -1)
+    	list->precision = 6;
+    num = get_the_bits(arg);
+    bin_to_dec(num);
+	rround(&num, list->precision);
+	str = put_bignum_strings_into_one(num, list);
+	if (num->sign == '-' || list->plus == '+')
+		sign = num->sign;
+	add_sign_float(sign, &str, list);
+	width_insert(list, &str);
+ 	if (ft_strchr(&list->sharp, '#') && list->precision == 0)
+		str1 = ft_strjoin_free(str, ".", 1);
+	else
+	 	str1 = str;
+	list->len += ft_strlen(str);
+	ft_putstr(str1);
+}*/
+
+void    long_float(t_printf *list, long double arg)
+{
+    char		sign;
+	t_bignum	*num;
+	char		*str;
+	char 		*str1;
 
 	if (list->precision == -1)
     	list->precision = 6;
@@ -689,19 +714,20 @@ void    long_float(t_printf *list, long double arg, char **format)
 		sign = num->sign;
 	add_sign_float(sign, &str, list);
 	width_insert(list, &str);
- 	if (ft_strchr(&list->bar, '#') && list->precision == 0)
-		*format = ft_strjoin_free(str, ".", 1);
+ 	if (ft_strchr(&list->sharp, '#') && list->precision == 0)
+		str1 = ft_strjoin_free(str, ".", 1);
 	else
-	 	*format = str;
-	list->symbs += ft_strlen(str);
-	ft_putstr(*format);
+	 	str1 = str;
+	list->len += ft_strlen(str);
+	ft_putstr(str1);
 }
 
-void    default_float(t_printf *list, double arg, char **format)
+void    default_float(t_printf *list, double arg)
 {
     char		sign;
 	t_bignum	*num;
 	char		*str;
+	char 		*str1;
 
 	if (list->precision == -1)
     	list->precision = 6;
@@ -713,10 +739,10 @@ void    default_float(t_printf *list, double arg, char **format)
 		sign = num->sign;
 	add_sign_float(sign, &str, list);
 	width_insert(list, &str);
- 	if (ft_strchr(&list->bar, '#') && list->precision == 0)
-		*format = ft_strjoin_free(str, ".", 1);
+ 	if (ft_strchr(&list->sharp, '#') && list->precision == 0)
+		str1 = ft_strjoin_free(str, ".", 1);
 	else
-	 	*format = str;
-	list->symbs += ft_strlen(str);
-	ft_putstr(*format);
+	 	str1 = str;
+	list->len += ft_strlen(str);
+	ft_putstr(str1);
 }
