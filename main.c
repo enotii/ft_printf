@@ -13,8 +13,8 @@
 
 #include "ft_printf.h"
 
-int main()
+int main ()
 {
-    ft_printf("{%f}{%lf}{%Lf}", 1.42, 1.42, 1.42l);
-    return(0);
+    ft_printf("%5.2x", 5427);
+    return (0);
 }
