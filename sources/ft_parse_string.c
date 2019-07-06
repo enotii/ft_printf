@@ -14,7 +14,7 @@
 
 static void	wildcard(t_printf *storage, int flag)
 {
-	int type;
+	int		type;
 
 	++storage->str;
 	type = va_arg(storage->arg, int);
@@ -34,10 +34,10 @@ static void	wildcard(t_printf *storage, int flag)
 	storage->width = type;
 }
 
-void parse_precision(t_printf *storage)
+void		parse_precision(t_printf *storage)
 {
 	char	*str;
-    int     precision;
+	int		precision;
 
 	precision = 0;
 	str = storage->str;
@@ -61,9 +61,9 @@ void parse_precision(t_printf *storage)
 	}
 }
 
-void parse_flags(t_printf *storage)
+void		parse_flags(t_printf *storage)
 {
-    while (*storage->str && (*storage->str == '-' || *storage->str == '+'
+	while (*storage->str && (*storage->str == '-' || *storage->str == '+'
 	|| *storage->str == ' ' || *storage->str == '#' || *storage->str == '0'))
 	{
 		if (*storage->str == '-')
@@ -80,12 +80,12 @@ void parse_flags(t_printf *storage)
 	}
 }
 
-void  parse_width(t_printf *storage)
+void		parse_width(t_printf *storage)
 {
-    int		width;
+	int		width;
 	char	*str;
 
-    width = 0;
+	width = 0;
 	str = storage->str;
 	if (storage->str && *storage->str == '*')
 		return (wildcard(storage, 1));

@@ -12,56 +12,57 @@
 
 #include "ft_printf.h"
 
-int parse_int(t_printf *storage)
+int	parse_int(t_printf *s)
 {
-	if (!storage->size)
-		return (ft_printnbr(storage, va_arg(storage->arg, int)));
-	else if (storage->size == 2)
-		return (ft_printnbr(storage, va_arg(storage->arg, long long int)));
-	else if (storage->size == 1)
-		return (ft_printnbr(storage, va_arg(storage->arg, long int)));
-	else if (storage->size == 4)
-		return (ft_printnbr(storage, (char)va_arg(storage->arg, unsigned int)));
-	else if (storage->size == 3)
-		return (ft_printnbr(storage, (short)va_arg(storage->arg, int)));
+	if (!s->size)
+		return (ft_printnbr(s, va_arg(s->arg, int)));
+	else if (s->size == 2)
+		return (ft_printnbr(s, va_arg(s->arg, long long int)));
+	else if (s->size == 1)
+		return (ft_printnbr(s, va_arg(s->arg, long int)));
+	else if (s->size == 4)
+		return (ft_printnbr(s, (char)va_arg(s->arg, unsigned int)));
+	else if (s->size == 3)
+		return (ft_printnbr(s, (short)va_arg(s->arg, int)));
 	return (0);
 }
 
-int parse_unsigned(t_printf *storage)
+int	parse_unsigned(t_printf *s)
 {
-    if (storage->type == 'U')
-		return (ft_printnbr_unsigned(storage, va_arg(storage->arg, unsigned long int)));
-	else if (!storage->size)
-		return (ft_printnbr_unsigned(storage, va_arg(storage->arg, unsigned int)));
-	else if (storage->size == 2)
-		return (ft_printnbr_unsigned(storage, va_arg(storage->arg, unsigned long long int)));
-	else if (storage->size == 1)
-		return (ft_printnbr_unsigned(storage, va_arg(storage->arg, unsigned long int)));
-	else if (storage->size == 4)
-		return (ft_printnbr_unsigned(storage, (unsigned char)va_arg(storage->arg, int)));
-	else if (storage->size == 3)
-		return (ft_printnbr_unsigned(storage, (unsigned short)va_arg(storage->arg, int)));
+	if (s->type == 'U')
+		return (ft_printnbr_unsigned(s, va_arg(s->arg, unsigned long int)));
+	else if (!s->size)
+		return (ft_printnbr_unsigned(s, va_arg(s->arg, unsigned int)));
+	else if (s->size == 2)
+		return (ft_printnbr_unsigned(s, va_arg(s->arg, \
+		unsigned long long int)));
+	else if (s->size == 1)
+		return (ft_printnbr_unsigned(s, va_arg(s->arg, unsigned long int)));
+	else if (s->size == 4)
+		return (ft_printnbr_unsigned(s, (unsigned char)va_arg(s->arg, int)));
+	else if (s->size == 3)
+		return (ft_printnbr_unsigned(s, (unsigned short)va_arg(s->arg, int)));
 	return (0);
 }
 
-int	parse_other(t_printf *storage)
+int	parse_other(t_printf *s)
 {
 	int	flag;
 
-	flag = storage->type != 'p' && storage->type != 'x' && storage->type != 'o';
-	if (storage->type == 'O')
-		return (print_other(storage, va_arg(storage->arg, long long int), flag));
-	else if (storage->type == 'p')
-		return (print_other(storage, va_arg(storage->arg, unsigned long long int), flag));
-	else if (!storage->size)
-		return (print_other(storage, va_arg(storage->arg, unsigned int), flag));
-	else if (storage->size == 2)
-		return (print_other(storage, va_arg(storage->arg, long long int), flag));
-	else if (storage->size == 1)
-		return (print_other(storage, va_arg(storage->arg, long int), flag));
-	else if (storage->size == 3)
-		return (print_other(storage, (unsigned short)va_arg(storage->arg, int), flag));
-	else if (storage->size == 4)
-		return (print_other(storage, (unsigned char)va_arg(storage->arg, int), flag));
+	flag = s->type != 'p' && s->type != 'x' && s->type != 'o';
+	if (s->type == 'O')
+		return (print_other(s, va_arg(s->arg, long long int), flag));
+	else if (s->type == 'p')
+		return (print_other(s, va_arg(s->arg, unsigned long long int), flag));
+	else if (!s->size)
+		return (print_other(s, va_arg(s->arg, unsigned int), flag));
+	else if (s->size == 2)
+		return (print_other(s, va_arg(s->arg, long long int), flag));
+	else if (s->size == 1)
+		return (print_other(s, va_arg(s->arg, long int), flag));
+	else if (s->size == 3)
+		return (print_other(s, (unsigned short)va_arg(s->arg, int), flag));
+	else if (s->size == 4)
+		return (print_other(s, (unsigned char)va_arg(s->arg, int), flag));
 	return (0);
 }

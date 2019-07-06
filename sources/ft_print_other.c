@@ -12,64 +12,73 @@
 
 #include "ft_printf.h"
 
-static void		write_other_into_buff(t_printf *storage, t_help_struct *lst, int flag)
+static void		write_other_into_buff(t_printf *s, t_help_struct *lst, int flag)
 {
-	!storage->minus ? write_into_buff(storage, lst->space, ' ') : 0;
-	if (storage->sharp)
+	!s->minus ? write_into_buff(s, lst->space, ' ') : 0;
+	if (s->sharp)
 	{
-		write_into_buff(storage, 1, '0');
-		if (storage->type != 'o' && storage->type != 'O')
-			!flag ? write_into_buff(storage, 1, 'x') : write_into_buff(storage, 1, 'X');
+		write_into_buff(s, 1, '0');
+		if (s->type != 'o' && s->type != 'O')
+			!flag ? write_into_buff(s, 1, 'x') : write_into_buff(s, 1, 'X');
 	}
-	write_into_buff(storage, lst->zero, '0');
-	modified_itoa(lst, storage, flag);
-	storage->minus ? write_into_buff(storage, lst->space, ' ') : 0;
+	write_into_buff(s, lst->zero, '0');
+	modified_itoa(lst, s, flag);
+	s->minus ? write_into_buff(s, lst->space, ' ') : 0;
 }
 
-static int	space_count_x(t_printf *storage, t_help_struct *lst)
+static int		space_count_x(t_printf *s, t_help_struct *lst)
 {
 	unsigned char flag;
 
-	flag = storage->type == 'o' || storage->type == 'O' ? 1 : 2;
-	if (!storage->sharp && !lst->zero && storage->width > lst->len)
-		return (storage->width - lst->len);
-	if (storage->sharp && !lst->zero && storage->width > lst->len + flag)
-		return (storage->width - lst->len - flag);
-	if (!storage->sharp && storage->width > lst->len && storage->width > storage->precision)
-		return (lst->len > storage->precision ? storage->width - lst->len : storage->width - storage->precision);
-	if (storage->sharp && storage->width > lst->len + flag && storage->width > storage->precision + flag)
-		return (lst->len > storage->precision ? storage->width - lst->len - flag : storage->width - storage->precision - flag);
-	return (0);
+	flag = s->type == 'o' || s->type == 'O' ? 1 : 2;
+	if (!s->sharp && !lst->zero && s->width > lst->len)
+		return (s->width - lst->len);
+	if (s->sharp && !lst->zero && s->width > lst->len + flag)
+		return (s->width - lst->len - flag);
+	if (!s->sharp && s->width > lst->len && s->width > s->precision)
+		return (lst->len > s->precision ? \
+		s->width - lst->len : s->width - s->precision);
+		if (s->sharp && s->width > lst->len + flag && \
+	s->width > s->precision + flag)
+		return (lst->len > s->precision ? \
+		s->width - lst->len - flag : s->width - s->precision - flag);
+		return (0);
 }
 
-static int	initialize_other(t_printf *storage, t_help_struct *lst)
+static int		initialize_other(t_printf *s, t_help_struct *lst)
 {
 	unsigned char flag;
 
-	flag = storage->type == 'O' || storage->type == 'o' ? 1 : 2;
-	storage->type == 'p' ? storage->sharp = 1 : 0;
-	(storage->type == 'O' || storage->type == 'o') && !storage->precision_status && !lst->number ? storage->sharp = 0 : 0;
-	if (!storage->zero)
-		return (lst->number == 0 && storage->precision_status && !storage->precision ? 0 : lst->len);
-	storage->minus && storage->width > lst->len && storage->zero ? storage->minus = 1 : 0;
-	storage->width > lst->len && !storage->precision_status && !storage->sharp && !storage->minus ? storage->precision = storage->width : 0;
-	storage->width > lst->len && !storage->precision_status && storage->sharp && !storage->minus ? storage->precision = storage->width - flag : 0;
-	return (!lst->number && storage->precision_status && !storage->precision ? 0 : lst->len);
+	flag = s->type == 'O' || s->type == 'o' ? 1 : 2;
+	s->type == 'p' ? s->sharp = 1 : 0;
+	(s->type == 'O' || s->type == 'o') && !s->precision_status && \
+	!lst->n ? s->sharp = 0 : 0;
+	if (!s->zero)
+		return (lst->n == 0 && s->precision_status && \
+		!s->precision ? 0 : lst->len);
+		s->minus && s->width > lst->len && s->zero ? s->minus = 1 : 0;
+	s->width > lst->len && !s->precision_status && \
+		!s->sharp && !s->minus ? s->precision = s->width : 0;
+	s->width > lst->len && !s->precision_status && s->sharp && \
+		!s->minus ? s->precision = s->width - flag : 0;
+	return (!lst->n && s->precision_status && \
+	!s->precision ? 0 : lst->len);
 }
 
-int			print_other(t_printf *storage, unsigned long long int number, int flag)
+int				print_other(t_printf *s, unsigned long long int n, int flag)
 {
 	t_help_struct	lst;
 
 	ft_bzero(&lst, sizeof(lst));
-	!number && storage->type != 'o' && storage->type != 'O' ? storage->sharp = 0 : 0;
-	lst.base = storage->type == 'O' || storage->type == 'o' ? 8 : 16;
-	lst.number = number;
-	lst.len = symbs_count(number, lst.base);
-	lst.len = initialize_other(storage, &lst);
-	storage->precision > lst.len ? lst.zero = storage->precision - lst.len : 0;
-	(storage->type == 'o' || storage->type == 'O') && storage->precision_status && lst.zero > 0 && storage->sharp ? --storage->sharp : 0;
-	lst.space = space_count_x(storage, &lst);
-	write_other_into_buff(storage, &lst, flag);
+	!n && s->type != 'o' && s->type != 'O' ? s->sharp = 0 : 0;
+	lst.base = s->type == 'O' || s->type == 'o' ? 8 : 16;
+	lst.n = n;
+	lst.len = symbs_count(n, lst.base);
+	lst.len = initialize_other(s, &lst);
+	s->precision > lst.len ? lst.zero = s->precision - lst.len : 0;
+	(s->type == 'o' || s->type == 'O') && s->precision_status && \
+	lst.zero > 0 && s->sharp ? --s->sharp : 0;
+	lst.space = space_count_x(s, &lst);
+	write_other_into_buff(s, &lst, flag);
 	return (1);
 }
