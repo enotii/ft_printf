@@ -1,29 +1,39 @@
-NAME = ft_printf
+C = clang
+
+NAME = libftprintf.a
+
+FLAGS = -ggdb -Wall -Wextra -Werror -c
+
+DIR_S = sources
+
+DIR_O = temporary
+
+HEADER = include
+
+TEST = main.c
+
+SOURCES = ft_parse_long_float.c ft_parse_float.c ft_default_float.c ft_bzero.c ft_parse_nbr.c ft_parse_size.c ft_parse_string.c ft_print_char_string.c ft_print_other.c ft_printf.c ft_printnbr.c ft_printnbr_logic.c ft_strlen.c help_functions.c
+
+OBJS = $(addprefix $(DIR_O)/,$(SOURCES:.c=.o))
 
 all: $(NAME)
-$(NAME):
-	make -C libft/ 
-	clang -I libft/ -o ft_print_float.o ft_print_float.c
-	clang -I libft/ -o ft_parse_nbr.o ft_parse_nbr.c
-	clang -I libft/ -o ft_parse_size.o ft_parse_size.c
-	clang -I libft/ -o ft_parse_size.o ft_parse_string.c
-	clang -I libft/ -o ft_print_char_string.o ft_print_char_string.c
-	clang -I libft/ -o ft_print_other.o ft_print_other.c
-	clang -I libft/ -o ft_printf.o ft_printf.c
-	clang -I libft/ -o ft_printnbr_logic.o ft_printnbr_logic.c
-	clang -I libft/ -o help_functions.o help_functions.c
-	clang -I libft/ -o main.o -c main.c
-	clang -o $(NAME) main.o ft_print_float.o ft_parse_nbr.o ft_parse_size.o ft_parse_string.o ft_print_char_string.o ft_print_other.o ft_printf.o ft_printnbr_logic.o help_functions.o -I libft/ -L libft/ -lft
+
+$(NAME): $(OBJS)
+	@ar rc $(NAME) $(OBJS)
+	@ranlib $(NAME)
+
+$(DIR_O)/%.o: $(DIR_S)/%.c
+	@mkdir -p temporary
+	@$(CC) $(FLAGS) -I $(HEADER) -o $@ -c $<
+
 clean:
-	rm -rf libft/*.o
-	rm -rf *.o
+	@rm -f $(OBJS)
+	@rm -rf $(DIR_O)
+
 fclean: clean
-	rm -rf $(NAME)
-	rm -rf libft/libft.a
+	@rm -f $(NAME)
+
 re: fclean all
 
-debug:
-	 gcc -ggdb main.c ft_print_float.c ft_bzero.c ft_parse_nbr.c ft_parse_size.c ft_parse_string.c ft_print_char_string.c ft_print_other.c ft_printf.c ft_printnbr.c ft_printnbr_logic.c ft_strlen.c help_functions.c -I libft/ -L libft/ -lft
-
-val:
-	valgrind --leak-check=full ./ft_printf test10.fillitf	
+test:
+	gcc -ggdb $(TEST) $(NAME)	-I $(HEADER)

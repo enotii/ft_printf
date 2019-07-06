@@ -8,10 +8,10 @@
     "name": "(lldb) Launch",
     "type": "cppdbg",
     "request": "launch",
-    "program": "/Users/mbeahan/Desktop/new_printf/a.out",
+    "program": "${workspaceFolder}/a.out",
     "args": [],
     "stopAtEntry": true,
-    "cwd": "${workspaceFolder}/new_printf",
+    "cwd": "${workspaceFolder}",
     "environment": [],
     "externalConsole": true,
     "MIMode": "lldb"
