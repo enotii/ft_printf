@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_default_float.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbeahan <mbeahan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: Alexandr <Alexandr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/06 00:32:32 by mbeahan           #+#    #+#             */
-/*   Updated: 2019/07/06 02:04:07 by mbeahan          ###   ########.fr       */
+/*   Updated: 2019/07/08 01:30:35 by Alexandr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,7 @@ void	exac_float(t_printf *storage, t_help_struct *lst, int flag, char *rou)
 	write_into_buff(storage, lst->zero, '0');
 	modified_itoa(lst, storage, 0);
 	if (rou || storage->sharp)
-	{
 		write_into_buff(storage, 1, '.');
-		++storage->len;
-	}
 	while (norm)
 	{
 		write_into_buff(storage, 1, *rou);

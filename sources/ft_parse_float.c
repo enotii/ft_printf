@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_parse_float.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbeahan <mbeahan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: Alexandr <Alexandr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/06 00:06:59 by mbeahan           #+#    #+#             */
-/*   Updated: 2019/07/06 01:59:51 by mbeahan          ###   ########.fr       */
+/*   Updated: 2019/07/07 17:40:07 by Alexandr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ int print_float(t_printf *storage)
 	ft_bzero(&lst, sizeof(lst));
 	lst.base = 10;
 	num = va_arg(storage->arg, double);
-	if (nan_checker(storage, num))
+	if (nan_checker(storage, (long double)num))
 		return (1);
 	ptr = (unsigned long *)&num;
 	flag = *ptr >> 63;

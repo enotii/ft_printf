@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_parse_nbr.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbeahan <mbeahan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: Alexandr <Alexandr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/05 15:24:05 by mbeahan           #+#    #+#             */
-/*   Updated: 2019/07/06 02:24:30 by mbeahan          ###   ########.fr       */
+/*   Updated: 2019/07/07 18:03:24 by Alexandr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,9 +68,9 @@ int	parse_other(t_printf *storage)
 
 int parse_float(t_printf *storage)
 {
-	if (storage->type == 'f' && !storage->size)
+	if (storage->type == 'f' && (!storage->size || storage->size == 1))
 		return(print_float(storage));
-	if(storage->type == 'f' && storage->size > 0 && storage->size < 3)
+	if(storage->type == 'f' && storage->size == 2)
 		return(print_long_float(storage));
 	return (0);
 }
